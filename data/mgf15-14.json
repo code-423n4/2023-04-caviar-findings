@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "mgf15",
+  "risk": "2",
+  "title": "Missing check for equal length arrays in sumWeightsAndValidateProof ",
+  "issueId": 14,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/14"
+}
