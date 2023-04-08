@@ -239,6 +239,46 @@ FILE : 2023-04-caviar/src/EthRouter.sol
 ```
 [EthRouter.sol#L91](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L91)
 
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+143: constructor(address _factory, address _royaltyRegistry, address _stolenNftOracle) {
+144:        factory = payable(_factory);
+145:        royaltyRegistry = _royaltyRegistry;
+146:        stolenNftOracle = _stolenNftOracle;
+147:    }
+
+175: baseToken = _baseToken;
+176: nft = _nft;
+
+```
+[PrivatePool.sol#L143-L147](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L143-L147),[PrivatePool.sol#L175-L176](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L175-L176)
+
+```solidity
+FILE: 2023-04-caviar/src/Factory.sol
+
+function setPrivatePoolMetadata(address _privatePoolMetadata) public onlyOwner {
+        privatePoolMetadata = _privatePoolMetadata;
+    }
+
+function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
+        privatePoolImplementation = _privatePoolImplementation;
+    }
+
+```
+[Factory.sol#L129-L137](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L137)
+
+
+### Recommendation Code
+
+```soldiity
+FILE: 2023-04-caviar/src/Factory.sol
+
+function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
+       assembly {
+            sstore(privatePoolImplementation.slot, _privatePoolImplementation)
+        }
+```
 ##
 
 ## [G-13] Use nested if and, avoid multiple check combinations
@@ -255,6 +295,18 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 
 ```
 [EthRouter.sol#L101](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L101),[EthRouter.sol#L154](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L154),[EthRouter.sol#L228](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L228),[EthRouter.sol#L256](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L256)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+225: if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+277: if (royaltyFee > 0 && recipient != address(0)) {
+344: if (royaltyFee > 0 && recipient != address(0)) {
+397: if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+635: if (baseToken == address(0) && msg.value < fee) revert InvalidEthAmount();
+
+```
+[PrivatePool.sol#L225](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L225),[PrivatePool.sol#L277](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L277),[PrivatePool.sol#L344](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L344),[PrivatePool.sol#L397](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L397),[PrivatePool.sol#L635](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L635),[]()
 
 ##
 
@@ -274,6 +326,16 @@ FILE: 2023-04-caviar/src/Factory.sol
 
 ```
 [Factory.sol#L74-L77](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L74-L77)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+160: uint128 _virtualBaseTokenReserves,
+161: uint128 _virtualNftReserves,
+162: uint56 _changeFee,
+163: uint16 _feeRate,
+```
+[PrivatePool.sol#L160-L163](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L160-L163)
 ##
 
 ## [G-15] Splitting require() statements that use && saves gas
@@ -283,18 +345,6 @@ See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128
 ```solidity
 ```
 
-##
-
-## [G-16] Add unchecked {} for subtractions where the operands cannot underflow
-
-```solidity
-FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
-
-The block.number is not going to less than 10
-
-943: _rank[id].delb < block.number - 10
-```
-[RubiconMarket.sol#L943](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L943)
 
 ##
 
@@ -318,6 +368,15 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 ```
 [EthRouter.sol#L88](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L88)
 
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+134: receive() external payable {}
+
+```
+[PrivatePool.sol#L134](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L134)
+
 ##
 
 ## [G-18] Use assembly to check for address(0)
@@ -333,6 +392,27 @@ FILE : 2023-04-caviar/src/Factory.sol
 
 ```
 [Factory.sol#L110](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L110),[Factory.sol#L149](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L149)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+254: if (baseToken != address(0)) {
+277: if (royaltyFee > 0 && recipient != address(0)) {
+278: if (baseToken != address(0)) {
+344: if (royaltyFee > 0 && recipient != address(0)) {
+345: if (baseToken != address(0)) {
+357: if (baseToken == address(0)) {
+397: if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+421: if (baseToken != address(0)) {
+489: if ((baseToken == address(0) && msg.value != baseTokenAmount) || (msg.value > 0 && baseToken != address(0))) {
+500: if (baseToken != address(0)) {
+522: if (token == address(0)) {
+635: if (baseToken == address(0) && msg.value < fee) revert InvalidEthAmount();
+651:  if (baseToken != address(0)) ERC20(baseToken).transferFrom(msg.sender, address(this), fee);
+
+```
+[PrivatePool.sol#L254](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L254)
+
 
 ##
 
@@ -362,6 +442,23 @@ FILE : 2023-04-caviar/src/EthRouter.sol
 284: for (uint256 j = 0; j < changes[i].outputTokenIds.length; j++) {
 ```
 [EthRouter.sol#L106](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L106),[EthRouter.sol#L116](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L116),[EthRouter.sol#L134](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L134),[thRouter.sol#L159-L161](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L159-L161),[EthRouter.sol#L239](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L239),[EthRouter.sol#L261](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L261),[EthRouter.sol#L284](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L284)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+238: for (uint256 i = 0; i < tokenIds.length; i++) {
+272: for (uint256 i = 0; i < tokenIds.length; i++) {
+329: for (uint256 i = 0; i < tokenIds.length; i++) {
+441: for (uint256 i = 0; i < inputTokenIds.length; i++) {
+496: for (uint256 i = 0; i < tokenIds.length; i++) {
+518: for (uint256 i = 0; i < tokenIds.length; i++) {
+673: for (uint256 i = 0; i < tokenIds.length; i++) {
+
+```
+[PrivatePool.sol#L238](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L238),[PrivatePool.sol#L272](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L272),[PrivatePool.sol#L329](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L329),[PrivatePool.sol#L441](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L441),[PrivatePool.sol#L446](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L446),[PrivatePool.sol#L496](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L496),[PrivatePool.sol#L518](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L518),[PrivatePool.sol#L673](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L673)
+
+
+
 ##
 
 ## [G-20] Amounts should be checked for 0 before calling a transfer functions 
@@ -399,13 +496,29 @@ FILE : 2023-04-caviar/src/Factory.sol
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
 
+58: event Initialize(address indexed baseToken, address indexed nft, uint128 virtualBaseTokenReserves, uint128 virtualNftReserves, uint56 changeFee, uint16 feeRate, bytes32 merkleRoot, bool useStolenNftOracle, bool payRoyalties);
+59: event Buy(uint256[] tokenIds, uint256[] tokenWeights, uint256 inputAmount, uint256 feeAmount, uint256 protocolFeeAmount, uint256 royaltyFeeAmount);
+60: event Sell(uint256[] tokenIds, uint256[] tokenWeights, uint256 outputAmount, uint256 feeAmount, uint256 protocolFeeAmount, uint256 royaltyFeeAmount);
+61: event Deposit(uint256[] tokenIds, uint256 baseTokenAmount);
+62: event Withdraw(address indexed nft, uint256[] tokenIds, address token, uint256 amount);
+63: event Change(uint256[] inputTokenIds, uint256[] inputTokenWeights, uint256[] outputTokenIds, uint256[] outputTokenWeights, uint256 feeAmount, uint256 protocolFeeAmount);
+64: event SetVirtualReserves(uint128 virtualBaseTokenReserves, uint128 virtualNftReserves);
+65: event SetMerkleRoot(bytes32 merkleRoot);
+66: event SetFeeRate(uint16 feeRate);
+67: event SetUseStolenNftOracle(bool useStolenNftOracle);
+68: event SetPayRoyalties(bool payRoyalties);
 
-()
-()
+```
+[PrivatePool.sol#L58-L68](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L58-L68)
 
 ##
 
-## [G-23] Public functions not called by contract can declare as external 
+## [G-23] Public functions not called by contract can declare as external to save gas 
+
+External call cost is less expensive than of public functions.
+Contracts [are allowed](https://docs.soliditylang.org/en/latest/contracts.html#function-overriding) to override their parents’ functions and change the visibility from external to public.
+The following functions could be set external to save gas and improve code quality:
+
 
 ```solidity
 FILE : 2023-04-caviar/src/PrivatePoolMetadata.sol
@@ -437,6 +550,32 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 311: (recipient, royaltyFee) = IERC2981(lookupAddress).royaltyInfo(tokenId, salePrice);
 ```
 
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+240: ERC721(nft).safeTransferFrom(address(this), msg.sender, tokenIds[i]);
+256: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), netInputAmount);
+259: if (protocolFeeAmount > 0) ERC20(baseToken).safeTransfer(address(factory), protocolFeeAmount);
+279: ERC20(baseToken).safeTransfer(recipient, royaltyFee);
+331: ERC721(nft).safeTransferFrom(msg.sender, address(this), tokenIds[i]);
+346: ERC20(baseToken).safeTransfer(recipient, royaltyFee);
+365: ERC20(baseToken).transfer(msg.sender, netOutputAmount);
+423: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), feeAmount);
+442: ERC721(nft).safeTransferFrom(msg.sender, address(this), inputTokenIds[i]);
+447: ERC721(nft).safeTransferFrom(address(this), msg.sender, outputTokenIds[i]);
+497: ERC721(nft).safeTransferFrom(msg.sender, address(this), tokenIds[i]);
+502: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), baseTokenAmount);
+519: ERC721(_nft).safeTransferFrom(address(this), msg.sender, tokenIds[i]);
+527: ERC20(token).transfer(msg.sender, tokenAmount);
+638: ERC721(token).safeTransferFrom(address(this), address(receiver), tokenId);
+648: ERC721(token).safeTransferFrom(address(receiver), address(this), tokenId);
+651: if (baseToken != address(0)) ERC20(baseToken).transferFrom(msg.sender, address(this), fee);
+765: try ERC721(token).ownerOf(tokenId) returns (address result) {
+784: address lookupAddress = IRoyaltyRegistry(royaltyRegistry).getRoyaltyLookupAddress(nft);
+786: if (IERC2981(lookupAddress).supportsInterface(type(IERC2981).interfaceId)) {
+788: (recipient, royaltyFee) = IERC2981(lookupAddress).royaltyInfo(tokenId, salePrice);
+```
+
 ##
 
 ## [G-25] Duplicated require()/if() checks should be refactored to a modifier or function
@@ -451,6 +590,68 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 
 ```
 [EthRouter.sol#L101](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L101),[EthRouter.sol#L154](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L154),[EthRouter.sol#L228](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L228),[EthRouter.sol#L256](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L256)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+254: if (baseToken != address(0)) {
+278: if (baseToken != address(0)) {
+345: if (baseToken != address(0)) {
+421: if (baseToken != address(0)) {
+500: if (baseToken != address(0)) {
+651:  if (baseToken != address(0)) 
+
+277: if (royaltyFee > 0 && recipient != address(0)) {
+344: if (royaltyFee > 0 && recipient != address(0)) {
+
+```
+[PrivatePool.sol#L254](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L254)
+
+##
+
+## [G-26] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME FOR -=)
+
+Using the addition operator instead of plus-equals saves [113 gas](https://gist.github.com/IllIllI000/cbbfb267425b898e5be734d4008d4fe8)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+230: virtualBaseTokenReserves += uint128(netInputAmount - feeAmount - protocolFeeAmount);
+231: virtualNftReserves -= uint128(weightSum);
+
+323: virtualBaseTokenReserves -= uint128(netOutputAmount + protocolFeeAmount + feeAmount);
+324: virtualNftReserves += uint128(weightSum);
+
+```
+[PrivatePool.sol#L230-L231](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L230-L231),[PrivatePool.sol#L323-L324](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L323-L324)
+
+##
+
+## [G-27] Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement
+
+```
+require(a <= b); x = b - a => require(a <= b); unchecked { x = b - a }
+```
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+268:  if (msg.value > netInputAmount) msg.sender.safeTransferETH(msg.value - netInputAmount);
+
+if (msg.value > feeAmount + protocolFeeAmount) {
+                msg.sender.safeTransferETH(msg.value - feeAmount - protocolFeeAmount);
+            }
+
+```
+[PrivatePool.sol#L268](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L268),[PrivatePool.sol#L435-L437](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L435-L437)
+
+##
+
+## [G-28] Don't declare variables inside the loops 
+
+Declare the variables outside the loops and use inside 
+
+(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L106-L115)
+(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L261-L262)
 
 
 
