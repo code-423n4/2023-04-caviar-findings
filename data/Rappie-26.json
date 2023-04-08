@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Rappie",
+  "risk": "3",
+  "title": "EthRouter.change() completely broken for multiple changes",
+  "issueId": 26,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/26"
+}
