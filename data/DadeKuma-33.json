@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "DadeKuma",
+  "risk": "2",
+  "title": "Unbalanced private pool weights when users `change` their NFTs results in stale price",
+  "issueId": 33,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/33"
+}
