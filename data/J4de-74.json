@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "J4de",
+  "risk": "2",
+  "title": "It is up to the user to decide whether to pay royalties when public pool purchases are made in the `EthRouter#buy` function",
+  "issueId": 74,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/74"
+}
