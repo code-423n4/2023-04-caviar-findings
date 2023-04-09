@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "J4de",
+  "risk": "3",
+  "title": "ERC20 basetoken pool can be sandwich attacked",
+  "issueId": 69,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/69"
+}
