@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bauer",
+  "risk": "3",
+  "title": "If user calls the EthRouter.sell()  function with base token that is not native ETH, the base token will be locked in the contract.",
+  "issueId": 59,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/59"
+}
