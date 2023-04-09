@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": "Skipped validation of `outputTokenIds` length",
+  "issueId": 98,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/98"
+}
