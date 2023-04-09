@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "Owner of PrivatePool can steal any NFTs and tokens that the pool has approval for",
+  "issueId": 63,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/63"
+}
