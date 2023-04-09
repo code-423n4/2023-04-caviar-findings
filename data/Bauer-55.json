@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bauer",
+  "risk": "2",
+  "title": "It doesn't handle fee-on-transfer tokens",
+  "issueId": 55,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/55"
+}
