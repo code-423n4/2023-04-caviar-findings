@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bauer",
+  "risk": "2",
+  "title": "A bad actor can revert in the ETH callback function to block user to buy and sell NFT",
+  "issueId": 54,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/54"
+}
