@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "dacian",
+  "risk": "2",
+  "title": "Tax-On-Transfer ERC20 tokens not correctly handled",
+  "issueId": 80,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/80"
+}
