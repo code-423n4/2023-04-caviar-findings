@@ -2,73 +2,7 @@
 
 ##
 
-## [G-1] State variables only set in the constructor should be declared immutable
-
-Avoids a Gsset (20000 gas) in the constructor, and replaces the first access in each transaction (Gcoldsload - 2100 gas) and each access thereafter (Gwarmacces - 100 gas) with a PUSH32 (3 gas).
-
-While strings are not value types, and therefore cannot be immutable/constant if not hard-coded outside of the constructor, the same behavior can be achieved by making the current contract abstract with virtual functions for the string accessors, and having a child contract override the functions with the hard-coded implementation-specific values.
-
-```solidity
-FILE : 2023-04-rubicon/contracts/V2Migrator.sol
-
-/// @audit v1ToV2Pools (constructor)
-33: v1ToV2Pools[bathTokensV1[i]] = bathTokensV2[i];
-```
-[V2Migrator.sol#L33](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/V2Migrator.sol#L33)
-
-```solidity
-FILE : 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
-
-/// @audit oracle (constructor),rubiconMarket (constructor),bathHouseV2 (constructor),comptroller (constructor)
-55: oracle = PriceOracle(_oracle);
-56: rubiconMarket = RubiconMarket(_rubiconMarket);
-57: bathHouseV2 = BathHouseV2(_bathHouseV2);
-58: comptroller = bathHouseV2.comptroller();
-
-```
-[Position.sol#L55-L58](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/utilities/poolsUtility/Position.sol#L55-L58)
-
-
-##
-
-## [G-2] State variables can be packed into fewer storage slots
-
-If variables occupying the same slot are both written the same function or by the constructor, avoids a separate Gsset (20000 gas). Reads of the variables can also be cheaper
-
-```solidity
-
-FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
-
-219: uint256 public last_offer_id; // 32 bytes  SLOT-1
-222: mapping(uint256 => OfferInfo) public offers; // 32 bytes  SLOT-2
-224: bool locked; // 1 bytes  SLOT-3
-227: uint256 internal feeBPS; // 32 bytes  SLOT-4
-230: address internal feeTo; // 20 bytes   SLOT-5
-
-> Currently total of 5 slots occupied 
-
-```
-[RubiconMarket.sol#L219-L230](https://github.com/code-423n4/2023-04-rubicon/blob/511636d889742296a54392875a35e4c0c4727bb7/contracts/RubiconMarket.sol#L219-L230)
-
-### After Mitigations 
-
-```solidity
-
-FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
-
-  219: uint256 public last_offer_id; // 32 bytes  SLOT-1
-  222: mapping(uint256 => OfferInfo) public offers; // 32 bytes  SLOT-2
-- 224: bool locked; // 1 bytes  
-  227: uint256 internal feeBPS; // 32 bytes  SLOT-3
-  230: address internal feeTo; // 20 bytes   SLOT-4
-+ 224: bool locked; // 1 bytes  SLOT-4
-
-```
-### After mitigation total slots 4 . Saved 1 slot and saves Gsset (20000 gas)
-
-##
-
-## [G-3] Structs can be packed into fewer storage slots
+## [G-1] Structs can be packed into fewer storage slots
 
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
 
@@ -108,35 +42,7 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 ```
 [EthRouter.sol#L58-L67](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L58-L67)
 
-## [G-4] Use a more recent version of solidity
-
-One of the main ways that Solidity reduces gas costs is through the use of more efficient bytecode. The Solidity compiler generates optimized bytecode that uses fewer instructions and consumes less gas than previous versions. This optimization can result in significant gas savings, particularly for contracts with complex logic or large data structures
-
-- Inline assembly
-- Storage layout optimization
-- Better gas estimation
--Low-level data access
-
-```solidity
-FILE : 2023-04-rubicon/contracts/RubiconMarket.sol
-
-3: pragma solidity ^0.8.9;
-```
-
-```solidity
-FILE : 2023-04-rubicon/contracts/periphery/BathBuddy.sol
-
-2: pragma solidity ^0.8.0;
-```
-
-``` solidity
-FILE : 2023-04-rubicon/contracts/utilities/poolsUtility/Position.sol
-
-2: pragma solidity 0.8.17;
-```
-##
-
-## [G-5] Optimize names to save gas
+## [G-2] Optimize names to save gas
 
 public/external function names and public member variable names can be optimized to save gas. See this [link](https://gist.github.com/IllIllI000/a5d8b486a8259f9f77891a919febd1a9) for an example of how it works. Below are the interfaces/abstract contracts that can be optimized so that the most frequently-called functions use the least amount of gas possible during method lookup. Method IDs that have two leading zero bytes can save 128 gas each during deployment, and renaming functions to have lower method IDs will save 22 gas per call, [per sorted position shifted](https://medium.com/joyso/solidity-how-does-function-name-affect-gas-consumption-in-smart-contract-47d270d8ac92)
 
@@ -166,7 +72,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 ```
 ##
 
-## [G-7] Functions guaranteed to revert when called by normal users can be marked payable
+## [G-3] Functions guaranteed to revert when called by normal users can be marked payable
 
 If a function modifier such as onlyOwner is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2),DUP1(3),ISZERO(3),PUSH2(3),JUMPI(10),PUSH1(3),DUP1(3),REVERT(0),JUMPDEST(1),POP(2), which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost
 
@@ -180,37 +86,21 @@ FILE: 2023-04-caviar/src/Factory.sol
 ```
 [Factory.sol#L129](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129)
 
-##
-
-## [G-8] Do not calculate constants
-
-Due to how constant variables are implemented (replacements at compile-time), an expression assigned to a constant variable is recomputed each time that the variable is used, which wastes some gas
-
 ```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+514:  function withdraw(address _nft, uint256[] calldata tokenIds, address token, uint256 tokenAmount) public onlyOwner {
+538:  function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirtualNftReserves) public onlyOwner {
+550:  function setMerkleRoot(bytes32 newMerkleRoot) public onlyOwner {
+562:  function setFeeRate(uint16 newFeeRate) public onlyOwner {
+576:  function setUseStolenNftOracle(bool newUseStolenNftOracle) public onlyOwner {
+587:  function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
 ```
+[PrivatePool.sol#L538](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538),[PrivatePool.sol#L550](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L550),[PrivatePool.sol#L562](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L562),[PrivatePool.sol#L576](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L576),[PrivatePool.sol#L587](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L587)
 
 ##
 
-## [G-9] internal/Private functions or Modifiers only called once can be inlined to save gas
-
-Not inlining costs 20 to 40 gas because of two extra JUMP instructions and additional stack operations needed for function calls.
-
-```solidity 
-```
-
-##
-
-## [G-10] NOT USING THE NAMED RETURN VARIABLES WHEN A FUNCTION RETURNS, WASTES DEPLOYMENT GAS
-
-It is true that not using the named return variables when a function returns wastes deployment gas.
-
-```solidity
-
-```
-
-##
-
-## [G-11] Setting the constructor to payable
+## [G-4] Setting the constructor to payable
 
 You can cut out 10 opcodes in the creation-time EVM bytecode if you declare a constructor payable. Making the constructor payable eliminates the need for an initial check of msg.value == 0 and saves 13 gas on deployment with no security risks
 
@@ -226,11 +116,9 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 
 90: constructor(address _royaltyRegistry) {
 ```
-
-
 ##
 
-## [G-12] Use assembly to write address storage values
+## [G-5] Use assembly to write address storage values
 
 ```solidity
 FILE : 2023-04-caviar/src/EthRouter.sol
@@ -281,7 +169,7 @@ function setPrivatePoolImplementation(address _privatePoolImplementation) public
 ```
 ##
 
-## [G-13] Use nested if and, avoid multiple check combinations
+## [G-6] Use nested if and, avoid multiple check combinations
 
 Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
 
@@ -310,7 +198,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-14] Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead
+## [G-7] Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead
 
 When using elements that are smaller than 32 bytes, your contracts gas usage may be higher. This is because the EVM operates on 32 bytes at a time. Therefore, if the element is smaller than that, the EVM must use more operations in order to reduce the size of the element from 32 bytes to the desired size.
 
@@ -330,6 +218,10 @@ FILE: 2023-04-caviar/src/Factory.sol
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
 
+112:  uint128 public virtualNftReserves;
+104:  uint128 public virtualBaseTokenReserves;
+91:   uint16 public feeRate;
+88:   uint56 public changeFee;
 160: uint128 _virtualBaseTokenReserves,
 161: uint128 _virtualNftReserves,
 162: uint56 _changeFee,
@@ -338,7 +230,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 [PrivatePool.sol#L160-L163](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L160-L163)
 ##
 
-## [G-15] Splitting require() statements that use && saves gas
+## [G-8] Splitting require() statements that use && saves gas
 
 See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128) which describes the fact that there is a larger deployment gas cost, but with enough runtime calls, the change ends up being cheaper by 3 gas
 
@@ -348,7 +240,7 @@ See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128
 
 ##
 
-## [G-17] Empty blocks should be removed or emit something
+## [G-9] Empty blocks should be removed or emit something
 
 The code should be refactored such that they no longer exist, or the block should do something useful, such as emitting an event or reverting. If the contract is meant to be extended, the contract should be abstract and the function signatures be added without any default implementation. If the block is an empty if-statement block to avoid doing subsequent checks in the else-if/else conditions, the else-if/else conditions should be nested under the negation of the if-statement, because they involve different classes of checks, which may lead to the introduction of errors when the code is later modified (if(x){}else if(y){...}else{...} => if(!x){if(y){...}else{...}}). Empty receive()/fallback() payable functions that are not used, can be removed to save deployment gas
 
@@ -379,7 +271,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-18] Use assembly to check for address(0)
+## [G-10] Use assembly to check for address(0)
 
 Saves 6 gas per instance
 
@@ -416,7 +308,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-19] ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as is the case when used in for- and while-loops
+## [G-11] ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as is the case when used in for- and while-loops
 
 The unchecked keyword is new in solidity version 0.8.0, so this only applies to that version or higher, which these instances are
 
@@ -461,7 +353,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-20] Amounts should be checked for 0 before calling a transfer functions 
+## [G-12] Amounts should be checked for 0 before calling a transfer functions 
 
 Checking non-zero transfer values can avoid an expensive external call and save gas.
 While this is done at some places, it’s not consistently done in the solution.
@@ -479,9 +371,26 @@ FILE : 2023-04-caviar/src/Factory.sol
 ```
 [Factory.sol#L150-L152](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L150-L152),[Factory.sol#L112](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L112)
 
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+256: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), netInputAmount);
+259: if (protocolFeeAmount > 0) ERC20(baseToken).safeTransfer(address(factory), protocolFeeAmount);
+279: ERC20(baseToken).safeTransfer(recipient, royaltyFee);
+346: ERC20(baseToken).safeTransfer(recipient, royaltyFee);
+365: ERC20(baseToken).transfer(msg.sender, netOutputAmount);
+423: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), feeAmount);
+502: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), baseTokenAmount);
+527: ERC20(token).transfer(msg.sender, tokenAmount);
+638: ERC721(token).safeTransferFrom(address(this), address(receiver), tokenId);
+648: ERC721(token).safeTransferFrom(address(receiver), address(this), tokenId);
+651: if (baseToken != address(0)) ERC20(baseToken).transferFrom(msg.sender, address(this), fee);
+```
+[PrivatePool.sol#L256](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L256)
+
 ##
 
-## [G-21] Use 3 indexed parameters rule for events to save gas
+## [G-13] Use 3 indexed parameters rule for events to save gas
 
 Its must add 3 indexed parameter for every event. If event has less than 3 parameters all parameters should be indexed 
 
@@ -513,7 +422,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-23] Public functions not called by contract can declare as external to save gas 
+## [G-14] public functions to external
 
 External call cost is less expensive than of public functions.
 Contracts [are allowed](https://docs.soliditylang.org/en/latest/contracts.html#function-overriding) to override their parents’ functions and change the visibility from external to public.
@@ -530,9 +439,99 @@ FILE : 2023-04-caviar/src/PrivatePoolMetadata.sol
 ```
 [PrivatePoolMetadata.sol#L35](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L35)
 
+```solidity
+FILE: 2023-04-caviar/src/Factory.sol
+
+function create(
+        address _baseToken,
+        address _nft,
+        uint128 _virtualBaseTokenReserves,
+        uint128 _virtualNftReserves,
+        uint56 _changeFee,
+        uint16 _feeRate,
+        bytes32 _merkleRoot,
+        bool _useStolenNftOracle,
+        bool _payRoyalties,
+        bytes32 _salt,
+        uint256[] memory tokenIds, // put in memory to avoid stack too deep error
+        uint256 baseTokenAmount
+    ) public payable returns (PrivatePool privatePool) {
+
+135:  function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
+
+141: function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner {
+
+148: function withdraw(address token, uint256 amount) public onlyOwner {
+
+129: function setPrivatePoolMetadata(address _privatePoolMetadata) public onlyOwner {
+
+168: function predictPoolDeploymentAddress(bytes32 salt) public view returns (address predictedAddress) {
+
+```
+
+[Factory.sol#L71-L84](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L71-L84),[Factory.sol#L135](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L135),[Factory.sol#L141](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L141),[Factory.sol#L148](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L148),[Factory.sol#L129](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129),[Factory.sol#L168](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L168)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePoolMetadata.sol
+
+17: function tokenURI(uint256 tokenId) public view returns (string memory) {
+
+
+```
+[PrivatePoolMetadata.sol#L17](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L17)
+
+```solidity
+FILE: 2023-04-caviar/src/EthRouter.sol
+
+99:  function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public payable {
+152: function sell(Sell[] calldata sells, uint256 minOutputAmount, uint256 deadline, bool payRoyalties) public {
+
+```
+[EthRouter.sol#L99](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L99),[EthRouter.sol#L152](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L152),[]()
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+ function buy(uint256[] calldata tokenIds, uint256[] calldata tokenWeights, MerkleMultiProof calldata proof)
+        public
+        payable
+        returns (uint256 netInputAmount, uint256 feeAmount, uint256 protocolFeeAmount)
+
+function sell(
+        uint256[] calldata tokenIds,
+        uint256[] calldata tokenWeights,
+        MerkleMultiProof calldata proof,
+        IStolenNftOracle.Message[] memory stolenNftProofs // put in memory to avoid stack too deep error
+    ) public returns (uint256 netOutputAmount, uint256 feeAmount, uint256 protocolFeeAmount) {
+
+function change(
+        uint256[] memory inputTokenIds,
+        uint256[] memory inputTokenWeights,
+        MerkleMultiProof memory inputProof,
+        IStolenNftOracle.Message[] memory stolenNftProofs,
+        uint256[] memory outputTokenIds,
+        uint256[] memory outputTokenWeights,
+        MerkleMultiProof memory outputProof
+    ) public payable returns (uint256 feeAmount, uint256 protocolFeeAmount) {
+
+459:  function execute(address target, bytes memory data) public payable onlyOwner returns (bytes memory) {
+
+484:  function deposit(uint256[] calldata tokenIds, uint256 baseTokenAmount) public payable {
+
+514:  function withdraw(address _nft, uint256[] calldata tokenIds, address token, uint256 tokenAmount) public onlyOwner {
+
+538:  function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirtualNftReserves) public onlyOwner {
+550:  function setMerkleRoot(bytes32 newMerkleRoot) public onlyOwner {
+562:  function setFeeRate(uint16 newFeeRate) public onlyOwner {
+576:  function setUseStolenNftOracle(bool newUseStolenNftOracle) public onlyOwner {
+587:  function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
+
+```
+[PrivatePool.sol#L211-L214](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L214),[PrivatePool.sol#L301-L306](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L301-L306),[PrivatePool.sol#L385-L393](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L385-L393),[PrivatePool.sol#L459](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L459),[PrivatePool.sol#L484](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L484),[PrivatePool.sol#L514](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L514),[PrivatePool.sol#L538](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538),[PrivatePool.sol#L550](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L550),[PrivatePool.sol#L562](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L562),[PrivatePool.sol#L576](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L576),[PrivatePool.sol#L587](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L587)
+
 ##
 
-## [G-24] Avoid contract existence checks by using low level calls
+## [G-15] Avoid contract existence checks by using low level calls
 
 Prior to 0.8.10 the compiler inserted extra code, including EXTCODESIZE (100 gas), to check for contract existence for external function calls. In more recent solidity versions, the compiler will not insert these checks if the external call has a return value. Similar behavior can be achieved in earlier versions by using low-level calls, since low level calls never check for contract existence
 
@@ -578,7 +577,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-25] Duplicated require()/if() checks should be refactored to a modifier or function
+## [G-16] Duplicated require()/if() checks should be refactored to a modifier or function
 
 ```solidity
 FILE: 2023-04-caviar/src/EthRouter.sol
@@ -609,7 +608,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-26] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME FOR -=)
+## [G-17] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME FOR -=)
 
 Using the addition operator instead of plus-equals saves [113 gas](https://gist.github.com/IllIllI000/cbbfb267425b898e5be734d4008d4fe8)
 
@@ -627,7 +626,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-27] Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement
+## [G-18] Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement
 
 ```
 require(a <= b); x = b - a => require(a <= b); unchecked { x = b - a }
@@ -646,27 +645,224 @@ if (msg.value > feeAmount + protocolFeeAmount) {
 
 ##
 
-## [G-28] Don't declare variables inside the loops 
+## [G-19] Don't declare variables inside the loops 
 
 Declare the variables outside the loops and use inside 
 
 (https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L106-L115)
 (https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L261-L262)
+(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L329-L335)
 
+##
 
+## [G-20] The condition check should be top of the functions 
 
+By performing these checks at the beginning of the function, the contract can avoid unnecessary processing and save gas
 
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
 
+> If condition should be checked top of the function. Waste of gas if (baseToken != address(0) && msg.value > 0) condition failed after getting sumWeightsAndValidateProof(),buyQuote() functions called 
 
+function buy(uint256[] calldata tokenIds, uint256[] calldata tokenWeights, MerkleMultiProof calldata proof)
+        public
+        payable
+        returns (uint256 netInputAmount, uint256 feeAmount, uint256 protocolFeeAmount)
+    {
+        // ~~~ Checks ~~~ //
 
+        // calculate the sum of weights of the NFTs to buy
+        uint256 weightSum = sumWeightsAndValidateProof(tokenIds, tokenWeights, proof);
 
+        // calculate the required net input amount and fee amount
+        (netInputAmount, feeAmount, protocolFeeAmount) = buyQuote(weightSum);
 
+        // check that the caller sent 0 ETH if the base token is not ETH
+        if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
 
+```
 
+[PrivatePool.sol#L211-L225](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L225)
 
+```
 
-public functions not called by contract
-events should use 3 indexed rule 
+##
+
+## [G-21] Cheaper input valdiations should come before expensive operations
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+> "if (useStolenNftOracle) {" condition consumes less gas than "if (baseToken != address(0) && msg.value > 0) " condition check 
+
+397: if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+
+400: if (useStolenNftOracle) {
+            IStolenNftOracle(stolenNftOracle).validateTokensAreNotStolen(nft, inputTokenIds, stolenNftProofs);
+        }
+
+```
+[PrivatePool.sol#L397-L402](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L397-L402)
+
+##
+
+## [G-22] Sort Solidity operations using short-circuit mode
+
+Short-circuiting is a solidity contract development model that uses OR/AND logic to sequence different cost operations. It puts low gas cost operations in the front and high gas cost operations in the back, so that if the front is low If the cost operation is feasible, you can skip (short-circuit) the subsequent high-cost Ethereum virtual machine operation.
+
+```
+//f(x) is a low gas cost operation 
+//g(y) is a high gas cost operation 
+//Sort operations with different gas costs as follows 
+f(x) || g(y) 
+f(x) && g(y)
+
+```
+```solidity
+FILE: 2023-04-caviar/src/EthRouter.sol
+
+it is generally more gas efficient to use a local variable to store the deadline time in a condition check, rather than calling block.timestamp directly in the condition. This is because accessing the block.timestamp requires an external call to the Ethereum network, which is more expensive in terms of gas compared to using a local variable
+
+101: if (block.timestamp > deadline && deadline != 0) {
+154: if (block.timestamp > deadline && deadline != 0) {
+228: if (block.timestamp > deadline && deadline != 0) {
+256: if (block.timestamp > deadline && deadline != 0) {
+
+```
+[EthRouter.sol#L101](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L101)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+msg.value > 0 check this condition first then baseToken != address(0). Because baseToken is state variable 
+
+225: if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+397: if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+489: if ((baseToken == address(0) && msg.value != baseTokenAmount) || (msg.value > 0 && baseToken != address(0))) {
+635: if (baseToken == address(0) && msg.value < fee) revert InvalidEthAmount();
+```
+[PrivatePool.sol#L225](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L225)
+
+##
+
+## [G-23] Multiplication/division by 2 should use bit shifting
+
+<x> * 2 is equivalent to <x> << 1 and <x> / 2 is the same as <x> >> 1. The MUL and DIV opcodes cost 5 gas, whereas SHL and SHR only cost 3 gas
+
+```solidity 
+FILE: FILE: 2023-04-caviar/src/PrivatePool.sol
+
+668:  return tokenIds.length * 1e18;
+736: feeAmount = inputAmount * feePerNft / 1e18;
+734:  uint256 feePerNft = changeFee * 10 ** exponent;
+
+```
+[PrivatePool.sol#L668](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L668)
+
+##
+
+## [G-24] abi.encode() is less efficient than abi.encodePacked()
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+675: leafs[i] = keccak256(bytes.concat(keccak256(abi.encode(tokenIds[i], tokenWeights[i]))));
+
+```
+[PrivatePool.sol#L675](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L675)
+
+```solidity
+FILE: 2023-04-caviar/src/EthRouter.sol
+
+177: abi.decode(abi.encode(sells[i].stolenNftProofs), (ReservoirOracle.Message[]))
+
+```
+[EthRouter.sol#L177](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L177)
+
+##
+
+## [G-25] State variables with values known at compile time should be constants
+
+Variables with values known at compile time and that do not change at runtime should be declared as constant.
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+changeFee can be declared as constant since no changes in contract. The value assigned only one time through out the contract 
+
+179: changeFee = _changeFee;
+```
+[PrivatePool.sol#L179](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L179)
+
+##
+
+## [G-26] State variables should be cached in stack variables rather than re-reading them from storage
+
+Caching will replace each Gwarmaccess (100 gas) with a much cheaper stack read.
+Less obvious fixes/optimizations include having local storage variables of mappings within state variable mappings or mappings within state variable structs, having local storage variables of structs within mappings, having local memory caches of state variable structs, or having local caches of state variable contracts/addresses.
+
+```solidity
+2023-04-caviar/src/PrivatePool.sol
+
+baseToken should be cached with stack variable 
+
+buy() function
+
+225:  if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+256:  ERC20(baseToken).safeTransferFrom(msg.sender, address(this), netInputAmount);
+259:  if (protocolFeeAmount > 0) ERC20(baseToken).safeTransfer(address(factory), protocolFeeAmount);
+278:  if (baseToken != address(0)) {
+
+sell() function
+
+345: if (baseToken != address(0)) {
+365: ERC20(baseToken).transfer(msg.sender, netOutputAmount);
+368: if (protocolFeeAmount > 0) ERC20(baseToken).safeTransfer(address(factory), protocolFeeAmount);
+
+change() function
+
+397:  if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
+421:  if (baseToken != address(0)) {
+423:  ERC20(baseToken).safeTransferFrom(msg.sender, address(this), feeAmount);
+429:   if (protocolFeeAmount > 0) ERC20(baseToken).safeTransferFrom(msg.sender, factory, protocolFeeAmount);
+
+deposit() function
+
+489: if ((baseToken == address(0) && msg.value != baseTokenAmount) || (msg.value > 0 && baseToken != address(0))) {
+500: if (baseToken != address(0)) {
+502: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), baseTokenAmount);
+
+flashLoan() function
+
+635: if (baseToken == address(0) && msg.value < fee) revert InvalidEthAmount();
+651: if (baseToken != address(0)) ERC20(baseToken).transferFrom(msg.sender, address(this), fee);
+
+733: uint256 exponent = baseToken == address(0) ? 18 - 4 : ERC20(baseToken).decimals() - 4;
+744: uint256 exponent = baseToken == address(0) ? 18 : (36 - ERC20(baseToken).decimals());
+
+payRoyalties should be cached with stack variable 
+
+buy() function
+
+242: if (payRoyalties) {
+271: if (payRoyalties) {
+
+nft should be cached with stack variable
+
+buy() function
+
+317: IStolenNftOracle(stolenNftOracle).validateTokensAreNotStolen(nft, tokenIds, stolenNftProofs);
+331: ERC721(nft).safeTransferFrom(msg.sender, address(this), tokenIds[i]);
+
+change() function
+
+401: IStolenNftOracle(stolenNftOracle).validateTokensAreNotStolen(nft, inputTokenIds, stolenNftProofs);
+442: ERC721(nft).safeTransferFrom(msg.sender, address(this), inputTokenIds[i]);
+447: ERC721(nft).safeTransferFrom(address(this), msg.sender, outputTokenIds[i]);
+
+```
+[PrivatePool.sol#L225](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L225)
+
 
 GAS-1	Using bools for storage incurs overhead	3
 GAS-2	Cache array length outside of loop	19
