@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bauer",
+  "risk": "3",
+  "title": "This buy() and sell() functions does not allow the user to set the maximum payable amount, which may result in user losing assets.",
+  "issueId": 51,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/51"
+}
