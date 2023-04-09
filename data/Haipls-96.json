@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Haipls",
+  "risk": "3",
+  "title": "User can buy the same NFT multiple times without NFT sales which allows reduce virtualNftReserves",
+  "issueId": 96,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/96"
+}
