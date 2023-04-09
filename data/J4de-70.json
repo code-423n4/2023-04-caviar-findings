@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "J4de",
+  "risk": "3",
+  "title": "An attacker can perform a sandwich attack before the `setVirtualReserves`",
+  "issueId": 70,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/70"
+}
