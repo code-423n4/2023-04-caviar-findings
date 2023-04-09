@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": "The `tokenURI` method does not check if the NFT has been minted and returns data for the contract that may be a fake NFT.",
+  "issueId": 44,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/44"
+}
