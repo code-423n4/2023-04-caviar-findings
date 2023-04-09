@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ginlee",
+  "risk": "2",
+  "title": "Ensure that the nft parameter is not a zero address",
+  "issueId": 84,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/84"
+}
