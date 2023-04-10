@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Hama",
+  "risk": "2",
+  "title": "Users can buy items and have surplus refund if ether had been send to the contract through tha fallback function",
+  "issueId": 114,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/114"
+}
