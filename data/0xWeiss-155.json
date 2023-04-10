@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWeiss",
+  "risk": "2",
+  "title": "Non validation that feeRate is >0 will make sell orders fail",
+  "issueId": 155,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/155"
+}
