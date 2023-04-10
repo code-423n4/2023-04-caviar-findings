@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWeiss",
+  "risk": "3",
+  "title": "Tokens with <  ||  > (more or less) than 18 decimals break crucial invariant",
+  "issueId": 163,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/163"
+}
