@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ravi_gaint",
+  "risk": "3",
+  "title": "[H-01] Lack of Division by Zero Check in calculateAmounts Function",
+  "issueId": 122,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/122"
+}
