@@ -235,7 +235,7 @@ index 75991e1..96c433f 100644
  }
 ```
 
-#### Gas savings as seen by tests
+#### Gas savings as recorded by tests
 Displaying only rows where there's a difference in gas cost.
 
 Original tests:
@@ -438,7 +438,7 @@ index 125001d..129c264 100644
 ```
 
 
-#### Gas savings as seen by tests
+#### Gas savings as recorded by tests
 Displaying only rows where there's a difference in gas cost.
 
 Original tests:
