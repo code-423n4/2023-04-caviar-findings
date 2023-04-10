@@ -129,3 +129,29 @@ All Contracts
 Manual Analysis
 
 
+# 5: IMPORTS CAN BE GROUPED TOGETHER
+
+Vulnerability details
+
+## Context:
+
+Imports can be grouped together.
+
+## Proof of Concept
+
+> ***File: EthRouter.sol*** 
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L31-L38
+
+
+> ***File: PrivatePool.sol***
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L27-L37
+
+## Tools Used
+
+Manual Analysis
+
+### Recommended Mitigation Steps
+
+Consider importing OZ first, then all interfaces, then all utils.
