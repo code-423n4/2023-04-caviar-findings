@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ravi_gaint",
+  "risk": "2",
+  "title": "[M-01] Missing Input Token Approval Check in swap Function",
+  "issueId": 116,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/116"
+}
