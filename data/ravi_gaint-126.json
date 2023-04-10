@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ravi_gaint",
+  "risk": "3",
+  "title": "[H-02] Potential issue with calculation of token balances in swap function",
+  "issueId": 126,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/126"
+}
