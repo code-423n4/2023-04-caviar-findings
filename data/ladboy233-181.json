@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": " Private Pool NFT Metadata does not render the balance correctly if the balance number is large and long",
+  "issueId": 181,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/181"
+}
