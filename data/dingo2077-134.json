@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "dingo2077",
+  "risk": "2",
+  "title": "[M-01] Possible DoS attack at buyers if they didn't implemented receive() function;",
+  "issueId": 134,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/134"
+}
