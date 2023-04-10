@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Jigsaw",
+  "risk": "3",
+  "title": "PrivatePool Withdraw function withdraws all assets to owner regardless of actual ownership",
+  "issueId": 107,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/107"
+}
