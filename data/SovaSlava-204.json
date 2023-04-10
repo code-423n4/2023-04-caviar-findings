@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "SovaSlava",
+  "risk": "2",
+  "title": "User can get ether from other users, who sent eth to Router, without any NFT",
+  "issueId": 204,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/204"
+}
