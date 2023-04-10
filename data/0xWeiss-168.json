@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWeiss",
+  "risk": "3",
+  "title": "Attacker can steal all the balance from the contract",
+  "issueId": 168,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/168"
+}
