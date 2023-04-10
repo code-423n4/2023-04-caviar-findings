@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ravi_gaint",
+  "risk": "2",
+  "title": "[M-02] Lack of slippage adjustment in `updatePrices` function may result in inaccurate token prices",
+  "issueId": 117,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/117"
+}
