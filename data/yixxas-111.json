@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "yixxas",
+  "risk": "2",
+  "title": "Base tokens with less than 4 decimals will break protocol",
+  "issueId": 111,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/111"
+}
