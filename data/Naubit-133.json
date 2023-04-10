@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Naubit",
+  "risk": "2",
+  "title": "price() reverts if the baseToken has 37 or more decimals",
+  "issueId": 133,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/133"
+}
