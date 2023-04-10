@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x4non",
+  "risk": "3",
+  "title": "Arbitrary call on `execute` let a malicious owner to drain users funds or nfts",
+  "issueId": 186,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/186"
+}
