@@ -77,4 +77,33 @@ Manual Analysis
 Use a non-legacy and more battle-tested version
 
 
+# 3: ADD A LIMIT FOR THE MAXIMUM NUMBER OF CHARACTERS PER LINE
+
+Vulnerability details
+
+## Context:
+
+The solidity documentation recommends a maximum of 120 characters.
+
+For reference, see https://docs.soliditylang.org/en/v0.8.17/style-guide.html#maximum-line-length
+
+## Proof of Concept
+
+> ***2 Files, 5 Instances*** 
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L103
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L58-L60
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L63
+
+## Tools Used
+
+Manual Analysis
+
+### Recommended Mitigation Steps
+
+Consider adding a limit of 120 characters or less to prevent large lines.
+
+
 
