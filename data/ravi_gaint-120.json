@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ravi_gaint",
+  "risk": "2",
+  "title": "[M-04] Uninitialized `poolToken` variable in PrivatePool constructor",
+  "issueId": 120,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/120"
+}
