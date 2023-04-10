@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Dug",
+  "risk": "2",
+  "title": "Missing events for `Factory.sol` state changes",
+  "issueId": 192,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/192"
+}
