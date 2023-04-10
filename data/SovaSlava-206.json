@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "SovaSlava",
+  "risk": "2",
+  "title": "User can't buy/sell nft, if payRoyalties==true and royaltyRecipient reject incoming ether",
+  "issueId": 206,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/206"
+}
