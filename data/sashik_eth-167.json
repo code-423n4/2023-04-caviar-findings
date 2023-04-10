@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "sashik_eth",
+  "risk": "3",
+  "title": "Risk of silent overflow in reserves update",
+  "issueId": 167,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/167"
+}
