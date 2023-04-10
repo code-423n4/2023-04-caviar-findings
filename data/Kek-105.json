@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Kek",
+  "risk": "3",
+  "title": "In PrivatePool.sol, owners/users can execute initialize()/deposit() with stolen NFTs, users can buy() with no stolen NFT check",
+  "issueId": 105,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/105"
+}
