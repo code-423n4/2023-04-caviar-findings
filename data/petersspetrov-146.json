@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "petersspetrov",
+  "risk": "2",
+  "title": "ERC20 transfer zero amount can be reverted",
+  "issueId": 146,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/146"
+}
