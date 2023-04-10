@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWeiss",
+  "risk": "3",
+  "title": "Imcompatibility with ERC777 due to re-entrancy issue",
+  "issueId": 153,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/153"
+}
