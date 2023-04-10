@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "shealtielanz",
+  "risk": "3",
+  "title": "Users Can Lose their funds and encounter a Denial of Service when interacting with the Contract's Functions due to a bug that allows for Front Running.",
+  "issueId": 138,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/138"
+}
