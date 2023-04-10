@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "jasonxiale",
+  "risk": "2",
+  "title": "when user deposit his NFT/baseToken/ETH to some other's PrivatePool, he can't withdraw his asset back",
+  "issueId": 152,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/152"
+}
