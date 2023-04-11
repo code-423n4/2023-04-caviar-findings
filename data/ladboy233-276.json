@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Token change fee is incorrectly calculated because of division before multiplication and when token decimal is low",
+  "issueId": 276,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/276"
+}
