@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "seller fails to get back fund through selling to privatePool in EthRouter when base Token is ERC20",
+  "issueId": 271,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/271"
+}
