@@ -237,4 +237,40 @@ https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c2
 Manual Analysis
 
 
+# 8: EVENT IS MISSING INDEXED FIELDS
+
+Vulnerability details
+
+## Context:
+
+Index event fields make the field more quickly accessible to off-chain tools that parse events. However, note that each index field costs extra gas during emission, so it's not necessarily best to index the maximum allowed per event (three fields). Each event should use three indexed fields if there are three or more fields and gas usage is not, particularly of concern for the events in question. If there are fewer than three fields, all of the fields should be indexed.
+
+## Proof of Concept
+
+> ***Instances: (9)***
+
+> ***File: PrivatePool.sol***
+
+59:    event Buy(uint256[] tokenIds, uint256[] tokenWeights, uint256 inputAmount, uint256 feeAmount, uint256 protocolFeeAmount, uint256 royaltyFeeAmount);
+60:    event Sell(uint256[] tokenIds, uint256[] tokenWeights, uint256 outputAmount, uint256 feeAmount, uint256 protocolFeeAmount, uint256 royaltyFeeAmount);
+61:    event Deposit(uint256[] tokenIds, uint256 baseTokenAmount);
+
+63:    event Change(uint256[] inputTokenIds, uint256[] inputTokenWeights, uint256[] outputTokenIds, uint256[] outputTokenWeights, uint256 feeAmount, uint256 protocolFeeAmount);
+64:    event SetVirtualReserves(uint128 virtualBaseTokenReserves, uint128 virtualNftReserves);
+65:    event SetMerkleRoot(bytes32 merkleRoot);
+66:    event SetFeeRate(uint16 feeRate);
+67:    event SetUseStolenNftOracle(bool useStolenNftOracle);
+68:    event SetPayRoyalties(bool payRoyalties);
+
+[Link to code](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol)
+
+## Tools Used
+
+Manual Analysis
+
+### Recommended Mitigation Steps
+
+Events should be indexed where necessary 
+
+
 X
