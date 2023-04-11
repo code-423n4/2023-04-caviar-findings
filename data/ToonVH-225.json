@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ToonVH",
+  "risk": "2",
+  "title": "Improper handling of ERC20's with decimals smaller than 4 or larger than 36 in PrivatePool",
+  "issueId": 225,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/225"
+}
