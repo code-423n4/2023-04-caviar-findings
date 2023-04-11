@@ -1,6 +1,29 @@
 ## Combining for loops in `buy()` of PrivatePool
 Like it has been implemented in [`sell()`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L328-L351), consider combining the two [for loops](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L242) involving [`if (payRoyalties)`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L271) in [`buy()`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L211-L289) to save gas both on function calls and contract size. 
 
+## Identical arithmetic operation can be cached
+In PrivatePool, the two identical arithmetic operations of `buy()` can be cached into a local variable to save gas on function call as follows:
+
+[File: PrivatePool.sol#L229-L237](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L229-L237)
+
+```diff
++        trimmedNetInputAmount = netInputAmount - feeAmount - protocolFeeAmount;
+
+        // update the virtual reserves
+-        virtualBaseTokenReserves += uint128(netInputAmount - feeAmount - protocolFeeAmount);
++        virtualBaseTokenReserves += uint128(trimmedNetInputAmount);
+        virtualNftReserves -= uint128(weightSum);
+
+        // ~~~ Interactions ~~~ //
+
+        // calculate the sale price (assume it's the same for each NFT even if weights differ)
+-        uint256 salePrice = (netInputAmount - feeAmount - protocolFeeAmount) / tokenIds.length;
++        uint256 salePrice = trimmedNetInputAmount / tokenIds.length;
+        uint256 royaltyFeeAmount = 0; 
+```
+## Unneeded `flashFeeToken()`
+`baseToken` is already evidently used in [line 635](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L635) and [line 651](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L651) of `flashLoan()`. Additionally, `baseToken` comes with a free [public getter](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L82). Hence, consider removing the unneeded [`flashFeeToken()`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L754-L757) to reduce the contract size.  
+
 ## Use of named returns for local variables saves gas
 You can have further advantages in term of gas cost by simply using named return values as temporary local variable.
 
