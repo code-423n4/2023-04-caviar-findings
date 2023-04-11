@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "chaduke",
+  "risk": "2",
+  "title": "flashloan() will not work when changeFee == 0 for base tokens that revert on zero value transfer. ",
+  "issueId": 238,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/238"
+}
