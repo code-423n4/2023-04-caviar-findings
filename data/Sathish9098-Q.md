@@ -1,7 +1,53 @@
-##
+## LOW FINDINGS 
+
+|  Low Count | Issues | Instances |
+| -------- | --------| -------- |
+| [L-1]  | Lack of address(0) check when assigning address to state variables  | 4  |
+| [L-2]  | A single point of failure | 8  |
+| [L-3]  | Front running attacks by the onlyOwner | 8  |
+| [L-4]  | Prevent division by 0 | 5  |
+| [L-5]  | Sanity/Threshold/Limit Checks | 10  |
+| [L-6]  | Consider using OpenZeppelin’s SafeCast library to prevent unexpected errors  | 3  |
+| [L-7]  | Function may run out of gas | 7  |
+| [L-8]  | Gas griefing/theft is possible on unsafe external call | 1  |
+| [L-9]  | Loss of precision due to rounding | 11  |
+| [L-10]  | Use latest @openzeppelin/merkle-tree version  | 1  |
+| [L-11]  | abi.encodePacked() should not be used with dynamic types when passing the result to a hash function such as keccak256() | 7  |
+
+# NON CRITICAL FINDINGS
+
+| NC Count | Issues | Instances |
+| -------- | --------| -------- |
+| [NC-1]   | Add a timelock to critical functions | 8  |
+| [NC-2]   | No same value control  | 8  |
+| [NC-3]   | Critical changes should use two-step procedure | 8  |
+| [NC-4]   | Events that mark critical parameter changes should contain both the old and the new value | 8 |
+| [NC-5]   | NATSPEC COMMENTS SHOULD BE INCREASED IN CONTRACTS | -  |
+| [NC-6]   | NOT USING THE NAMED RETURN VARIABLES ANYWHERE IN THE FUNCTION IS CONFUSING | 11 |
+| [NC-7]   | Mark visibility of initialize(…) functions as external | 1  |
+| [NC-8]   | Contract layout and order of functions | 8  |
+| [NC-9]   | Pragma float | -  |
+| [NC-10]   | immutable should be uppercase  | 3  |
+| [NC-11]   | Public functions not called by contract can declare as external  | 11  |
+| [NC-12]   | Include return parameters in NatSpec comments | 6  |
+| [NC-13]   | Use of bytes.concat() instead of abi.encodePacked() | 7  |
+| [NC-14]   | For functions, follow Solidity standard naming conventions (internal function style rule) | 1 |
+| [NC-15]   | Typos | 1  |
+| [NC-16]   | NatSpec is incomplete | 3  |
+| [NC-17]   | Missing NATSPEC | 5  |
+| [NC-18]   | Lines are too long | 4  |
+| [NC-19]   | Non-library/interface files should use fixed compiler versions, not floating ones | 1 |
+| [NC-20]   | Event is missing indexed fields | 15  |
+| [NC-21]   | Duplicated require()/revert() checks should be refactored to a modifier or function | 12 |
+| [NC-22]   | Imports can be grouped together | 1  |
+| [NC-23]   | Approve() function return value not checked | 1  |
+| [NC-24]   | Assembly Codes Specific – Should Have Comments | 1  |
 
 ##
+
 ## [L-1] Lack of address(0) check when assigning address to state variables 
+
+> Instances(4) 
 
 ```solidity
 FILE: 2023-04-caviar/src/EthRouter.sol
@@ -27,6 +73,8 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 ##
 
 ## [L-2] A single point of failure
+
+> Instances(8) 
 
 ### Impact
 The onlyOwner role has a single point of failure and onlyOwner can use critical a few functions.
@@ -56,9 +104,18 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 ```
 [PrivatePool.sol#L538](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538),[PrivatePool.sol#L550](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L550),[PrivatePool.sol#L562](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L562),[PrivatePool.sol#L576](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L576),[PrivatePool.sol#L587](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L587)
 
+### Recommended Mitigation Steps
+Add a time lock to critical functions. Admin-only functions that change critical parameters should emit events and have timelocks.
+
+Events allow capturing the changed parameters so that off-chain tools/interfaces can register such changes with timelocks that allow users to evaluate them and consider if they would like to engage/exit based on how they perceive the changes as affecting the trustworthiness of the protocol or profitability of the implemented financial services.
+
+Also detail them in documentation and NatSpec comments.
+
 ##
 
 ## [L-3] Front running attacks by the onlyOwner
+
+> Instances(8) 
 
 ```solidity
 FILE: 2023-04-caviar/src/Factory.sol
@@ -83,11 +140,13 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 
 
-## Recommended Mitigation Steps
+### Recommended Mitigation Steps
 Use a timelock to avoid instant changes of the parameters.
 
 
 ## [L-4] Prevent division by 0
+
+> Instances(5) 
 
 On several locations in the code precautions are not being taken for not dividing by 0, this will revert the code.
 These functions can be called with 0 value in the input, this value is not checked for being bigger than 0, that means in some scenarios this can potentially trigger a division by zero.
@@ -114,6 +173,8 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 
 ## [L-5] Sanity/Threshold/Limit Checks
+
+> Instances(10) 
 
 Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation as well as zero address checks for critical changes. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
 
@@ -154,11 +215,13 @@ function withdraw(address token, uint256 amount) public onlyOwner {
 
 [PrivatePool.sol#L538-L615](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L615)
 
-```
+
 
 ##
 
 ## [L-6] Consider using OpenZeppelin’s SafeCast library to prevent unexpected errors 
+
+> Instances(3)
 
 Using OpenZeppelin's SafeCast library can help prevent unexpected errors when casting variables from one data type to another. SafeCast provides a set of casting functions that perform type conversions in a safe and secure way, by checking for possible overflow or underflow conditions and throwing an error if any such condition is detected
 
@@ -185,6 +248,8 @@ Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows
 
 ## [L-7] Function may run out of gas
 
+> Instances(7) 
+
 The for loop in the Solidity code you provided, for (uint256 i = 0; i < tokenIds.length; i++) { ... }, has the potential to consume a lot of gas, especially if the tokenIds array is large. This is because each iteration of the loop requires the execution of the code inside the loop, which can result in a significant amount of computational work.
 
 If the gas limit for the transaction executing this loop is not set high enough to cover the gas cost of each iteration of the loop, the transaction may run out of gas and fail. When a transaction runs out of gas, all state changes made up to that point are reverted and any ether sent with the transaction is lost
@@ -197,7 +262,7 @@ FILE: 2023-04-caviar/src/Factory.sol
         }
 
 ```
-[Factory.sol#L119-L121](Factory.sol#L119-L121](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L119-L121)
+[Factory.sol#L119-L121](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L119-L121)
 
 ```solidity
 FILE: 2023-04-caviar/src/EthRouter.sol
@@ -243,6 +308,8 @@ for (uint256 i = 0; i < inputTokenIds.length; i++) {
 
 ## [L-8] Gas griefing/theft is possible on unsafe external call
 
+> Instances(1) 
+
 return data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0) . Thus, this storage disappears and may come from external contracts a possible Gas griefing/theft problem is avoided
 
 ```solidity
@@ -255,14 +322,74 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
+## [L-9] Loss of precision due to rounding
+
+> Instances(11)
+
+Add scalars so roundings are negligible.
+
+```solidity
+FILE : 2023-04-caviar/src/EthRouter.sol
+
+115:  uint256 salePrice = inputAmount / buys[i].tokenIds.length;
+182:  uint256 salePrice = outputAmount / sells[i].tokenIds.length;
+
+```
+[EthRouter.sol#L115](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L115)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+236: uint256 salePrice = (netInputAmount - feeAmount - protocolFeeAmount) / tokenIds.length;
+335: uint256 salePrice = (netOutputAmount + feeAmount + protocolFeeAmount) / tokenIds.length;
+703: protocolFeeAmount = inputAmount * Factory(factory).protocolFeeRate() / 10_000;
+704: feeAmount = inputAmount * feeRate / 10_000;
+719: uint256 outputAmount = inputAmount * virtualBaseTokenReserves / (virtualNftReserves + inputAmount);
+721: protocolFeeAmount = outputAmount * Factory(factory).protocolFeeRate() / 10_000;
+722: feeAmount = outputAmount * feeRate / 10_000;
+737: protocolFeeAmount = feeAmount * Factory(factory).protocolFeeRate() / 10_000;
+745: return (virtualBaseTokenReserves * 10 ** exponent) / virtualNftReserves;
+
+```
+[PrivatePool.sol#L236](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L236)
+
+##
+
+## [L-10] Use latest @openzeppelin/merkle-tree version 
+
+Latest version is 1.0.4 
+
+```
+FILE: package-lock.json
+
+12: "@openzeppelin/merkle-tree": "^1.0.2",
+
+```
+##
+
+## [L-11] abi.encodePacked() should not be used with dynamic types when passing the result to a hash function such as keccak256()
+
+Use abi.encode() instead which will pad items to 32 bytes, which will [prevent hash collisions](https://docs.soliditylang.org/en/v0.8.13/abi-spec.html#non-standard-packed-mode) (e.g. abi.encodePacked(0x123,0x456) => 0x123456 => abi.encodePacked(0x1,0x23456), but abi.encode(0x123,0x456) => 0x0...1230...456). “Unless there is a compelling reason, abi.encode should be preferred”. If there is only one argument to abi.encodePacked() it can often be cast to bytes() or bytes32() instead.
+
+If all arguments are strings and or bytes, bytes.concat() should be used [instead](https://ethereum.stackexchange.com/questions/30912/how-to-compare-strings-in-solidity#answer-82739).
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L19-L28
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L30
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L39-L48
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L62-L76
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L81-L92
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L97-L106
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L115-L117
+
+##
+
+##
 
 
 
 ##
 
 ## NON CRITICAL FINDINGS
-
-
 
 ## [NC-1] Add a timelock to critical functions
 
@@ -355,8 +482,8 @@ function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirt
 
 ## [NC-2] No same value control 
 
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L143)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L593)
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L143
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L593
 
 
 ##
@@ -367,22 +494,17 @@ Lack of two-step procedure for critical operations leaves them error-prone. Cons
 
 Consider adding a two-steps pattern on critical changes to avoid mistakenly transferring ownership of roles or critical functionalities to the wrong address
 
-```solidity
-
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L143)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L593)
-
-```
-
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L143
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L593
 
 ##
 
-## [NC-4] Emit both old and new values in critical changes 
+## [NC-4] Events that mark critical parameter changes should contain both the old and the new value
 
 Emitting old and new values when critical changes are made can help you improve the reliability, accuracy, and maintainability of your systems
 
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L143)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L593)
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L129-L143
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L538-L593
 
 ##
 
@@ -390,7 +512,7 @@ Emitting old and new values when critical changes are made can help you improve 
 
 It is recommended that Solidity contracts are fully annotated using NatSpec for all public interfaces (everything in the ABI). It is clearly stated in the Solidity official documentation.
 In complex projects such as Defi, the interpretation of all functions and their arguments and returns is important for code readability and auditability.
-(https://docs.soliditylang.org/en/v0.8.15/natspec-format.html)
+https://docs.soliditylang.org/en/v0.8.15/natspec-format.html
 
 ### Recommendation
 NatSpec comments should be increased in Contracts
@@ -401,17 +523,17 @@ NatSpec comments should be increased in Contracts
 
 Consider changing the variable to be an unnamed one
 
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L214)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L291-L306)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L393)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L694-L697)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L713-L716)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L731)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L778-L781)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L71-L84)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L168)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L301-L304)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L385-L393)
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L214
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L291-L306
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L393
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L694-L697
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L713-L716
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L731
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L778-L781
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L71-L84
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L168
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L301-L304
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L385-L393
 
 ##
 
@@ -429,7 +551,7 @@ but it is not possible to override a function from public to external (= “narr
 
 For above reasons you can change initialize(…) to external
 
-(https://github.com/OpenZeppelin/openzeppelin-contracts/issues/3750)
+https://github.com/OpenZeppelin/openzeppelin-contracts/issues/3750
 
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
@@ -514,8 +636,7 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 ##
 ## [NC-11] Public functions not called by contract can declare as external 
 
-The following functions could be set external to improve code quality:
-
+The following functions could be set external to improve code quality
 
 ```solidity
 FILE : 2023-04-caviar/src/PrivatePoolMetadata.sol
@@ -574,10 +695,10 @@ FILE: 2023-04-caviar/src/PrivatePoolMetadata.sol
 
 > Some functions return parameters is missing
 
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L33-L35)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L15-L17)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L53-L55)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L393)
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L33-L35
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L15-L17
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L53-L55
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L393
 
 
 
@@ -589,13 +710,13 @@ Rather than using abi.encodePacked for appending bytes, since version 0.8.4, byt
 
 Since version 0.8.4 for appending bytes, bytes.concat() can be used instead of abi.encodePacked(,)
 
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L19-L28)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L30)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L39-L48)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L62-L76)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L81-L92)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L97-L106)
-(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L115-L117)
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L19-L28
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L30
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L39-L48
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L62-L76
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L81-L92
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L97-L106
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L115-L117
 
 ##
 
@@ -615,7 +736,7 @@ internal and private functions : the mixedCase format starting with an underscor
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
 
-/// @audit amount
+/// @audit aount => amount
 251: // add the royalty fee amount to the net input aount
 
 ```
@@ -809,8 +930,53 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [NC-22] 
+## [NC-22] Imports can be grouped together
 
+Consider importing like this format -  solmate,solady,openzeppelin,royalty-registry-solidity,interfaces,Factory
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+ 32: import {IERC2981} from "openzeppelin/interfaces/IERC2981.sol";
++34: import {IERC3156FlashBorrower} from "openzeppelin/interfaces/IERC3156FlashLender.sol";
+ 33: import {IRoyaltyRegistry} from "royalty-registry-solidity/IRoyaltyRegistry.sol";
+-34: import {IERC3156FlashBorrower} from "openzeppelin/interfaces/IERC3156FlashLender.sol";
+
+```
+
+(https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L27-L37)
+
+##
+
+## [NC-23] Approve() function return value not checked 
+
+```solidity
+FILE: 2023-04-caviar/src/EthRouter.sol
+
+166: ERC721(sells[i].nft).setApprovalForAll(sells[i].pool, true);
+
+```
+[EthRouter.sol#L166](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L166)
+
+##
+
+## [NC-24] Assembly Codes Specific – Should Have Comments
+
+Since this is a low level language that is more difficult to parse by readers, include extensive documentation, comments on the rationale behind its use, clearly explaining what each assembly instruction does.
+
+This will make it easier for users to trust the code, for reviewers to validate the code, and for developers to build on or update the code.
+
+Note that using Assembly removes several important security features of Solidity, which can make the code more insecure and more error-prone
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+469: assembly {
+
+```
+[PrivatePool.sol#L469](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L469)
+
+##
 
 
 
