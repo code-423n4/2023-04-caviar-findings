@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ravi_gaint",
+  "risk": "3",
+  "title": "[H-05] Issue with initialized variable not resetting after contract destruction",
+  "issueId": 214,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/214"
+}
