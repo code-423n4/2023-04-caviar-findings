@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xbepresent",
+  "risk": "2",
+  "title": "The surplus native token amount is not returned to the caller after the FlashLoan fee is paid",
+  "issueId": 307,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/307"
+}
