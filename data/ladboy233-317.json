@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Lack of token approval makes user not able to use the EthRouter.sol to buy / sell / deposit / change on PrivatePool.sol if baseToken is not ETH",
+  "issueId": 317,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/317"
+}
