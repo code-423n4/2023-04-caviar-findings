@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "PrivatePool#buy function does not enforce stolen NFT oracle check",
+  "issueId": 282,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/282"
+}
