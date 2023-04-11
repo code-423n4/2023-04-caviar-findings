@@ -303,4 +303,46 @@ For reference, see https://docs.soliditylang.org/en/v0.8.17/style-guide.html
 Manual Analysis
 
 
-X
+# 10: MISSING NATSPEC COMMENTS
+
+Vulnerability details
+
+## Context:
+
+Missing NatSpec
+
+Consider adding specifications to the following code blocks:
+
+## Proof of Concept
+
++ ***File: src/PrivatePool.sol***
+
+    error AlreadyInitialized();
+    error Unauthorized();
+    error InvalidEthAmount();
+    error InvalidMerkleProof();
+    error InsufficientInputWeight();
+    error FeeRateTooHigh();
+    error NotAvailableForFlashLoan();
+    error FlashLoanFailed();
+    error InvalidRoyaltyFee();
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L70-L80
+
+
++ ***File: src/EthRouter.sol***
+
+    error DeadlinePassed();
+    error OutputAmountTooSmall();
+    error PriceOutOfRange();
+    error InvalidRoyaltyFee();
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L80-L85
+
+## Tools Used
+
+Manual Analysis
+
+## Recommended Mitigation Steps
+
+Add NatSpec comments accordingly.
