@@ -18,3 +18,17 @@ QA4. Maybe ``bytes.concat`` is not needed here and the calculation can be simpli
 + leafs[i] = keccak256(abi.encode(tokenIds[i], tokenWeights[i]));
 
 ```
+
+QA5. There is an error in the NatSpec of ``change()``:
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L377](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L377)
+
+Mitigation: the correct should be 
+```diff
+- The sum of the caller's NFT weights must be less than or equal to the sum of the
+    /// output pool NFTs weights.
+
++ The sum of the caller's NFT weights must be greater than or equal to the sum of the
+    /// output pool NFTs weights.
+```
+
