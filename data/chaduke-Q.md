@@ -33,8 +33,11 @@ Mitigation: the correct should be
 ```
 
 QA6. The ``buy()`` function fails to verify that a private pool only supports ETH as base tokens.
+Similary, the ``deposit()`` function does not check this either.
 
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L129](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L129)
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L247](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L247)
 
 Mitigation: check whether the private pool only supports ETH as base tokens:
 ```diff
