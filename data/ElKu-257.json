@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "2",
+  "title": "The last nft cannot be bought because of divide by zero error in buyQuote function",
+  "issueId": 257,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/257"
+}
