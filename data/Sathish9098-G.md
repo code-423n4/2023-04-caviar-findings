@@ -1,8 +1,41 @@
 ## GAS OPTIMIZATIONS
 
+| Gas Count     | Issues | Instances | Gas Saved| 
+| --------------- | --------------- | --------------- | --------------- | 
+| [G-1] | Structs can be packed into fewer storage slots | 2 | 40000 |
+| [G-2] | Optimize names to save gas | 38 | - |
+| [G-3] | Functions guaranteed to revert when called by normal users can be marked payable | 10 | 210 |
+| [G-4] | Setting the constructor to payable | 2 | 26 |
+| [G-5] | Use assembly to write address storage values | 8 | - |
+| [G-6] | Use nested if and, avoid multiple check combinations | 9 | 81 |
+| [G-7] | Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead | 7 | 196 |
+| [G-8] | Empty blocks should be removed or emit something | 4 | - |
+| [G-9] | Use assembly to check for address(0) | 15 | 90 |
+| [G-10] | ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as is the case when used in for- and while-loops | 18 | 2520 |
+| [G-11] | Amounts should be checked for 0 before calling a transfer functions | 16 | - |
+| [G-12] | Use 3 indexed parameters rule for events to save gas | 11 | - |
+| [G-13] | public functions to external | 23 | 345 |
+| [G-14] | Avoid contract existence checks by using low level calls | 30 | 3000 |
+| [G-15] | Duplicated require()/if() checks should be refactored to a modifier or function | 12 | - |
+| [G-16] | <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME FOR -=) | 4 | 452 |
+| [G-17] | Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement | 2 | 440 |
+| [G-18] | Don't declare variables inside the loops  | 3 | - |
+| [G-19] | The condition check should be top of the functions  | 1 | - |
+| [G-20] | Cheaper input validations should come before expensive operations | 1 | - |
+| [G-21] | Sort Solidity operations using short-circuit mode | 8 | - |
+| [G-22] | Multiplication/division by 2 should use bit shifting | 3 | - |
+| [G-23] | abi.encode() is less efficient than abi.encodePacked() | 2 | - |
+| [G-24] | State variables with values known at compile time should be constants | 1 | - |
+| [G-25] | State variables should be cached in stack variables rather than re-reading them from storage | 25 | 2500 |
+| [G-26] | With assembly, .call (bool success) transfer can be done gas-optimized | 1 | -|
+
 ##
 
 ## [G-1] Structs can be packed into fewer storage slots
+
+> Instances(2)
+
+> Approximate Gas Saved : 40000 (2 slots) gas
 
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
 
@@ -44,6 +77,8 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 
 ## [G-2] Optimize names to save gas
 
+> Instances(38)
+
 public/external function names and public member variable names can be optimized to save gas. See this [link](https://gist.github.com/IllIllI000/a5d8b486a8259f9f77891a919febd1a9) for an example of how it works. Below are the interfaces/abstract contracts that can be optimized so that the most frequently-called functions use the least amount of gas possible during method lookup. Method IDs that have two leading zero bytes can save 128 gas each during deployment, and renaming functions to have lower method IDs will save 22 gas per call, [per sorted position shifted](https://medium.com/joyso/solidity-how-does-function-name-affect-gas-consumption-in-smart-contract-47d270d8ac92)
 
 > public/external functions
@@ -71,8 +106,11 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ```
 ##
-
 ## [G-3] Functions guaranteed to revert when called by normal users can be marked payable
+
+> Instances(10)
+
+> Approximate Gas Saved : 210 gas
 
 If a function modifier such as onlyOwner is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2),DUP1(3),ISZERO(3),PUSH2(3),JUMPI(10),PUSH1(3),DUP1(3),REVERT(0),JUMPDEST(1),POP(2), which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost
 
@@ -102,6 +140,10 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ## [G-4] Setting the constructor to payable
 
+> Instances(2)
+
+> Approximate Gas Saved : 26 gas
+
 You can cut out 10 opcodes in the creation-time EVM bytecode if you declare a constructor payable. Making the constructor payable eliminates the need for an initial check of msg.value == 0 and saves 13 gas on deployment with no security risks
 
 ```solidity
@@ -119,6 +161,8 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 ##
 
 ## [G-5] Use assembly to write address storage values
+
+> Instances(8)
 
 ```solidity
 FILE : 2023-04-caviar/src/EthRouter.sol
@@ -159,7 +203,7 @@ function setPrivatePoolImplementation(address _privatePoolImplementation) public
 
 ### Recommendation Code
 
-```soldiity
+```solidity
 FILE: 2023-04-caviar/src/Factory.sol
 
 function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
@@ -171,7 +215,13 @@ function setPrivatePoolImplementation(address _privatePoolImplementation) public
 
 ## [G-6] Use nested if and, avoid multiple check combinations
 
+> Instances(9)
+
+> Approximate Gas Saved : 81 gas
+
 Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
+
+[As per gas test](https://gist.github.com/sathishpic22/fe96671bafb22ceaace7fc05a66bd115) its possible to save 9 gas 
 
 ```solidity
 FILE: 2023-04-caviar/src/EthRouter.sol
@@ -200,9 +250,16 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ## [G-7] Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead
 
+> Instances(13)
+
+> Approximate Gas Saved : 364 gas
+
 When using elements that are smaller than 32 bytes, your contracts gas usage may be higher. This is because the EVM operates on 32 bytes at a time. Therefore, if the element is smaller than that, the EVM must use more operations in order to reduce the size of the element from 32 bytes to the desired size.
 
 (https://docs.soliditylang.org/en/v0.8.11/internals/layout_in_storage.html)
+
+Each operation involving a uint128 costs an extra 22-28 gas (depending on whether the other operand is also a variable of type uint8) as compared to ones involving uint256, due to the compiler having to clear the higher bits of the memory word before operating on the uint128, as well as the associated stack operations of doing so. Use a larger size then downcast where needed
+
 
 ```solidity
 FILE: 2023-04-caviar/src/Factory.sol
@@ -211,6 +268,8 @@ FILE: 2023-04-caviar/src/Factory.sol
 75: uint128 _virtualNftReserves,
 76: uint56 _changeFee,
 77: uint16 _feeRate,
+141: function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner {
+
 
 ```
 [Factory.sol#L74-L77](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L74-L77)
@@ -222,25 +281,19 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 104:  uint128 public virtualBaseTokenReserves;
 91:   uint16 public feeRate;
 88:   uint56 public changeFee;
+
 160: uint128 _virtualBaseTokenReserves,
 161: uint128 _virtualNftReserves,
 162: uint56 _changeFee,
 163: uint16 _feeRate,
 ```
 [PrivatePool.sol#L160-L163](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L160-L163)
-##
-
-## [G-8] Splitting require() statements that use && saves gas
-
-See [this issue](https://github.com/code-423n4/2022-01-xdefi-findings/issues/128) which describes the fact that there is a larger deployment gas cost, but with enough runtime calls, the change ends up being cheaper by 3 gas
-
-```solidity
-```
-
 
 ##
 
-## [G-9] Empty blocks should be removed or emit something
+## [G-8] Empty blocks should be removed or emit something
+
+> Instances(4)
 
 The code should be refactored such that they no longer exist, or the block should do something useful, such as emitting an event or reverting. If the contract is meant to be extended, the contract should be abstract and the function signatures be added without any default implementation. If the block is an empty if-statement block to avoid doing subsequent checks in the else-if/else conditions, the else-if/else conditions should be nested under the negation of the if-statement, because they involve different classes of checks, which may lead to the introduction of errors when the code is later modified (if(x){}else if(y){...}else{...} => if(!x){if(y){...}else{...}}). Empty receive()/fallback() payable functions that are not used, can be removed to save deployment gas
 
@@ -271,7 +324,11 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-10] Use assembly to check for address(0)
+## [G-9] Use assembly to check for address(0)
+
+> Instances(15)
+
+> Approximate Gas Saved : 90 gas
 
 Saves 6 gas per instance
 
@@ -308,9 +365,15 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-11] ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as is the case when used in for- and while-loops
+## [G-10] ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as is the case when used in for- and while-loops
 
-The unchecked keyword is new in solidity version 0.8.0, so this only applies to that version or higher, which these instances are
+> Instances(17)
+
+> Approximate Gas Saved : 2040 gas
+
+The unchecked keyword is new in solidity version 0.8.0, so this only applies to that version or higher. 
+
+[As per test](https://gist.github.com/sathishpic22/61f9b96d64c40b9c34824aa0f337e9d2) its possible to save 100-150 gas 
 
 ```solidity
 FILE : 2023-04-caviar/src/Factory.sol
@@ -349,11 +412,11 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 ```
 [PrivatePool.sol#L238](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L238),[PrivatePool.sol#L272](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L272),[PrivatePool.sol#L329](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L329),[PrivatePool.sol#L441](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L441),[PrivatePool.sol#L446](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L446),[PrivatePool.sol#L496](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L496),[PrivatePool.sol#L518](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L518),[PrivatePool.sol#L673](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L673)
 
-
-
 ##
 
-## [G-12] Amounts should be checked for 0 before calling a transfer functions 
+## [G-11] Amounts should be checked for 0 before calling a transfer functions 
+
+> Instances(16)
 
 Checking non-zero transfer values can avoid an expensive external call and save gas.
 While this is done at some places, it’s not consistently done in the solution.
@@ -390,7 +453,9 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-13] Use 3 indexed parameters rule for events to save gas
+## [G-12] Use 3 indexed parameters rule for events to save gas
+
+> Instances(12)
 
 Its must add 3 indexed parameter for every event. If event has less than 3 parameters all parameters should be indexed 
 
@@ -422,7 +487,13 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-14] public functions to external
+## [G-13] public functions to external
+
+> Instances(23)
+
+> Approximate Gas Saved : 345 gas
+
+Its possible to save 10-15 gas using external instead public for every function call 
 
 External call cost is less expensive than of public functions.
 Contracts [are allowed](https://docs.soliditylang.org/en/latest/contracts.html#function-overriding) to override their parents’ functions and change the visibility from external to public.
@@ -531,7 +602,11 @@ function change(
 
 ##
 
-## [G-15] Avoid contract existence checks by using low level calls
+## [G-14] Avoid contract existence checks by using low level calls
+
+> Instances(30)
+
+> Approximate Gas Saved : 3000 gas
 
 Prior to 0.8.10 the compiler inserted extra code, including EXTCODESIZE (100 gas), to check for contract existence for external function calls. In more recent solidity versions, the compiler will not insert these checks if the external call has a return value. Similar behavior can be achieved in earlier versions by using low-level calls, since low level calls never check for contract existence
 
@@ -577,7 +652,9 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-16] Duplicated require()/if() checks should be refactored to a modifier or function
+## [G-15] Duplicated require()/if() checks should be refactored to a modifier or function
+
+> Instances(12)
 
 ```solidity
 FILE: 2023-04-caviar/src/EthRouter.sol
@@ -608,7 +685,11 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-17] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME FOR -=)
+## [G-16] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (SAME FOR -=)
+
+> Instances(4)
+
+> Approximate Gas Saved : 452 gas
 
 Using the addition operator instead of plus-equals saves [113 gas](https://gist.github.com/IllIllI000/cbbfb267425b898e5be734d4008d4fe8)
 
@@ -626,7 +707,13 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-18] Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement
+## [G-17] Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement
+
+> Instances(2)
+
+> Approximate Gas Saved : 442 gas
+
+[As per test](https://gist.github.com/sathishpic22/255e4a8c2b9bbfd52bb5637a132bdf17) possible to save 221 gas when we use unchecked for subtractions 
 
 ```
 require(a <= b); x = b - a => require(a <= b); unchecked { x = b - a }
@@ -645,9 +732,11 @@ if (msg.value > feeAmount + protocolFeeAmount) {
 
 ##
 
-## [G-19] Don't declare variables inside the loops 
+## [G-18] Don't declare variables inside the loops 
 
-Declare the variables outside the loops and use inside 
+> Instances(3)
+
+Declare the variables outside the loops and use inside . Its possible to save 9 gas for every iterations of the for loops. The gas differs as per data types.
 
 (https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L106-L115)
 (https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L261-L262)
@@ -655,14 +744,16 @@ Declare the variables outside the loops and use inside
 
 ##
 
-## [G-20] The condition check should be top of the functions 
+## [G-19] The condition check should be top of the functions 
+
+> Instances(1)
 
 By performing these checks at the beginning of the function, the contract can avoid unnecessary processing and save gas
 
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
 
-> If condition should be checked top of the function. Waste of gas if (baseToken != address(0) && msg.value > 0) condition failed after getting sumWeightsAndValidateProof(),buyQuote() functions called 
+>  if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount(); Condition should be placed top of the function. Waste of gas if (baseToken != address(0) && msg.value > 0) condition failed after getting sumWeightsAndValidateProof(),buyQuote() variable values 
 
 function buy(uint256[] calldata tokenIds, uint256[] calldata tokenWeights, MerkleMultiProof calldata proof)
         public
@@ -681,14 +772,15 @@ function buy(uint256[] calldata tokenIds, uint256[] calldata tokenWeights, Merkl
         if (baseToken != address(0) && msg.value > 0) revert InvalidEthAmount();
 
 ```
-
 [PrivatePool.sol#L211-L225](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L225)
 
 ```
 
 ##
 
-## [G-21] Cheaper input valdiations should come before expensive operations
+## [G-20] Cheaper input validations should come before expensive operations
+
+> Instances(1)
 
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
@@ -706,7 +798,9 @@ FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-22] Sort Solidity operations using short-circuit mode
+## [G-21] Sort Solidity operations using short-circuit mode
+
+> Instances(7)
 
 Short-circuiting is a solidity contract development model that uses OR/AND logic to sequence different cost operations. It puts low gas cost operations in the front and high gas cost operations in the back, so that if the front is low If the cost operation is feasible, you can skip (short-circuit) the subsequent high-cost Ethereum virtual machine operation.
 
@@ -745,7 +839,11 @@ msg.value > 0 check this condition first then baseToken != address(0). Because b
 
 ##
 
-## [G-23] Multiplication/division by 2 should use bit shifting
+## [G-22] Multiplication/division by 2 should use bit shifting
+
+> Instances(3)
+
+> Approximate Gas Saved : 15 gas
 
 <x> * 2 is equivalent to <x> << 1 and <x> / 2 is the same as <x> >> 1. The MUL and DIV opcodes cost 5 gas, whereas SHL and SHR only cost 3 gas
 
@@ -761,7 +859,9 @@ FILE: FILE: 2023-04-caviar/src/PrivatePool.sol
 
 ##
 
-## [G-24] abi.encode() is less efficient than abi.encodePacked()
+## [G-23] abi.encode() is less efficient than abi.encodePacked()
+
+> Instances(2)
 
 ```solidity
 FILE: 2023-04-caviar/src/PrivatePool.sol
@@ -781,7 +881,9 @@ FILE: 2023-04-caviar/src/EthRouter.sol
 
 ##
 
-## [G-25] State variables with values known at compile time should be constants
+## [G-24] State variables with values known at compile time should be constants
+
+> Instances(1)
 
 Variables with values known at compile time and that do not change at runtime should be declared as constant.
 
@@ -796,7 +898,11 @@ changeFee can be declared as constant since no changes in contract. The value as
 
 ##
 
-## [G-26] State variables should be cached in stack variables rather than re-reading them from storage
+## [G-25] State variables should be cached in stack variables rather than re-reading them from storage
+
+> Instances(25)
+
+> Approximate Gas Saved : 2500 gas
 
 Caching will replace each Gwarmaccess (100 gas) with a much cheaper stack read.
 Less obvious fixes/optimizations include having local storage variables of mappings within state variable mappings or mappings within state variable structs, having local storage variables of structs within mappings, having local memory caches of state variable structs, or having local caches of state variable contracts/addresses.
@@ -862,6 +968,32 @@ change() function
 
 ```
 [PrivatePool.sol#L225](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L225)
+
+##
+
+## [G-26] With assembly, .call (bool success) transfer can be done gas-optimized
+
+> Instances(1)
+
+Return data (bool success,) has to be stored due to EVM architecture, but in a usage like below, ‘out’ and ‘outsize’ values are given (0,0), this storage disappears and gas optimization is provided.
+
+(https://twitter.com/pashovkrum/status/1607024043718316032?t=xs30iD6ORWtE2bTTYsCFIQ&s=19)
+
+```solidity
+FILE: 2023-04-caviar/src/PrivatePool.sol
+
+461: (bool success, bytes memory returnData) = target.call{value: msg.value}(data);
+
+```
+[PrivatePool.sol#L461](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L461)
+
+
+
+
+
+
+
+
 
 
 GAS-1	Using bools for storage incurs overhead	3
