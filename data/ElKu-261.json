@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "3",
+  "title": "`flashFee` is not calculated correctly causing loss to protocol and pool owners",
+  "issueId": 261,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/261"
+}
