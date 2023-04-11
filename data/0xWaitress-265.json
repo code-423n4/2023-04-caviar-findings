@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "ETHRouter has a receive fallback but accidental ETH deposit is up for anyone to collect through a simple buy/sell",
+  "issueId": 265,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/265"
+}
