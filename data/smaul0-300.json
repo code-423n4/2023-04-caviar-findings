@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "smaul0",
+  "risk": "2",
+  "title": "[M-01] Fee check working incorrectly in the initialize function  in [PrivatePool.sol#L171-L172](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L171-L172#)",
+  "issueId": 300,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/300"
+}
