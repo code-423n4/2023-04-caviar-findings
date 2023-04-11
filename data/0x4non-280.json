@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x4non",
+  "risk": "2",
+  "title": "Is possible to DOS buys on `PrivatePool` by frontruning buys and perform a \"change\"",
+  "issueId": 280,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/280"
+}
