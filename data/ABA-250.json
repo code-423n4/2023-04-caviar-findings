@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ABA",
+  "risk": "2",
+  "title": "`PrivatePool` is not `ERC 3156` compliant",
+  "issueId": 250,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/250"
+}
