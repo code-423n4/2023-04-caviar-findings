@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "BuyQuote should not accept output larger than virtualNftReserves",
+  "issueId": 281,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/281"
+}
