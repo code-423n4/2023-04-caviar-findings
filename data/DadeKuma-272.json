@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "DadeKuma",
+  "risk": "3",
+  "title": "Royalty payout is calculated with a wrong `salePrice` for royalty receivers",
+  "issueId": 272,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/272"
+}
