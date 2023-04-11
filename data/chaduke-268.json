@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "chaduke",
+  "risk": "2",
+  "title": " change() sends msg.value instead of the remaining ETH balance to _change.pool in each iteration, as a result, the function might fail due to insufficient ETH.",
+  "issueId": 268,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/268"
+}
