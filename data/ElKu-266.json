@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "3",
+  "title": "price() function doesnt work properly if the weights are not of the order of 18 decimals",
+  "issueId": 266,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/266"
+}
