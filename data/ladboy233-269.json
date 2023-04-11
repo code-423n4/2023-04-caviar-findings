@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Transaction revert in royalty fee recipient of the NFT cannot receive ETH",
+  "issueId": 269,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/269"
+}
