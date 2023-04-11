@@ -1,3 +1,5 @@
+# Low Severity Findings
+
 1. The doc says:
  > Initially the protocol fee rate will be set to be 0% however it may be increased in the future, with advanced notice.
 
