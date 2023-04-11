@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "price in privatePool actually does not care about actual reserve and # of NFT",
+  "issueId": 283,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/283"
+}
