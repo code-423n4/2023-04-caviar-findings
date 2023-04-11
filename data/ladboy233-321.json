@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Trade does not check thx*y = k invariant hold, x*y = k invariant should be not set by pool owner any time",
+  "issueId": 321,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/321"
+}
