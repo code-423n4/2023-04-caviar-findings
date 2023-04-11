@@ -229,11 +229,12 @@ main/src/PrivatePool.sol
     744: uint256 exponent = baseToken == address(0) ? ...
 ```
 ### RECOMENDATION
-```diff
-main/src/EthRouter.sol#L101
-- 101:    if (block.timestamp > deadline && deadline != 0) {
-+         if (block.timestamp > deadline) {
-+           if (deadline != 0) {
-+           }
-+         } 
+```solidity
+// @audit example
+assembly {
+ if iszero(_addr) {
+  mstore(0x00, "zero address")
+  revert(0x00, 0x20)
+ }
+}
 ```
