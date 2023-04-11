@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xWaitress",
+  "risk": "2",
+  "title": "Royalty fee does not charge as a percentage of the tx; but a percentage of the residual from protocolFee and feeAmount",
+  "issueId": 254,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/254"
+}
