@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Transaction revert if the baseToken does not support 0 value transfer when charging changeFee",
+  "issueId": 278,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/278"
+}
