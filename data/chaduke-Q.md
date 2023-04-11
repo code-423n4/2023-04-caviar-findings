@@ -90,3 +90,32 @@ function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public pa
     }
 ```
 
+QA7. 
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L459-L476](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L459-L476)
+
+Mitigation: send any remaining ETH balance to the user
+```diff
+function execute(address target, bytes memory data) public payable onlyOwner returns (bytes memory) {
+        // call the target with the value and data
+        (bool success, bytes memory returnData) = target.call{value: msg.value}(data);
+
++        uint256 remaining = address(this).balance; 
++        msg.sender.safeTransferETH(remaining);
+
+        // if the call succeeded return the return data
+        if (success) return returnData;
+
+        // if we got an error bubble up the error message
+        if (returnData.length > 0) {
+            // solhint-disable-next-line no-inline-assembly
+            assembly {
+                let returnData_size := mload(returnData)
+                revert(add(32, returnData), returnData_size)
+            }
+        } else {
+            revert();
+        }
+        
+    }
+```
