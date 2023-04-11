@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "ETH sent to the ETHRouter.sol and PrivatePool.sol will be lost",
+  "issueId": 302,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/302"
+}
