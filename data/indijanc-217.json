@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "indijanc",
+  "risk": "2",
+  "title": "Rounding on division in `changeFeeQuote()` may cause Pool owners to maliciously or mistakenly avoid paying the protocol fee",
+  "issueId": 217,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/217"
+}
