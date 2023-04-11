@@ -6,7 +6,7 @@
 |[L-02]|Even if there is a fee of `msg.value`, the transaction will be reverted | 1 |
 |[L-03]|Missing ReEntrancy Guard to ` safeTransferFrom `in functions | 6 |
 |[L-04]|Prevent division by `0`|2|
-|[L-05]|Function Calls in Loop Could Lead to Denial of Service due to Array length not being checked| 1 |
+|[L-05]|`PrivatePoolMetadata.tokenURI` is not compliant with EIP721 |1|
 |[L-06]|Use ```safeTransferOwnership``` instead of ```transferOwnership``` function | 1 |
 |[L-07]|Use Fuzzing Test for math code bases | All Contracts |
 |[L-08]|Project Upgrade and Stop Scenario should be | All Contracts |
@@ -15,7 +15,7 @@
 |[L-11] |Loss of precision due to rounding|1|
 |[L-12] |Should an airdrop token arrive on the `private.sol` contract, it will be stuck| 1|
 |[L-13] |Add to _blacklist function_| 1|
-|[NC-14] |Missing Event for  initialize|3|
+|[L-14]|Function Calls in Loop Could Lead to Denial of Service due to Array length not being checked| 1 |
 |[NC-15] |Constants on the left are better| 8 |
 |[NC-16] |`Function writing` that does not comply with the `Solidity Style Guide`| All Contracts |
 |[NC-17] |Include return parameters in NatSpec comments| All Contracts |
@@ -27,8 +27,9 @@
 |[NC-23] |Use SMTChecker| All Contract |
 |[NC-24] |Lines are too long| 3 |
 |[NC-25] |Omissions in Events| 8 |
+|[NC-26] |Missing Event for  initialize|3|
 
-Total 25 issues
+Total 26 issues
 
 ### [L-01] Calculation of flash loan fee should be rounded up 
 
@@ -216,69 +217,39 @@ src/PrivatePool.sol:
 
 
 ```
+### [L-05] `PrivatePoolMetadata.tokenURI` is not compliant with EIP721
 
 
-### [L-05] Function Calls in Loop Could Lead to Denial of Service due to Array length not being checked
+It implements `PrivatePoolMetadata.tokenURI()` , a function overriding ERC721's tokenURI().
 
+This function returns the metadata URI of the provided token ID
+
+The issue is that if queried for a token that does not have an owner or has not been minted, it returns the empty string ’’.
 
 ```diff
 
-src/EthRouter.sol:
-   99:     function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public payable {
-  100:         // check that the deadline has not passed (if any)
-  101:         if (block.timestamp > deadline && deadline != 0) {
-  102:             revert DeadlinePassed();
-  103:         }
-+     	 if buys.length > maxArrayLength) {
-+          	      revert maxArrayLengt();
-+       	 }
-
-  104: 
-  105:         // loop through and execute the the buys
-  106:         for (uint256 i = 0; i < buys.length; i++) {
-  107:             if (buys[i].isPublicPool) {
-  108:                 // execute the buy against a public pool
-  109:                 uint256 inputAmount = Pair(buys[i].pool).nftBuy{value: buys[i].baseTokenAmount}(
-  110:                     buys[i].tokenIds, buys[i].baseTokenAmount, 0
-  111:                 );
-  112: 
-  113:                 // pay the royalties if buyer has opted-in
-  114:                 if (payRoyalties) {
-  115:                     uint256 salePrice = inputAmount / buys[i].tokenIds.length;
-  116:                     for (uint256 j = 0; j < buys[i].tokenIds.length; j++) {
-  117:                         // get the royalty fee and recipient
-  118:                         (uint256 royaltyFee, address royaltyRecipient) =
-  119:                             getRoyalty(buys[i].nft, buys[i].tokenIds[j], salePrice);
-  120: 
-  121:                         if (royaltyFee > 0) {
-  122:                             // transfer the royalty fee to the royalty recipient
-  123:                             royaltyRecipient.safeTransferETH(royaltyFee);
-  124:                         }
-  125:                     }
-  126:                 }
-  127:             } else {
-  128:                 // execute the buy against a private pool
-  129:                 PrivatePool(buys[i].pool).buy{value: buys[i].baseTokenAmount}(
-  130:                     buys[i].tokenIds, buys[i].tokenWeights, buys[i].proof
-  131:                 );
-  132:             }
-  133: 
-  134:             for (uint256 j = 0; j < buys[i].tokenIds.length; j++) {
-  135:                 // transfer the NFT to the caller
-  136:                 ERC721(buys[i].nft).safeTransferFrom(address(this), msg.sender, buys[i].tokenIds[j]);
-  137:             }
-  138:         }
-  139: 
-  140:         // refund any surplus ETH to the caller
-  141:         if (address(this).balance > 0) {
-  142:             msg.sender.safeTransferETH(address(this).balance);
-  143:         }
-  144:     }
+src/PrivatePoolMetadata.sol:
+  16      /// @param tokenId The private pool's token ID.
+  17:     function tokenURI(uint256 tokenId) public view returns (string memory) {
+  18:         // forgefmt: disable-next-item
++               if (_owners[_tokenId] == address(0)) return '';
+  19:         bytes memory metadata = abi.encodePacked(
+  20:             "{",
+  21:                 '"name": "Private Pool ',Strings.toString(tokenId),'",',
+  22:                 '"description": "Caviar private pool AMM position.",',
+  23:                 '"image": ','"data:image/svg+xml;base64,', Base64.encode(svg(tokenId)),'",',
+  24:                 '"attributes": [',
+  25:                     attributes(tokenId),
+  26:                 "]",
+  27:             "}"
+  28:         );
+  29: 
+  30:         return string(abi.encodePacked("data:application/json;base64,", Base64.encode(metadata)));
+  31:     }
 
 ```
 
-**Recommendation:**
-Function calls made in unbounded loop are error-prone with potential resource exhaustion as it can trap the contract due to gas limitations or failed transactions. Consider bounding the loop length if the array is expected to be growing and/or handling a huge list of elements to avoid unnecessary gas wastage and denial of service.
+
 
 
 ### [L-06] Use ```safeTransferOwnership``` instead of ```transferOwnership``` function
@@ -425,34 +396,71 @@ https://etherscan.io/address/0xe4e4003afe3765aca8149a82fc064c0b125b9e5a#code
 ```
 Recommended Mitigation Steps add to Blacklist function and modifier.
 
-### [N-14] Missing Event for  initialize
 
-**Context:**
-```solidity
 
-src/PrivatePool.sol:
-  143:     constructor(address _factory, address _royaltyRegistry, address _stolenNftOracle) {
-  144:         factory = payable(_factory);
-  145:         royaltyRegistry = _royaltyRegistry;
-  146:         stolenNftOracle = _stolenNftOracle;
-  147:     }
+### [L-14] Function Calls in Loop Could Lead to Denial of Service due to Array length not being checked
 
-src/Factory.sol:
-  53:     constructor() ERC721("Caviar Private Pools", "POOL") Owned(msg.sender) {}
+
+```diff
 
 src/EthRouter.sol:
-  90:     constructor(address _royaltyRegistry) {
-  91:         royaltyRegistry = _royaltyRegistry;
-  92:     }
+   99:     function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public payable {
+  100:         // check that the deadline has not passed (if any)
+  101:         if (block.timestamp > deadline && deadline != 0) {
+  102:             revert DeadlinePassed();
+  103:         }
++     	 if buys.length > maxArrayLength) {
++          	      revert maxArrayLengt();
++       	 }
+
+  104: 
+  105:         // loop through and execute the the buys
+  106:         for (uint256 i = 0; i < buys.length; i++) {
+  107:             if (buys[i].isPublicPool) {
+  108:                 // execute the buy against a public pool
+  109:                 uint256 inputAmount = Pair(buys[i].pool).nftBuy{value: buys[i].baseTokenAmount}(
+  110:                     buys[i].tokenIds, buys[i].baseTokenAmount, 0
+  111:                 );
+  112: 
+  113:                 // pay the royalties if buyer has opted-in
+  114:                 if (payRoyalties) {
+  115:                     uint256 salePrice = inputAmount / buys[i].tokenIds.length;
+  116:                     for (uint256 j = 0; j < buys[i].tokenIds.length; j++) {
+  117:                         // get the royalty fee and recipient
+  118:                         (uint256 royaltyFee, address royaltyRecipient) =
+  119:                             getRoyalty(buys[i].nft, buys[i].tokenIds[j], salePrice);
+  120: 
+  121:                         if (royaltyFee > 0) {
+  122:                             // transfer the royalty fee to the royalty recipient
+  123:                             royaltyRecipient.safeTransferETH(royaltyFee);
+  124:                         }
+  125:                     }
+  126:                 }
+  127:             } else {
+  128:                 // execute the buy against a private pool
+  129:                 PrivatePool(buys[i].pool).buy{value: buys[i].baseTokenAmount}(
+  130:                     buys[i].tokenIds, buys[i].tokenWeights, buys[i].proof
+  131:                 );
+  132:             }
+  133: 
+  134:             for (uint256 j = 0; j < buys[i].tokenIds.length; j++) {
+  135:                 // transfer the NFT to the caller
+  136:                 ERC721(buys[i].nft).safeTransferFrom(address(this), msg.sender, buys[i].tokenIds[j]);
+  137:             }
+  138:         }
+  139: 
+  140:         // refund any surplus ETH to the caller
+  141:         if (address(this).balance > 0) {
+  142:             msg.sender.safeTransferETH(address(this).balance);
+  143:         }
+  144:     }
 
 ```
 
-**Description:**
-Events help non-contract tools to track changes, and events prevent users from being surprised by changes
-Issuing event-emit during initialization is a detail that many projects skip
-
 **Recommendation:**
-Add Event-Emit
+Function calls made in unbounded loop are error-prone with potential resource exhaustion as it can trap the contract due to gas limitations or failed transactions. Consider bounding the loop length if the array is expected to be growing and/or handling a huge list of elements to avoid unnecessary gas wastage and denial of service.
+
+
 
 ### [N-15] Constants on the left are better
 
@@ -739,3 +747,33 @@ src/PrivatePool.sol:
   587:     function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
 
 ```
+
+
+### [N-26] Missing Event for  initialize
+
+**Context:**
+```solidity
+
+src/PrivatePool.sol:
+  143:     constructor(address _factory, address _royaltyRegistry, address _stolenNftOracle) {
+  144:         factory = payable(_factory);
+  145:         royaltyRegistry = _royaltyRegistry;
+  146:         stolenNftOracle = _stolenNftOracle;
+  147:     }
+
+src/Factory.sol:
+  53:     constructor() ERC721("Caviar Private Pools", "POOL") Owned(msg.sender) {}
+
+src/EthRouter.sol:
+  90:     constructor(address _royaltyRegistry) {
+  91:         royaltyRegistry = _royaltyRegistry;
+  92:     }
+
+```
+
+**Description:**
+Events help non-contract tools to track changes, and events prevent users from being surprised by changes
+Issuing event-emit during initialization is a detail that many projects skip
+
+**Recommendation:**
+Add Event-Emit
