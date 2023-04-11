@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "2",
+  "title": "deposited tokens and bought tokens are not checked for stolen status",
+  "issueId": 262,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/262"
+}
