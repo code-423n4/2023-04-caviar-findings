@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "2",
+  "title": "The `royaltyFee` is not calculated fairly in the `buy` and `sell` functions",
+  "issueId": 255,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/255"
+}
