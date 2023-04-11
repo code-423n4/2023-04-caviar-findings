@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "The user cannot use EthRouter.sol#deposit to deposit fund into the PrivatePool into the baseToken is not ETH because msg.value is used instead of baseTokenAmount",
+  "issueId": 311,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/311"
+}
