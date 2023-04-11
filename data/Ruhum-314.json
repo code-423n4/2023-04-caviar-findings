@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Ruhum",
+  "risk": "3",
+  "title": "Pool doesn't update baseTokenReserves the same way for sales and purchases",
+  "issueId": 314,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/314"
+}
