@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "John",
+  "risk": "2",
+  "title": "The Deposit function is malicious",
+  "issueId": 288,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/288"
+}
