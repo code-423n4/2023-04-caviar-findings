@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "3",
+  "title": "Factory owner and Pool owner can front run large buy or sell transactions by momentarily increasing the fees or setting virtual reserves",
+  "issueId": 260,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/260"
+}
