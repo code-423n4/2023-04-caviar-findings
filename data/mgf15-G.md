@@ -10,6 +10,9 @@
 | [GAS-4](#GAS-4) | Functions guaranteed to revert when called by normal users can be marked `payable` | 10 |
 | [GAS-5](#GAS-5) | `++i` costs less gas than `i++`, especially when it's used in `for`-loops (`--i`/`i--` too) | 19 |
 | [GAS-6](#GAS-6) | Use != 0 instead of > 0 for unsigned integer comparison | 17 |
+| [GAS-7](#GAS-7) | <x> += <y> costs more gas than <x> = <x> + <y> for state variables (-= too) | 9 |
+| [GAS-8](#GAS-8) | Setting the constructor to payable | 3 |
+
 ### [GAS-1] Using bools for storage incurs overhead
 Use uint256(1) and uint256(2) for true/false to avoid a Gwarmaccess (100 gas), and to avoid Gsset (20000 gas) when changing from ‘false’ to ‘true’, after having been ‘true’ in the past. See [source](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/58f635312aa21f947cae5f8578638a85aa2519f5/contracts/security/ReentrancyGuard.sol#L23-L27).
 
@@ -284,4 +287,51 @@ File: 2023-04-caviar/src/PrivatePool.sol
 
 489:         if ((baseToken == address(0) && msg.value != baseTokenAmount) || (msg.value > 0 && baseToken != address(0))) {
 
+```
+
+### [GAS‑7] <x> += <y> costs more gas than <x> = <x> + <y> for state variables (-= too)
+
+Using the addition operator instead of plus-equals saves 113 gas. Subtructions act the same way.
+*Instances (9)*:
+
+```solidity
+File:2023-04-caviar/blob/main/src/PrivatePool.sol
+
+230:        virtualBaseTokenReserves += uint128(netInputAmount - feeAmount - protocolFeeAmount);
+231:        virtualNftReserves -= uint128(weightSum);
+
+247:        royaltyFeeAmount += royaltyFee;
+
+252:        netInputAmount += royaltyFeeAmount;
+
+323:        virtualBaseTokenReserves -= uint128(netOutputAmount + protocolFeeAmount + feeAmount);
+324:        virtualNftReserves += uint128(weightSum);
+
+341:        royaltyFeeAmount += royaltyFee;
+
+355:        netOutputAmount -= royaltyFeeAmount;
+
+678:        sum += tokenWeights[i];
+```
+
+### [GAS-8] Setting the constructor to payable
+
+You can cut out 10 opcodes in the creation-time EVM bytecode if you declare a constructor payable. Making the constructor payable eliminates the need for an initial check of msg.value == 0 and saves 13 gas on deployment with no security risks.
+
+```solidity 
+File:2023-04-caviar/blob/main/src/PrivatePool.sol
+
+143:    constructor(address _factory, address _royaltyRegistry, address _stolenNftOracle) {
+```
+
+```solidity 
+File:2023-04-caviar/blob/main/src/Factory.sol
+
+53:        constructor() ERC721("Caviar Private Pools", "POOL") Owned(msg.sender) {}
+```
+
+```solidity 
+File:2023-04-caviar/blob/main/src/EthRouter.sol
+
+90:    constructor(address _royaltyRegistry) {
 ```
