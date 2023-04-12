@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Cryptor",
+  "risk": "2",
+  "title": "ETH router does not check if a pool's base token is ETH",
+  "issueId": 544,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/544"
+}
