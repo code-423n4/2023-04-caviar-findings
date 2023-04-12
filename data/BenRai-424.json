@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "BenRai",
+  "risk": "2",
+  "title": "Missing check for address(0x0) when assigning values to address state variables",
+  "issueId": 424,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/424"
+}
