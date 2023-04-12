@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tanh",
+  "risk": "3",
+  "title": "ERC20 Tokens get stuck in ETHRouter and user loses their NFTs",
+  "issueId": 324,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/324"
+}
