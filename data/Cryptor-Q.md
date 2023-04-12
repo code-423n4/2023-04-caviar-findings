@@ -1,0 +1,1 @@
+## Solidity version 0.8.19 is too recent and cannot be trusted
