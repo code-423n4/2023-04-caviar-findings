@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x5rings",
+  "risk": "2",
+  "title": "ProtocolFeeRate can be set beyond 100% to a value type(uint16).max (65536).. causing loss o fund due to excessive fees",
+  "issueId": 541,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/541"
+}
