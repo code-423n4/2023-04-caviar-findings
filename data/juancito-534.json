@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "juancito",
+  "risk": "2",
+  "title": "Users lose extra ETH sent using the `flashLoan` function",
+  "issueId": 534,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/534"
+}
