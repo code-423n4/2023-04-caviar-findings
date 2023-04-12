@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x5rings",
+  "risk": "2",
+  "title": "flash loans performed using `weirdERC20` tokens e.g. `ZRX` can lead to a borrower not paying any fees",
+  "issueId": 535,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/535"
+}
