@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Angry_Mustache_Man",
+  "risk": "2",
+  "title": "ERC20 tokens that have a fee-on-transfer mechanism require special handling",
+  "issueId": 389,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/389"
+}
