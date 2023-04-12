@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "nobody2018",
+  "risk": "3",
+  "title": "Attacker makes profit by sandwiching PrivatePool.setVirtualReserves",
+  "issueId": 351,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/351"
+}
