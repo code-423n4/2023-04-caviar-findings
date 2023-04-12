@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "GT_Blockchain",
+  "risk": "2",
+  "title": "Division by zero prevents the users from buying every NFT in the pool.",
+  "issueId": 461,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/461"
+}
