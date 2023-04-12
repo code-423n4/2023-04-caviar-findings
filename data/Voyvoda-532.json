@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Voyvoda",
+  "risk": "2",
+  "title": "Non-standard ERC20 tokens such as USDT are not supported",
+  "issueId": 532,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/532"
+}
