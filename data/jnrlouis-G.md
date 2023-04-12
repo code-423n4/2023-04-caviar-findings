@@ -8,7 +8,7 @@
 |  | Issue | Instances |
 | --- | --- | ---|
 | 1 | Setting the `constructor` to `payable` | 3 |
-| 2 | Functions guaranteed to revert when normal users call can be marked `payable`` | 11 |
+| 2 | Functions guaranteed to revert when normal users call can be marked `payable` | 11 |
 | 3 | Use Assembly to check for `address(0)` | 21 |
 | 4 | Splitting `require` and `if` statements that use `&&` saves gas | 12 |
 | 5 | `<x> += <y>` Costs More Gas Than `<x> = <x> + <y>` For State Variables | 4 |
