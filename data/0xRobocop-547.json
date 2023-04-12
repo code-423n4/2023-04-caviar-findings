@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "The change function of the EthRouter contract cannot be invoked with more than 1 pool.",
+  "issueId": 547,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/547"
+}
