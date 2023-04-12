@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x5rings",
+  "risk": "3",
+  "title": "`EthRouter` and `Private Pool` contract are designed to receive ETH bt not implement function for withdrawal.",
+  "issueId": 524,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/524"
+}
