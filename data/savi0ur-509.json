@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "savi0ur",
+  "risk": "2",
+  "title": "No slippage control for `sell` function for the private pool with base token as ERC20 token",
+  "issueId": 509,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/509"
+}
