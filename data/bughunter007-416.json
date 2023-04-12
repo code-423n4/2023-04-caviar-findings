@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "bughunter007",
+  "risk": "3",
+  "title": "If base token is ERC20, they are permanently locked by EthRouter for any calls through sell function.",
+  "issueId": 416,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/416"
+}
