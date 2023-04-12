@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "PrivatePool deployment via Factory is prone to frontrunning and MEV",
+  "issueId": 329,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/329"
+}
