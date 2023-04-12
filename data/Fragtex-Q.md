@@ -1,8 +1,4 @@
 ## Low
-### [L] Open ToDos
-Code architecture, incentives, and error handling/reporting issues/problems should be cleared prior to deployment.
-https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L404
-
 ### [L] Inaccurate comment
 The if statement checks if fee rate is less or equal to 50%
 https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L171
