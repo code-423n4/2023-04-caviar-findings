@@ -202,3 +202,9 @@ QA11. The ``PrivatePool#deposit()`` fails to keep track who the depositor is, no
 Impact: there is no way a depositor can withdraw the deposited NFTs and ETH on his own. 
 
 Mitigation: keep track of all deposit information (NFTs and ETH) for each depositor and add a function to allow each depositor to withdraw his own NFTs and ETH, possibly with additional rewards. Minimum: change the event topics so that event will reflect the information of who deposits how much/which NFT at when.
+
+QA12: The ``PrivatePool#buy()`` and ``PrivatePool#sell()`` functions lack slippage control for royalty fees. This is important since the owner might change the royalty payment mode by calling the ``setPayRoyalties()`` function.
+
+Without this control: a user might expect not to pay the royalty but end up having to pay the royalty due to the change of the royalty payment mode by the owner's calling of the ``setPayRoyalties()`` function.
+
+Mitigation: add one more argument called ``expectedPayRoyalties`` to the ``buy()`` and ``sell()`` and check whether it is equal to ``payRoyalties`` before proceeding with the rest of the flow.
