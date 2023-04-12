@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x5rings",
+  "risk": "3",
+  "title": "Loss of funds on No revert on ERC20 transfer of tokens can be drained when creating a private pool. `create()`",
+  "issueId": 520,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/520"
+}
