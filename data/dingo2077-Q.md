@@ -195,3 +195,168 @@ User could passed different length and tx will be reverted.
 
 ## Recommended Mitigation Steps
 Add `require(inputTokenIds.length == inputTokenWeights.length == outputTokenIds.length == outputTokenWeights.length)`;
+
+## [L-10] User could call buy() and do not pass any tokenIds and tx will not be reverted.
+SC: PrivatePool.sol
+
+## Proof of Concept
+There is no check for `tokenIds` array length in buy() function. User's tx will not be reverted.
+Foundry test:
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+import "forge-std/Test.sol";
+import "../../src/Factory.sol";
+import "../../src/EthRouter.sol";
+import "../../src/PrivatePool.sol";
+import "../shared/Milady.sol";
+
+contract MyLive is Test {
+    address public nftArtist = vm.addr(123);
+    address public royaltyRegistry = vm.addr(999);
+    address public poolCreator = vm.addr(432);
+    address public user2 = vm.addr(4323);
+
+    uint256[] tokenWeights;
+    PrivatePool.MerkleMultiProof proofs;
+    IStolenNftOracle.Message[] stolenNftProofs;
+
+    Factory factory;
+    EthRouter ethrouter;
+    PrivatePool privatePool;
+    Milady milady;
+
+    function setUp() public {
+        factory = new Factory();
+        ethrouter = new EthRouter(royaltyRegistry); //accept royaltyRegistry addr in constructor;
+        milady = new Milady();
+        privatePool = new PrivatePool(
+            address(factory),
+            address(royaltyRegistry),
+            address(0)
+        ); //Deploy base for clones copy.
+        vm.deal(poolCreator, 100 ether);
+        vm.deal(user2, 100 ether);
+        vm.startPrank(poolCreator);
+        milady.mint(poolCreator, 1);
+        milady.approve(address(factory), 1);
+        vm.stopPrank();
+    }
+
+    function testDirectSell() public {
+        console.log("address factory:                   ", address(factory));
+
+        factory.setPrivatePoolImplementation(address(privatePool));
+
+        vm.startPrank(poolCreator);
+        uint256[] memory tokenIds = new uint256[](1);
+        tokenIds[0] = 1;
+        privatePool = factory.create{value: 1 ether}(
+            address(0), //_baseToken
+            address(milady), //nft
+            10e18, //_virtualBaseTokenReserves
+            2e18, //_virtualNftReserves
+            0, //_changeFee
+            0, //fee rate //@note покрутиьт потом с разными значениями
+            bytes32(0), //_merkleRoot
+            false, //nft oracle
+            false, //pay royalties
+            bytes32(address(this).balance + 12345), //salt
+            tokenIds, //tokenIds //@audit Poll could be created with 0 nft and msg.value>0; check what could be
+            1 ether //baseTokenAmount
+        );
+        vm.stopPrank();
+
+        console.log("======================BEFORE BUY======================");
+        console.log("User2 eth balance                  ", user2.balance);
+        console.log(
+            "Pool eth balance                   ",
+            address(privatePool).balance
+        );
+        console.log(
+            "Pool nft balance                   ",
+            milady.balanceOf(address(privatePool))
+        );
+
+        vm.startPrank(user2);
+        (
+            uint256 netInputAmount,
+            uint256 feeAmount,
+            uint256 protocolFeeAmount
+        ) = privatePool.buyQuote(tokenIds.length * 1e18);
+
+        //buy
+        (uint256 returnedNetInputAmount, , ) = privatePool.buy{
+            value: netInputAmount
+        }(tokenIds, tokenWeights, proofs);
+        console.log("=================AFTER BUY & BEFORE SELL=============");
+        console.log("User2 eth balance                  ", user2.balance);
+        console.log(
+            "Pool eth balance                   ",
+            address(privatePool).balance
+        );
+        console.log(
+            "Pool nft balance                   ",
+            milady.balanceOf(address(privatePool))
+        );
+
+        (uint256 netOutputAmount, , ) = privatePool.sellQuote(
+            tokenIds.length * 1e18
+        );
+        uint256 balanceBefore = address(this).balance;
+
+        //sell
+        milady.approve(address(privatePool), 1);
+        privatePool.sell(tokenIds, tokenWeights, proofs, stolenNftProofs);
+        console.log("======================AFTER SELL======================");
+        console.log("User2 eth balance                  ", user2.balance);
+        console.log(
+            "Pool eth balance                   ",
+            address(privatePool).balance
+        );
+        console.log(
+            "Pool nft balance                   ",
+            milady.balanceOf(address(privatePool))
+        );
+
+        //sellE
+        uint256[] memory tokenIdsE;
+        privatePool.sell(tokenIdsE, tokenWeights, proofs, stolenNftProofs);
+        console.log("======================AFTER SELL E====================");
+        console.log("User2 eth balance                  ", user2.balance);
+        console.log(
+            "Pool eth balance                   ",
+            address(privatePool).balance
+        );
+        console.log(
+            "Pool nft balance                   ",
+            milady.balanceOf(address(privatePool))
+        );
+    }
+}
+
+```
+
+## Recommended Mitigation Steps
+Add `require(tokenIds.length > 0)`;
+
+## [L-11] User could call sell() and do not pass any tokenIds and tx will not be reverted.
+SC: PrivatePool.sol
+
+## Proof of Concept
+There is no check for `tokenIds` array length in sell() function. User's tx will not be reverted.
+
+
+## Recommended Mitigation Steps
+Add `require(tokenIds.length > 0)`;
+
+## [L-11] User could call deposit() and do not pass any tokenIds and tx will not be reverted.
+SC: PrivatePool.sol
+
+## Proof of Concept
+There is no check for `tokenIds` array length in deposit() function. User's tx will not be reverted.
+Also event `Deposit()` will be broadcasted.
+
+
+## Recommended Mitigation Steps
+Add `require(tokenIds.length > 0)`;
