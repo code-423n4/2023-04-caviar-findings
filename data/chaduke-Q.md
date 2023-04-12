@@ -194,3 +194,11 @@ QA4. Both ``EthRouter#buy()`` and ``EthRouter#sell()`` do not check whether ``re
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L190](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L190)
 
 Mitigation: check and make sure ``recipient != address(0)``. 
+
+QA11. The ``PrivatePool#deposit()`` fails to keep track who the depositor is, not in the emitted event either. 
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L484-L507](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L484-L507)
+
+Impact: there is no way a depositor can withdraw the deposited NFTs and ETH on his own. 
+
+Mitigation: keep track of all deposit information (NFTs and ETH) for each depositor and add a function to allow each depositor to withdraw his own NFTs and ETH, possibly with additional rewards. Minimum: change the event topics so that event will reflect the information of who deposits how much/which NFT at when.
