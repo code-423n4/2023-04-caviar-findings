@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "T1MOH",
+  "risk": "2",
+  "title": "Function `price()` will unexpectedly revert if base token has more than 36 decimals",
+  "issueId": 485,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/485"
+}
