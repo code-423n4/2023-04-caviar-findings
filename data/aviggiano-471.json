@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "aviggiano",
+  "risk": "3",
+  "title": "PrivatePool._getRoyalty incorrect calculation, as per EIP-2981, may lead to user loss of funds",
+  "issueId": 471,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/471"
+}
