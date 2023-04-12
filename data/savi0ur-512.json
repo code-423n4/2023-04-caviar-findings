@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "savi0ur",
+  "risk": "3",
+  "title": "No refund of any surplus erc20 token to the caller while changing nfts from private pool",
+  "issueId": 512,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/512"
+}
