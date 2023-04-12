@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xbepresent",
+  "risk": "3",
+  "title": "An attacker can finance his own purchase in ```EtherRouter.buy()``` using the ether deposited from others",
+  "issueId": 472,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/472"
+}
