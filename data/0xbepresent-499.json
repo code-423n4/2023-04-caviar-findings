@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xbepresent",
+  "risk": "3",
+  "title": "Attacker can sell a NFT to the private pool at unfair price",
+  "issueId": 499,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/499"
+}
