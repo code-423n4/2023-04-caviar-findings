@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "hihen",
+  "risk": "2",
+  "title": "Factory.privatePoolImplementation not set or set incorrectly can result in loss of tokens for users",
+  "issueId": 444,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/444"
+}
