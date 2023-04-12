@@ -157,6 +157,103 @@ File: 2023-04-caviar/blob/main/src/PrivatePool.sol
 578:    function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
 ```
 
+```diff
+diff --git a/src/Factory.sol b/src/Factory.sol
+index 09cbb4e..c8e30f0 100644
+--- a/src/Factory.sol
++++ b/src/Factory.sol
+@@ -126,26 +126,26 @@ contract Factory is ERC721, Owned {
+ 
+     /// @notice Sets private pool metadata contract.
+     /// @param _privatePoolMetadata The private pool metadata contract.
+-    function setPrivatePoolMetadata(address _privatePoolMetadata) public onlyOwner {
++    function setPrivatePoolMetadata(address _privatePoolMetadata) public onlyOwner payable {
+         privatePoolMetadata = _privatePoolMetadata;
+     }
+ 
+     /// @notice Sets the private pool implementation contract that newly deployed proxies point to.
+     /// @param _privatePoolImplementation The private pool implementation contract.
+-    function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
++    function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner payable {
+         privatePoolImplementation = _privatePoolImplementation;
+     }
+ 
+     /// @notice Sets the protocol fee that is taken on each buy/sell/change. It's in basis points: 350 = 3.5%.
+     /// @param _protocolFeeRate The protocol fee.
+-    function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner {
++    function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner payable {
+         protocolFeeRate = _protocolFeeRate;
+     }
+ 
+     /// @notice Withdraws the earned protocol fees.
+     /// @param token The token to withdraw.
+     /// @param amount The amount to withdraw.
+-    function withdraw(address token, uint256 amount) public onlyOwner {
++    function withdraw(address token, uint256 amount) public onlyOwner payable {
+         if (token == address(0)) {
+             msg.sender.safeTransferETH(amount);
+         } else {
+diff --git a/src/PrivatePool.sol b/src/PrivatePool.sol
+index 75991e1..bb934c5 100644
+--- a/src/PrivatePool.sol
++++ b/src/PrivatePool.sol
+@@ -511,7 +511,7 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// @param tokenIds The token IDs of the NFTs to withdraw.
+     /// @param token The address of the token to withdraw.
+     /// @param tokenAmount The amount of tokens to withdraw.
+-    function withdraw(address _nft, uint256[] calldata tokenIds, address token, uint256 tokenAmount) public onlyOwner {
++    function withdraw(address _nft, uint256[] calldata tokenIds, address token, uint256 tokenAmount) public onlyOwner payable {
+         // ~~~ Interactions ~~~ //
+ 
+         // transfer the nfts to the caller
+@@ -535,7 +535,7 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// pool. These parameters affect the price and liquidity depth of the pool.
+     /// @param newVirtualBaseTokenReserves The new virtual base token reserves.
+     /// @param newVirtualNftReserves The new virtual NFT reserves.
+-    function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirtualNftReserves) public onlyOwner {
++    function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirtualNftReserves) public onlyOwner payable {
+         // set the virtual base token reserves and virtual nft reserves
+         virtualBaseTokenReserves = newVirtualBaseTokenReserves;
+         virtualNftReserves = newVirtualNftReserves;
+@@ -547,7 +547,7 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// @notice Sets the merkle root. Can only be called by the owner of the pool. The merkle root is used to validate
+     /// the NFT weights.
+     /// @param newMerkleRoot The new merkle root.
+-    function setMerkleRoot(bytes32 newMerkleRoot) public onlyOwner {
++    function setMerkleRoot(bytes32 newMerkleRoot) public onlyOwner payable {
+         // set the merkle root
+         merkleRoot = newMerkleRoot;
+ 
+@@ -559,7 +559,7 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// fee amount when swapping or changing NFTs. The fee rate is in basis points (1/100th of a percent). For example,
+     /// 10_000 == 100%, 200 == 2%, 1 == 0.01%.
+     /// @param newFeeRate The new fee rate (in basis points)
+-    function setFeeRate(uint16 newFeeRate) public onlyOwner {
++    function setFeeRate(uint16 newFeeRate) public onlyOwner payable {
+         // check that the fee rate is less than 50%
+         if (newFeeRate > 5_000) revert FeeRateTooHigh();
+ 
+@@ -573,7 +573,7 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// @notice Sets the whether or not to use the stolen NFT oracle. Can only be called by the owner of the pool. The
+     /// stolen NFT oracle is used to check if an NFT is stolen.
+     /// @param newUseStolenNftOracle The new use stolen NFT oracle flag.
+-    function setUseStolenNftOracle(bool newUseStolenNftOracle) public onlyOwner {
++    function setUseStolenNftOracle(bool newUseStolenNftOracle) public onlyOwner payable {
+         // set the use stolen NFT oracle flag
+         useStolenNftOracle = newUseStolenNftOracle;
+ 
+@@ -584,7 +584,7 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// @notice Sets the pay royalties flag. Can only be called by the owner of the pool. If royalties are enabled then
+     /// the pool will pay royalties when buying or selling NFTs.
+     /// @param newPayRoyalties The new pay royalties flag.
+-    function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
++    function setPayRoyalties(bool newPayRoyalties) public onlyOwner payable {
+         // set the pay royalties flag
+         payRoyalties = newPayRoyalties;
+
+
+```
+
 ### [NC-7] Function Calls in Loop Could Lead to Denial of Service
 
 Function calls made in unbounded loop are error-prone with potential resource exhaustion as it can trap the contract due to the gas limitations or failed transactions. Here are some of the instances entailed:
