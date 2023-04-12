@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xbepresent",
+  "risk": "3",
+  "title": "```EthRouter.buy()```, ```EthRouter.sell()``` and ```EthRouter.change()``` can be used by the attacker to steal funds from ```EthRouter```",
+  "issueId": 441,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/441"
+}
