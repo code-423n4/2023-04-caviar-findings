@@ -131,3 +131,72 @@ Changes made via the setter functions in PrivatePool are sensitive transactions 
 For instance, a user's [buying transaction](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L211) could be preceded or frontrun inadvertently by [`setFeeRate()`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L562-L571) leading to the user paying more [`feeAmount`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L222) than originally intended.
 
 Consider implementing a time lock by making the crucial changes require two steps with a mandatory time window between them. The first step merely broadcasts to users that a particular change is coming, and the second step commits that change after a suitable waiting period. This allows users that do not accept the change to refrain from calling fee charging functions nearing the changing time. 
+
+## Unrestricted `deposit()`
+`deposit()` in both [EthRouter](https://github.com/code-423n4/2023-04-caviar/blob/main/src/EthRouter.sol#L219) and [PrivatePool](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L484) is a public unrestricted payable functions. Ample measures will need to be in place to avoid purely non-owners, i.e users unrelated to the owner, from calling this sensitive function considering any funds and NFTs deposited into PrivatePool are going to be irretrievable unless the owner is kind enough withdrawing on their behalf and then transferring those assets back to the careless users. That said, the system should look into a better measure such as having only role specific users assigned by the owner to meddle with this function.    
+
+## Uninitialized `cooldownPeriod` in StolenNftFilterOracle
+[`cooldownPeriod`](https://github.com/outdoteth/caviar/blob/main/src/StolenNftFilterOracle.sol#L12) in StolenNftFilterOracle is currently in its default value, i.e. `0`. If it were to be set to a non-zero threshold, `validateTokensAreNotStolen()` externally called by [`sell()`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L316-L318) and [`change()`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L400-L402) from PrivatePool might more frequently encounter function revert due to the restricting require statement on line 67 below:
+
+[File: StolenNftFilterOracle.sol#L48-L69](https://github.com/outdoteth/caviar/blob/main/src/StolenNftFilterOracle.sol#L48-L69) 
+
+```solidity
+    function validateTokensAreNotStolen(address tokenAddress, uint256[] calldata tokenIds, Message[] calldata messages)
+        public
+        view
+    {
+        if (isDisabled[tokenAddress]) return;
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            Message calldata message = messages[i];
+
+            // check that the signer is correct and message id matches token id + token address
+            bytes32 expectedMessageId = keccak256(abi.encode(TOKEN_TYPE_HASH, tokenAddress, tokenIds[i]));
+            require(_verifyMessage(expectedMessageId, validFor, message), "Message has invalid signature");
+
+            (bool isFlagged, uint256 lastTransferTime) = abi.decode(message.payload, (bool, uint256));
+
+            // check that the NFT is not stolen
+            require(!isFlagged, "NFT is flagged as suspicious");
+
+            // check that the NFT was not transferred too recently
+67:            require(lastTransferTime + cooldownPeriod < block.timestamp, "NFT was transferred too recently");
+        }
+    }
+``` 
+## `_verifyMessage()` does not check if `ecrecover` return value is 0
+`_verifyMessage()` of ReservoirOracle calls the Solidity `ecrecover` function directly to verify the given signatures.
+
+The return value of ecrecover may be 0, which means the signature is invalid, but the check can be bypassed when signer is 0.
+
+Consequently, stolen NFTs could end up dodging the checks and end up being sold/changed into PrivatePool.
+
+[File: ReservoirOracle.sol#L86-L109](https://github.com/reservoirprotocol/oracle/blob/main/contracts/ReservoirOracle.sol#L86-L109)
+
+```solidity
+        address signerAddress = ecrecover(
+            keccak256(
+                abi.encodePacked(
+                    "\x19Ethereum Signed Message:\n32",
+                    // EIP-712 structured-data hash
+                    keccak256(
+                        abi.encode(
+                            keccak256(
+                                "Message(bytes32 id,bytes payload,uint256 timestamp)"
+                            ),
+                            message.id,
+                            keccak256(message.payload),
+                            message.timestamp
+                        )
+                    )
+                )
+            ),
+            v,
+            r,
+            s
+        );
+
+        // Ensure the signer matches the designated oracle address
+        return signerAddress == RESERVOIR_ORACLE_ADDRESS;
+```
+Use the recover function from OpenZeppelin's ECDSA library for signature verification. Additionally, perform [a zero address check on `reservoirOracleAddress` at the constructor](https://github.com/reservoirprotocol/oracle/blob/main/contracts/ReservoirOracle.sol#L27-L29) where possible. 
