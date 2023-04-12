@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "shaka",
+  "risk": "2",
+  "title": "`change` fails for tokens with less than 4 decimals",
+  "issueId": 473,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/473"
+}
