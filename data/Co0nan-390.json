@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Co0nan",
+  "risk": "2",
+  "title": "Owner can modify the feeRate and steal funds from buyer/seller.",
+  "issueId": 390,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/390"
+}
