@@ -23,7 +23,7 @@ QA5. There is an error in the NatSpec of ``change()``:
 
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L377](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L375-L377)
 
-Mitigation: the correct should be 
+Mitigation: the correction should be 
 ```diff
 - The sum of the caller's NFT weights must be less than or equal to the sum of the
     /// output pool NFTs weights.
@@ -186,5 +186,11 @@ function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public pa
         }
     }
 
-    /// @notice 
-```
+QA10 
+QA4. Both ``EthRouter#buy()`` and ``EthRouter#sell()`` do not check whether ``recipient == address(0)``, as a result, they might send royalty fees to the zero address - loss of funds.
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L123](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L123)
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L190](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L190)
+
+Mitigation: check and make sure ``recipient != address(0)``. 
