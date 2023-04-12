@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "matrix_0wl",
+  "risk": "2",
+  "title": "Reentrancy may allow an admin to steal funds",
+  "issueId": 462,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/462"
+}
