@@ -165,3 +165,33 @@ If `ERC20(baseToken).decimals()` returned more than `36` than tx will be reverte
 
 ## Recommended Mitigation Steps
 Add `require(ERC20(baseToken).decimals() < 36, "Error decimals")` while creating pool.
+
+## [L-07] PrivatePool buy() function missed implemented require for check array lengths 
+SC: PrivatePool.sol
+
+## Proof of Concept
+`buy()` function in PrivatePool.sol do not check length of array `tokenIds` and `tokenWeights`.
+User could passed different length and tx will be reverted.
+
+## Recommended Mitigation Steps
+Add `require(tokenIds.length == tokenWeights.length)`;
+
+## [L-08] PrivatePool sell() function missed implemented require for check array lengths 
+SC: PrivatePool.sol
+
+## Proof of Concept
+`sell()` function in PrivatePool.sol do not check length of array `tokenIds` and `tokenWeights`.
+User could passed different length and tx will be reverted.
+
+## Recommended Mitigation Steps
+Add `require(tokenIds.length == tokenWeights.length)`;
+
+## [L-09] PrivatePool change() function missed implemented require for check array lengths 
+SC: PrivatePool.sol
+
+## Proof of Concept
+`change()` function in PrivatePool.sol do not check length of array `inputTokenIds`, `inputTokenWeights`, outputTokenIds, outputTokenWeights.
+User could passed different length and tx will be reverted.
+
+## Recommended Mitigation Steps
+Add `require(inputTokenIds.length == inputTokenWeights.length == outputTokenIds.length == outputTokenWeights.length)`;
