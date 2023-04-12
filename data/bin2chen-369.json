@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "bin2chen",
+  "risk": "2",
+  "title": "flashFee() missing multiplied by some exponent depending on the base token decimals.",
+  "issueId": 369,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/369"
+}
