@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "aviggiano",
+  "risk": "2",
+  "title": "PrivatePool assumption that sale price is the same for each NFT even if weights differ is not valid depending on royalty lookup address implementation of EIP-2981",
+  "issueId": 479,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/479"
+}
