@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ToonVH",
+  "risk": "3",
+  "title": "Owner of PrivatePool can front-run any purchase/sell using a non-ETH basetoken",
+  "issueId": 367,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/367"
+}
