@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x5rings",
+  "risk": "2",
+  "title": " `protocolFeeRate` can be set to max uint16 . The `protocolFeeAmount` required to change a given amount can be hiked leading to a rug pull / users loss of funds",
+  "issueId": 542,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/542"
+}
