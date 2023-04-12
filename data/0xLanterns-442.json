@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xLanterns",
+  "risk": "2",
+  "title": "Fee on Transfer Tokens will lead to pool owners losing yield and funds",
+  "issueId": 442,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/442"
+}
