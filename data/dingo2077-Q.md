@@ -350,7 +350,7 @@ There is no check for `tokenIds` array length in sell() function. User's tx will
 ## Recommended Mitigation Steps
 Add `require(tokenIds.length > 0)`;
 
-## [L-11] User could call deposit() and do not pass any tokenIds and tx will not be reverted.
+## [L-12] User could call deposit() and do not pass any tokenIds and tx will not be reverted.
 SC: PrivatePool.sol
 
 ## Proof of Concept
