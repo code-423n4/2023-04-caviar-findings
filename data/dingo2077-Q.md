@@ -145,3 +145,23 @@ Not let's see at another case:
 
 ## Recommended Mitigation Steps
 To avoid situation where users can't create pools it is necessary to set poolImplemmentation in factory constructor.
+
+## [L-06] Protocol doesn't support >=36 decimals tokens.
+SC: PrivatePool.sol
+
+## Proof of Concept
+As we see in function `price()`, if `ERC20(baseToken).decimals()` returned `36`, price will be `0`.
+If `ERC20(baseToken).decimals()` returned more than `36` than tx will be reverted.
+```solidity
+    function price() public view returns (uint256) {
+          // ensure that the exponent is always to 18 decimals of accuracy
+        uint256 exponent = baseToken == address(0)
+            ? 18
+            : (36 - ERC20(baseToken).decimals());
+        return (virtualBaseTokenReserves * 10 ** exponent) / virtualNftReserves;
+    }
+
+```
+
+## Recommended Mitigation Steps
+Add `require(ERC20(baseToken).decimals() < 36, "Error decimals")` while creating pool.
