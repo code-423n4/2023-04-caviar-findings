@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "The owner might front-run a sell() transaction, leading a seller to lose funds. ",
+  "issueId": 342,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/342"
+}
