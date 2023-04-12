@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xLanterns",
+  "risk": "2",
+  "title": "Some base tokens will cause a revert due to underflow",
+  "issueId": 434,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/434"
+}
