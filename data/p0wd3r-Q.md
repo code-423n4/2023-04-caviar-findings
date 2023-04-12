@@ -1,3 +1,17 @@
+# Check if tokenIds is empty at the beginning of the buy function.
+
+PrivatePool.sol L211
+
+```
+function buy(uint256[] calldata tokenIds, uint256[] calldata tokenWeights, MerkleMultiProof calldata proof) {
+...
+emit Buy(tokenIds, tokenWeights, netInputAmount, feeAmount, protocolFeeAmount, royaltyFeeAmount);
+}
+```
+
+The `buy` function does not check if `tokenIds` is empty. If it is empty, the function will continue to execute and eventually emit an event that has no effect and should not be emitted.
+
+
 # Replace `transferFrom` with `safeTransferFrom`
 
 Factory.sol L115
