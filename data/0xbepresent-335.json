@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xbepresent",
+  "risk": "2",
+  "title": "The ```change()``` function will fail if the ```baseToken``` is 3 decimals places or less",
+  "issueId": 335,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/335"
+}
