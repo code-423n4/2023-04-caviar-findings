@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "qpzm",
+  "risk": "2",
+  "title": "`PrivatePools.setAllParameters` may set `virtualBaseTokenReserves` to a value different from the real token balance in the contract.",
+  "issueId": 454,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/454"
+}
