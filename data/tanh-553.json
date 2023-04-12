@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tanh",
+  "risk": "2",
+  "title": "Loss of all pool funds by flash loan if user transfers ownership of factory NFT to the private pool",
+  "issueId": 553,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/553"
+}
