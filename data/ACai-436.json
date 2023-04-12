@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ACai",
+  "risk": "3",
+  "title": "The return value of the `transfer` and `transferFrom` is no checking",
+  "issueId": 436,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/436"
+}
