@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0x5rings",
+  "risk": "2",
+  "title": "baseToken with decimals less than 6 will revert when changeFeeQuote",
+  "issueId": 546,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/546"
+}
