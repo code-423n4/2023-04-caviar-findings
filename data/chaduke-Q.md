@@ -126,3 +126,65 @@ QA8. The ``buy()`` function fails to check if an NFT is stolen or not. This is i
 
 Mitigation: check if an NFT is stolen as well during buying. 
 
+QA9. The ``EthRouter#buy()`` fails to ensure that msg.value is no less than all the buys[i].baseTokenAmount added together. 
+
+[https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L99-L144](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L99-L144)
+
+Mitigation: We need to check that msg.value is no less than all the buys[i].baseTokenAmount added together. 
+```diff
+function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public payable {
+
+        // check that the deadline has not passed (if any)
+        if (block.timestamp > deadline && deadline != 0) {
+            revert DeadlinePassed();
+        }
+
++        uint num = buys.length;
++        for(uint256 i; i < num; i++)
++             inputAmount += buys[i].baseTokenAmount;
++        if(msg.value < inputAmount) revert NotSufficientETHProvided();
+ 
+         
+        // loop through and execute the the buys
+        for (uint256 i = 0; i < buys.length; i++) {
+            if (buys[i].isPublicPool) {
+                // execute the buy against a public pool
+                uint256 inputAmount = Pair(buys[i].pool).nftBuy{value: buys[i].baseTokenAmount}(
+                    buys[i].tokenIds, buys[i].baseTokenAmount, 0
+                );
+
+                // pay the royalties if buyer has opted-in
+                if (payRoyalties) {
+                    uint256 salePrice = inputAmount / buys[i].tokenIds.length;
+                    for (uint256 j = 0; j < buys[i].tokenIds.length; j++) {
+                        // get the royalty fee and recipient
+                        (uint256 royaltyFee, address royaltyRecipient) =
+                            getRoyalty(buys[i].nft, buys[i].tokenIds[j], salePrice);
+
+                        if (royaltyFee > 0) {
+                            // transfer the royalty fee to the royalty recipient
+                            royaltyRecipient.safeTransferETH(royaltyFee);
+                        }
+                    }
+                }
+            } else {
+                // execute the buy against a private pool
+                PrivatePool(buys[i].pool).buy{value: buys[i].baseTokenAmount}(
+                    buys[i].tokenIds, buys[i].tokenWeights, buys[i].proof
+                );
+            }
+
+            for (uint256 j = 0; j < buys[i].tokenIds.length; j++) {
+                // transfer the NFT to the caller
+                ERC721(buys[i].nft).safeTransferFrom(address(this), msg.sender, buys[i].tokenIds[j]);
+            }
+        }
+
+        // refund any surplus ETH to the caller
+        if (address(this).balance > 0) {
+            msg.sender.safeTransferETH(address(this).balance);
+        }
+    }
+
+    /// @notice 
+```
