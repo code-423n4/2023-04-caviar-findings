@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Robertas42",
+  "risk": "2",
+  "title": "Unhandled return values of transferFrom allow to avoid paying fees for using flashloan in PrivatePool",
+  "issueId": 362,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/362"
+}
