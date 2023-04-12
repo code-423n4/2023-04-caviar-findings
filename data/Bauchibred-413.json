@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bauchibred",
+  "risk": "3",
+  "title": "PrivatePool.sol: `FeeRate` can get set too high in edge case",
+  "issueId": 413,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/413"
+}
