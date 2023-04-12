@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "bearonbike",
+  "risk": "3",
+  "title": "User who use EthRouter.sell() to sell NFT might lost funds.",
+  "issueId": 418,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/418"
+}
