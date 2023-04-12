@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Dug",
+  "risk": "2",
+  "title": "DoS possible with private pool creation",
+  "issueId": 464,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/464"
+}
