@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "A user might purchase NFTs with weights more than what he expected (loss of funds). ",
+  "issueId": 333,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/333"
+}
