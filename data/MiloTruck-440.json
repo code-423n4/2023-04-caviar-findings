@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "MiloTruck",
+  "risk": "2",
+  "title": "Royalty fee calculations are non-compliant with EIP-2981",
+  "issueId": 440,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/440"
+}
