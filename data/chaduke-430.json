@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "chaduke",
+  "risk": "3",
+  "title": "virtualNftReserves might be out of sync with weights and merkeRoot, as a result, the trading price of NFTs might be wrong.",
+  "issueId": 430,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/430"
+}
