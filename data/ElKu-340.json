@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ElKu",
+  "risk": "2",
+  "title": "Function `changeFeeQuote` will revert for base tokens with less than 4 decimals",
+  "issueId": 340,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/340"
+}
