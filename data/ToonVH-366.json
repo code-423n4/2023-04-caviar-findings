@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ToonVH",
+  "risk": "2",
+  "title": "Division by zero in buyQuote() means the last NFT in a pool can not be bought",
+  "issueId": 366,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/366"
+}
