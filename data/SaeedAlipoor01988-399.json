@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "SaeedAlipoor01988",
+  "risk": "2",
+  "title": "The PrivatePool.sol#L742.price function does not handle the token that are not 18 decimals well",
+  "issueId": 399,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/399"
+}
