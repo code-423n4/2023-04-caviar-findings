@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Voyvoda",
+  "risk": "2",
+  "title": "Less flashloan fee is taken from users resulting in profit loss for the pool owner.",
+  "issueId": 459,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/459"
+}
