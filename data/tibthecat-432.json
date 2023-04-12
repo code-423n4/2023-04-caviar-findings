@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tibthecat",
+  "risk": "2",
+  "title": "PrivatePool owner could frontrun buyers and sellers",
+  "issueId": 432,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/432"
+}
