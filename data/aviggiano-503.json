@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "aviggiano",
+  "risk": "3",
+  "title": "Attacker can drain token funds from the pool by executing a flash loan with sell & buyback due to fee calculation vulnerability",
+  "issueId": 503,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/503"
+}
