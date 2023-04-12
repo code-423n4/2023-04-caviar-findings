@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Voyvoda",
+  "risk": "2",
+  "title": "Sandwich attack risk on `setVirtualReserves`",
+  "issueId": 378,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/378"
+}
