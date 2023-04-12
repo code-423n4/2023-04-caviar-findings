@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bnke0x0",
+  "risk": "2",
+  "title": "initialize function in PrivatePool.sol can be invoked multiple times from the implementation contract",
+  "issueId": 455,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/455"
+}
