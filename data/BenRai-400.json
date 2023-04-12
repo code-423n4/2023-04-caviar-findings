@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "BenRai",
+  "risk": "2",
+  "title": "Function can run out of gas in case the number of tokens array is to long",
+  "issueId": 400,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/400"
+}
