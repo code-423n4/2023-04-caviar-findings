@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "GT_Blockchain",
+  "risk": "2",
+  "title": "User Defined Salt allows for front-running pool creation",
+  "issueId": 457,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/457"
+}
