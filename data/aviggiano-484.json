@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "aviggiano",
+  "risk": "2",
+  "title": "`PrivatePool` functions do not have slippage control",
+  "issueId": 484,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/484"
+}
