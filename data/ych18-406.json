@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ych18",
+  "risk": "3",
+  "title": "Fees extremely high for non-standard decimal tokens ( decimals = 6)",
+  "issueId": 406,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/406"
+}
