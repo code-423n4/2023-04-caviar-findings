@@ -126,3 +126,22 @@ In PrivatePool.sol in function`setVirtualReserves()` and factory.sol in `create(
 ```solidity
 require(setVirtualReserves > 1e18);
 ```
+
+## [L-05] Missing maxInput amount in buy() function can lead to unexpected costs for user.
+SC: EthRouter.sol, PrivatePool.sol
+
+## Proof of Concept
+This is good practice for AMM to intergrate `maxInput` amount in `buy()` fuction to avoid unexpected costs for user.
+
+Let's see at normal buy case:
+1] User chose expensive NFT;
+2] User calls `buy()` with more msg.value than `netInputAmount()` require;
+3] Rest msg.value comes to user at the end of tx.
+Not let's see at another case:
+1] User chose NFT;
+2] User calls `buy()` with more msg.value than `netInputAmount()` require;
+3] Owner of pool see tx in mempool for huge buy() and set `setFeeRate` at 50%
+4] User who expected pay 10%, will pay 50% instead.
+
+## Recommended Mitigation Steps
+To avoid situation where users can't create pools it is necessary to set poolImplemmentation in factory constructor.
