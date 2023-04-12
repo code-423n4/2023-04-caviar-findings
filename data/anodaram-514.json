@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "anodaram",
+  "risk": "3",
+  "title": "Reentrancy attack using smart contract fallback function in PrivatePool.buy/sell/change",
+  "issueId": 514,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/514"
+}
