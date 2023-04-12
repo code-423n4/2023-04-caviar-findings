@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "AkshaySrivastav",
+  "risk": "3",
+  "title": "`EthRouter.buy` does not validate whether necessary ETH were sent with the call.",
+  "issueId": 387,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/387"
+}
