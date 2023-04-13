@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "EthRouter.sol HAS THE `receive` FUNCTION BUT THE SENT ETHER WILL BE WITHDRAWN BY THE NEXT BUYER",
+  "issueId": 745,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/745"
+}
