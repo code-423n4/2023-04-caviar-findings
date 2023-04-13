@@ -185,9 +185,9 @@ function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public pa
             msg.sender.safeTransferETH(address(this).balance);
         }
     }
+```
 
-QA10 
-QA4. Both ``EthRouter#buy()`` and ``EthRouter#sell()`` do not check whether ``recipient == address(0)``, as a result, they might send royalty fees to the zero address - loss of funds.
+QA10 Both ``EthRouter#buy()`` and ``EthRouter#sell()`` do not check whether ``recipient == address(0)``, as a result, they might send royalty fees to the zero address - loss of funds.
 
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L123](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L123)
 
