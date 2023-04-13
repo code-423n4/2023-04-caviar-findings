@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "said",
+  "risk": "3",
+  "title": "PrivatePool Factory create() susceptible to front run attack",
+  "issueId": 694,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/694"
+}
