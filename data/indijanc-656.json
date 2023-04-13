@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "indijanc",
+  "risk": "2",
+  "title": "ETH mistakenly sent to `EthRouter` can be taken by anyone using the `buy()`, `sell()` or `change()` functions",
+  "issueId": 656,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/656"
+}
