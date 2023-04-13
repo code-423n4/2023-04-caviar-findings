@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "decade",
+  "risk": "2",
+  "title": "Users can loose deposit during `create` if implementation is not set.",
+  "issueId": 841,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/841"
+}
