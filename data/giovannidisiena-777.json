@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "giovannidisiena",
+  "risk": "2",
+  "title": "Lack of zero value validation in `PrivatePool::setVirtualReserves` will alter behaviour of the pool",
+  "issueId": 777,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/777"
+}
