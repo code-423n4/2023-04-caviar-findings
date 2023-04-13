@@ -387,3 +387,14 @@ File: 2023-04-caviar/src/EthRouter.sol
 88:    receive() external payable {}
 
 ```
+
+### [L-04] Unsafe use of transfer()/transferFrom() with IERC20
+
+Some tokens do not implement the ERC20 standard properly but are still accepted by most code that accepts ERC20 tokens. For example Tether (USDT)‘s transfer() and transferFrom() functions do not return booleans as the specification requires, and instead have no return value. When these sorts of tokens are cast to IERC20, their function signatures do not match and therefore the calls made, revert. Use OpenZeppelin’s SafeERC20’s safeTransfer()/safeTransferFrom() instead
+
+```solidity
+File: 2023-04-caviar/src/Factory.sol
+
+152: ERC20(token).transfer(msg.sender, amount);
+
+```
