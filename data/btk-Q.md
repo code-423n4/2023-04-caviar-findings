@@ -1,6 +1,6 @@
 # Protocol Overview
 
-Caviar Private Pools is a DeFi platform on Ethereum that allows users to create private liquidity pools for trading different tokens. Users deposit tokens and set prices for buying and selling. Trades are executed automatically by the protocol's market-making algorithm. The platform is non-custodial and uses gas optimization to reduce transaction fees.
+The Caviar Private Pools protocol is a decentralized platform on Ethereum that allows users to create and join private investment pools. The smart contract manages the funds within the pool, ensures compliance with the specified rules, and distributes rewards to members. The protocol democratizes investment opportunities, promotes decentralization, and fosters innovation in the investment industry.
 
 | Total Low issues |
 |------------------|
@@ -15,6 +15,7 @@ Caviar Private Pools is a DeFi platform on Ethereum that allows users to create 
 | [L-06] | Add `address(0)` check for the critical changes                                                           | 2             |
 | [L-07] | Array lengths not checked                                                                                 | 4             |
 | [L-08] | Unused `receive()` Function Will Lock Ether In Contract                                                   | 1             |
+| [L-09] | Misleading comment                                                                                        | 1             |
 
 | Total Non-Critical issues |
 |---------------------------|
@@ -287,6 +288,25 @@ Check that the arrays length are the same.
 #### Recommended Mitigation Steps
 
 If the intention is for the Ether to be used, the function should call another function, otherwise it should revert, or add a function to rescue the locked Eth.
+
+## [L-09] Misleading comment
+
+#### Description
+
+The current comment in the [`PrivatePool`](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol) contract at line [376-377](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L376-L377) is misleading, as it states that the sum of the caller's NFT weights must be less than or equal to the sum of the output pool NFTs weights. However, the implementation of the contract does not reflect this comment, and it actually revert if the input weight sum is less than the output weight sum, which is the opposite of what the comment implies. This issue could potentially lead to confusion for developers and result in incorrect implementation of the contract.
+
+#### Lines of code 
+
+- [PrivatePool.sol#L376-L377](https://github.com/code-423n4/2023-04-caviar/blob/main/src/PrivatePool.sol#L376-L377)
+
+#### Recommended Mitigation Steps
+
+To address this issue, we recommend changing the comment at line 376-377 to better reflect the intended functionality of the contract: 
+
+```solidity
+// Old comment: The sum of the caller's NFT weights must be less than or equal to the sum of the output pool NFTs weights.
+// New comment: The sum of the caller's NFT weights must be greater than or equal to the sum of the output pool NFTs weights.
+```
 
 ## [NC-01] Include return parameters in NatSpec comments
 
