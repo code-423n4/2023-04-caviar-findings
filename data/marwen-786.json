@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "marwen",
+  "risk": "3",
+  "title": "Vulnerability in create() function allows users to mint NFTs without sending ETH",
+  "issueId": 786,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/786"
+}
