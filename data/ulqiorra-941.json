@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ulqiorra",
+  "risk": "3",
+  "title": "A hacker can front-run the owner of a PrivatePool to drain the pool",
+  "issueId": 941,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/941"
+}
