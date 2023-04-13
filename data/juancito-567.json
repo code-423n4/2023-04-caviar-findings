@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "juancito",
+  "risk": "2",
+  "title": "Adversary can prevent the creation of any private pools by frontrunning the deployer",
+  "issueId": 567,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/567"
+}
