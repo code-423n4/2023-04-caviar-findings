@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xmuxyz",
+  "risk": "3",
+  "title": "There is no way for users to withdraw their base tokens and NFTs from the PrivatePool, which lead to that a malicious user can steal all of base tokens and all of NFTs from the PrivatePool",
+  "issueId": 645,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/645"
+}
