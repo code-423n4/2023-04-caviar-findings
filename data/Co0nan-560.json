@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Co0nan",
+  "risk": "2",
+  "title": "Excess ETH on flashLoan function will not be refunded.",
+  "issueId": 560,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/560"
+}
