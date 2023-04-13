@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "juancito",
+  "risk": "3",
+  "title": "Incorrect calculation of virtualBaseTokenReserves leads to incorrect pricing of NFTs",
+  "issueId": 964,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/964"
+}
