@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "JGcarv",
+  "risk": "3",
+  "title": "Owner can fronrun sellers changing `virtualReserves` and provoking unwanted sells.",
+  "issueId": 717,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/717"
+}
