@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xmuxyz",
+  "risk": "2",
+  "title": "Due to lack of input validation for the `deadline`, the transaction of `buy()`/`sell()` may be revert soon right after the transaction would be executed or the user may suffer a slippage loss",
+  "issueId": 663,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/663"
+}
