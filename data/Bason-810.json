@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bason",
+  "risk": "3",
+  "title": "Caller gets charged double for protocolFeeAmount and royaltyFeeAmount",
+  "issueId": 810,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/810"
+}
