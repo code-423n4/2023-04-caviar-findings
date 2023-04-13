@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Krace",
+  "risk": "3",
+  "title": "The user's sale income may be locked in the EthRouter contract and cannot be retrieved",
+  "issueId": 758,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/758"
+}
