@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "DishWasher",
+  "risk": "2",
+  "title": "Deadline check in EthRouter.sol's buy, sell and change function",
+  "issueId": 614,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/614"
+}
