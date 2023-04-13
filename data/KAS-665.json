@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "KAS",
+  "risk": "3",
+  "title": "Lack of input validation and verification in NFT selling function",
+  "issueId": 665,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/665"
+}
