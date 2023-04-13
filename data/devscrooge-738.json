@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "devscrooge",
+  "risk": "2",
+  "title": "Possible underflow cause tx reverted leading to DOS",
+  "issueId": 738,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/738"
+}
