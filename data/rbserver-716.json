@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "rbserver",
+  "risk": "3",
+  "title": "Calling `EthRouter.buy` function to buy an NFT from a public pool can cause user to pay more `royaltyFee` to `royaltyRecipient` than `royaltyRecipient` is entitled to",
+  "issueId": 716,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/716"
+}
