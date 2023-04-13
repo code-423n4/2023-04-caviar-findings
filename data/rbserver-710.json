@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "rbserver",
+  "risk": "3",
+  "title": "Calling `PrivatePool.change` function when `inputWeightSum` is greater than `outputWeightSum` does not increase `virtualNftReserves` accordingly",
+  "issueId": 710,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/710"
+}
