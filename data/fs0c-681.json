@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "fs0c",
+  "risk": "2",
+  "title": "FlashLoan might take extra msg.value in case baseToken is ETH.",
+  "issueId": 681,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/681"
+}
