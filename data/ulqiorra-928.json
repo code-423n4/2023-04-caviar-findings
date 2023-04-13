@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ulqiorra",
+  "risk": "3",
+  "title": "Slippage stealing via ERC-777 operator",
+  "issueId": 928,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/928"
+}
