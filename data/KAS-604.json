@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "KAS",
+  "risk": "2",
+  "title": "Reentrancy vulnerability & Input validation Required",
+  "issueId": 604,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/604"
+}
