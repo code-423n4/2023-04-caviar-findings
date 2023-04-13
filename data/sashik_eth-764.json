@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "sashik_eth",
+  "risk": "2",
+  "title": "Pool owner could be sandwiched while updating virtual reserves ",
+  "issueId": 764,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/764"
+}
