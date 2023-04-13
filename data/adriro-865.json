@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "Deposit function should be only accessible by the pool owner",
+  "issueId": 865,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/865"
+}
