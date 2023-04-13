@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "wintermute",
+  "risk": "3",
+  "title": "EthRouter buy and sell do not handle ERC20 tokens",
+  "issueId": 690,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/690"
+}
