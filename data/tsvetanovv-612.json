@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "Locked ether in `EthRouter.sol`",
+  "issueId": 612,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/612"
+}
