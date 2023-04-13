@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "anodaram",
+  "risk": "2",
+  "title": "Using front-running, a malicious user can make a huge slippage to the human's PrivatePool.sell.",
+  "issueId": 895,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/895"
+}
