@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bason",
+  "risk": "3",
+  "title": "Frontrunning can send the whole contract balance to sender",
+  "issueId": 818,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/818"
+}
