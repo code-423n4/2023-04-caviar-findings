@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "Low-level transfer via call() can fail silently",
+  "issueId": 735,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/735"
+}
