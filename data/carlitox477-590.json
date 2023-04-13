@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "carlitox477",
+  "risk": "2",
+  "title": "`Factory.create(address,address,uint128,uint128,uint56,uint16,bytes32,bool,bool,bytes32,uint256[] memory,uint256)`: DoS attack on new private pools creation by sending the same salt",
+  "issueId": 590,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/590"
+}
