@@ -220,3 +220,28 @@ Allowing so many hooks for malicious code in ``flashloan()`` is risky. For examp
 Mitigation: make sure that ``token == nft`` so that one can only flashloan NFTs from the ``nft`` contract.
 
 
+QA14. ``PrivatePool`` will break when the number of decimals for ``baseToken`` is less than 4. This is due to the underflow of the following function:
+
+```javascript
+ function changeFeeQuote(uint256 inputAmount) public view returns (uint256 feeAmount, uint256 protocolFeeAmount) {
+        // multiply the changeFee to get the fee per NFT (4 decimals of accuracy)
+        uint256 exponent = baseToken == address(0) ? 18 - 4 : ERC20(baseToken).decimals() - 4;
+        uint256 feePerNft = changeFee * 10 ** exponent;
+
+        feeAmount = inputAmount * feePerNft / 1e18;
+        protocolFeeAmount = feeAmount * Factory(factory).protocolFeeRate() / 10_000;
+    }
+```
+
+Mitigation: use division instead of subtract to avoid underflow:
+```diff
+ function changeFeeQuote(uint256 inputAmount) public view returns (uint256 feeAmount, uint256 protocolFeeAmount) {
+        // multiply the changeFee to get the fee per NFT (4 decimals of accuracy)
+-        uint256 exponent = baseToken == address(0) ? 18 - 4 : ERC20(baseToken).decimals() - 4;
++        uint256 exponent = baseToken == address(0) ? 18: ERC20(baseToken).decimals();
+-        uint256 feePerNft = changeFee * 10 ** exponent;
++        uint256 feePerNft = changeFee * 10 ** exponent / 10**4;
+        feeAmount = inputAmount * feePerNft / 1e18;
+        protocolFeeAmount = feeAmount * Factory(factory).protocolFeeRate() / 10_000;
+    }
+```
