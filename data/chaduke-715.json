@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "chaduke",
+  "risk": "2",
+  "title": "EthRouter#change() fails to check that  _change.nft == _change.pool.nft. ",
+  "issueId": 715,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/715"
+}
