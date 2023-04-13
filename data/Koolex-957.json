@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "Oracle could possibly flag stolen NFT after the NFT already was sold to the pool which leads to non-trivial impact",
+  "issueId": 957,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/957"
+}
