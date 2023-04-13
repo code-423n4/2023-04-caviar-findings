@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "nemveer",
+  "risk": "2",
+  "title": "flashLoan() doesn't send back extra ETH after fee deduction to the caller",
+  "issueId": 814,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/814"
+}
