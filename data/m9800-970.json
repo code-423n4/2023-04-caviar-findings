@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "m9800",
+  "risk": "3",
+  "title": "Re-entrancy attack in flash loan ",
+  "issueId": 970,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/970"
+}
