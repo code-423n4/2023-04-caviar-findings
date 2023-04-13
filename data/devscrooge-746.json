@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "devscrooge",
+  "risk": "3",
+  "title": "Virtual reserve variables can be wrongly set when a pool is created.",
+  "issueId": 746,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/746"
+}
