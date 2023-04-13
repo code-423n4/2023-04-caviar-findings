@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "jayfromthe13th",
+  "risk": "2",
+  "title": "Missing Input Validation for Fee Rate in setAllParameters ",
+  "issueId": 896,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/896"
+}
