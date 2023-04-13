@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "bearonbike",
+  "risk": "2",
+  "title": "Incorrect price calculation method will cause EthRouter.deposit() unusable.",
+  "issueId": 594,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/594"
+}
