@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ych18",
+  "risk": "2",
+  "title": "Users can spend Ether stored inside the `EthRouter` contract to buy NFTs",
+  "issueId": 639,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/639"
+}
