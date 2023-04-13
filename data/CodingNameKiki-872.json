@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "CodingNameKiki",
+  "risk": "3",
+  "title": "Duo to multiplying zero in calculation, pools initialized with zero change fee won't pay any protocol fee when the function \"change\" is called.",
+  "issueId": 872,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/872"
+}
