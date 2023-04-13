@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "nemveer",
+  "risk": "2",
+  "title": "Incomplete initialization of Factory contract can lead to loss of users funds",
+  "issueId": 795,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/795"
+}
