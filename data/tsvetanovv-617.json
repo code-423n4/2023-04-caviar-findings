@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tsvetanovv",
+  "risk": "3",
+  "title": "It is possible for a random user to take ethers from `EthRouter.sol`",
+  "issueId": 617,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/617"
+}
