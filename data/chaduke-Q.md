@@ -33,7 +33,7 @@ Mitigation: the correction should be
 ```
 
 QA6. The ``buy()`` function fails to verify that a private pool only supports ETH as base tokens.
-Similary, the ``deposit()`` function does not check this either.
+Similarly, the ``deposit()`` function does not check this either.
 
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L129](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L129)
 
@@ -90,7 +90,7 @@ function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public pa
     }
 ```
 
-QA7. 
+QA7. The execute() fails to send remaining ETH back to the user when there is any.
 
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L459-L476](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L459-L476)
 
@@ -120,7 +120,7 @@ function execute(address target, bytes memory data) public payable onlyOwner ret
     }
 ```
 
-QA8. The ``buy()`` function fails to check if an NFT is stolen or not. This is important since when an NFT is sold, people might not have known it is stolen, and then after that, it is report that an NFT A is stolen, which has been sold to the contract. It is important to not to allow people to buy stolen NFT as well.
+QA8. The ``buy()`` function fails to check if an NFT is stolen or not. This is important since when an NFT is sold, people might not have known it is stolen, and then after that, it is reported that an NFT A is stolen, which has been sold to the contract. It is important to not to allow people to buy stolen NFT as well.
 
 [https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L289](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L211-L289)
 
@@ -220,28 +220,3 @@ Allowing so many hooks for malicious code in ``flashloan()`` is risky. For examp
 Mitigation: make sure that ``token == nft`` so that one can only flashloan NFTs from the ``nft`` contract.
 
 
-QA14. ``PrivatePool`` will break when the number of decimals for ``baseToken`` is less than 4. This is due to the underflow of the following function:
-
-```javascript
- function changeFeeQuote(uint256 inputAmount) public view returns (uint256 feeAmount, uint256 protocolFeeAmount) {
-        // multiply the changeFee to get the fee per NFT (4 decimals of accuracy)
-        uint256 exponent = baseToken == address(0) ? 18 - 4 : ERC20(baseToken).decimals() - 4;
-        uint256 feePerNft = changeFee * 10 ** exponent;
-
-        feeAmount = inputAmount * feePerNft / 1e18;
-        protocolFeeAmount = feeAmount * Factory(factory).protocolFeeRate() / 10_000;
-    }
-```
-
-Mitigation: use division instead of subtract to avoid underflow:
-```diff
- function changeFeeQuote(uint256 inputAmount) public view returns (uint256 feeAmount, uint256 protocolFeeAmount) {
-        // multiply the changeFee to get the fee per NFT (4 decimals of accuracy)
--        uint256 exponent = baseToken == address(0) ? 18 - 4 : ERC20(baseToken).decimals() - 4;
-+        uint256 exponent = baseToken == address(0) ? 18: ERC20(baseToken).decimals();
--        uint256 feePerNft = changeFee * 10 ** exponent;
-+        uint256 feePerNft = changeFee * 10 ** exponent / 10**4;
-        feeAmount = inputAmount * feePerNft / 1e18;
-        protocolFeeAmount = feeAmount * Factory(factory).protocolFeeRate() / 10_000;
-    }
-```
