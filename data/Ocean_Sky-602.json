@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Ocean_Sky",
+  "risk": "3",
+  "title": "PrivatePool and EthRouter has receive() function with no clear purpose to the Ether it received.",
+  "issueId": 602,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/602"
+}
