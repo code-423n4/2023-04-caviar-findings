@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "Royalty fees may be incorrectly accounted in the `buy` and `sell` functions of the PrivatePool contract",
+  "issueId": 868,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/868"
+}
