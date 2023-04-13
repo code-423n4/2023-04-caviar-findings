@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "emerald7017",
+  "risk": "2",
+  "title": "Missing check to ensure the contract has enough tokens in Withdraw.",
+  "issueId": 793,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/793"
+}
