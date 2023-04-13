@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "0xepley",
+  "risk": "3",
+  "title": "No check for `minPrice` and `maxPrice` in the `deposit()` function",
+  "issueId": 952,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/952"
+}
