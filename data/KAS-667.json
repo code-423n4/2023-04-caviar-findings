@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "KAS",
+  "risk": "3",
+  "title": "Surplus ETH refund in buy function can lead to a DoS attack",
+  "issueId": 667,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/667"
+}
