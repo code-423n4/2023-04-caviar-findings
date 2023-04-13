@@ -1,4 +1,4 @@
-# Check if tokenIds is empty at the beginning of the buy function.
+# Check if tokenIds is empty at the beginning of the buy/sell/change function.
 
 PrivatePool.sol L211
 
@@ -10,6 +10,8 @@ emit Buy(tokenIds, tokenWeights, netInputAmount, feeAmount, protocolFeeAmount, r
 ```
 
 The `buy` function does not check if `tokenIds` is empty. If it is empty, the function will continue to execute and eventually emit an event that has no effect and should not be emitted.
+
+The `sell` and `change` functions have the same issue.
 
 # The parameters of flashFee were not used.
 
