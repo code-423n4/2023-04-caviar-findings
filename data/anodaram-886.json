@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "anodaram",
+  "risk": "2",
+  "title": "Some ERC20 tokens have a decimal smaller than 4",
+  "issueId": 886,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/886"
+}
