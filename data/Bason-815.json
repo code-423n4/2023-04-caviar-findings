@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bason",
+  "risk": "3",
+  "title": "Paying royaltyFee does not value weights of the NFT in PrivatePool.sol",
+  "issueId": 815,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/815"
+}
