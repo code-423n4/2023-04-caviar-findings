@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "rvierdiiev",
+  "risk": "3",
+  "title": "PrivatePool.buyQuote will revert when you want to buy one or several last nft",
+  "issueId": 647,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/647"
+}
