@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Norah",
+  "risk": "3",
+  "title": "VirtualReserves are not updated in deposit() and withdraw() function",
+  "issueId": 789,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/789"
+}
