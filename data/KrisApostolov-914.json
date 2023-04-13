@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "KrisApostolov",
+  "risk": "2",
+  "title": "Incorrect virtual liquidity amount can result in NFTs becoming temporarily stuck",
+  "issueId": 914,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/914"
+}
