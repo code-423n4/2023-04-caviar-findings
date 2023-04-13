@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "JP_Courses",
+  "risk": "2",
+  "title": "Shouldn't only EthRouter have access to this function for additional security?",
+  "issueId": 931,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/931"
+}
