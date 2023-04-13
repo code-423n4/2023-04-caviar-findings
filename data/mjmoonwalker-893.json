@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "mjmoonwalker",
+  "risk": "3",
+  "title": "It's possible to cause an imbalance in the Concentrated Liquidity parameters set by the owner of the pool",
+  "issueId": 893,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/893"
+}
