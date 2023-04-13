@@ -11,6 +11,15 @@ emit Buy(tokenIds, tokenWeights, netInputAmount, feeAmount, protocolFeeAmount, r
 
 The `buy` function does not check if `tokenIds` is empty. If it is empty, the function will continue to execute and eventually emit an event that has no effect and should not be emitted.
 
+# The parameters of flashFee were not used.
+
+PrivatePool.sol L750
+
+```
+function flashFee(address, uint256) public view returns (uint256) {
+    return changeFee;
+}
+```
 
 # Replace `transferFrom` with `safeTransferFrom`
 
