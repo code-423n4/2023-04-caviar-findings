@@ -53,3 +53,17 @@ Instead, similiar check should be there.
         if (_feeRate > 5_000) revert FeeRateTooHigh();
 ```
 -- Malicious user shouldnot be able to charge extremely high changeFee. 
+
+---
+
+#### 6. Irregularities in implementation of different private pools. 
+-- https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L92
+ As the above line suggests, all private pools are deployed with current implementation. While older private pools will still have older implementation of private pools. 
+-- This could result in confusion and team would require to keep track of pools with different implementation. 
+-- Keeping track of privatepools and their respective implementation in the factory contract could also provide better user experience without relying on 3rd party. 
+
+---
+
+#### 7. No events are indexed. 
+-- Certain important events such as Buy, Sell, Change should have atleast one indexed arguments so that it becomes easier for protocol during data analysis. 
+
