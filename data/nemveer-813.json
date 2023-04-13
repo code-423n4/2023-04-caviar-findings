@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "nemveer",
+  "risk": "2",
+  "title": "Lack of zero address check in every configuration function and constructor can lead to unexpected behaviour or redeployment of contracts or in worst case loss of user's funds",
+  "issueId": 813,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/813"
+}
