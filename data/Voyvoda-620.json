@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Voyvoda",
+  "risk": "2",
+  "title": "Flashloan fee has to be paid upfront if baseToken is ETH ",
+  "issueId": 620,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/620"
+}
