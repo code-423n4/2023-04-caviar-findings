@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "rvierdiiev",
+  "risk": "3",
+  "title": "PrivatePool.changeFeeQuote supposes that virtualNftReserves is in e18 precision",
+  "issueId": 650,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/650"
+}
