@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "cryptonue",
+  "risk": "2",
+  "title": "Private Pool `buy` function exposed to reentrancy attack because NFT is being sent to buyer before buyer send their ETH (or token) to buy it",
+  "issueId": 696,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/696"
+}
