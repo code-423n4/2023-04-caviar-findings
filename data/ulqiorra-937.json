@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ulqiorra",
+  "risk": "3",
+  "title": "Dangerous use of setVirtualReserves(), withdraw(), and execute() leads to incorrect configuration of PrivatePool",
+  "issueId": 937,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/937"
+}
