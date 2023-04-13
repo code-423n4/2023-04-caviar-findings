@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "adriro",
+  "risk": "2",
+  "title": "`changeFeeQuote` will fail for low decimal ERC20 tokens",
+  "issueId": 858,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/858"
+}
