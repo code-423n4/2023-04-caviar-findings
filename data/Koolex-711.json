@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "`PrivatePool.change` will always revert if the baseToken's decimals is less than 4",
+  "issueId": 711,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/711"
+}
