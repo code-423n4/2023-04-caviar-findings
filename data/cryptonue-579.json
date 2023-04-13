@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "cryptonue",
+  "risk": "2",
+  "title": "Changing Fee Quote will revert due to underflow if the `baseToken`'s decimals is < 4",
+  "issueId": 579,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/579"
+}
