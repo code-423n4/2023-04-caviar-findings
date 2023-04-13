@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "holyhansss_kr",
+  "risk": "2",
+  "title": "malicious pool owner can front run the sell()",
+  "issueId": 589,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/589"
+}
