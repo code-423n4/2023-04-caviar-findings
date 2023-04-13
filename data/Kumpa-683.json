@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Kumpa",
+  "risk": "2",
+  "title": "A user could avoid paying fee in ```sell``` by using reentrancy in PrivatePool.sol",
+  "issueId": 683,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/683"
+}
