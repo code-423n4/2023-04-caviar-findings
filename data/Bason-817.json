@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Bason",
+  "risk": "2",
+  "title": "Adding royaltyFeeAmount to the netInputAmount without checking payRoyalties",
+  "issueId": 817,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/817"
+}
