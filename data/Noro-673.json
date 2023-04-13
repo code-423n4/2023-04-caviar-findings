@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Noro",
+  "risk": "2",
+  "title": "Private Pool owner can frontrun buy, sell, change, flashLoan after user approve the Pool ERC721, ERC20, using execute() ",
+  "issueId": 673,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/673"
+}
