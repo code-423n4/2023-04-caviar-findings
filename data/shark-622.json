@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "shark",
+  "risk": "2",
+  "title": "In `PrivatePool.sol`, in the `price()` function, if a token has decimals of 37 or greater, `price()` will revert due to underflow",
+  "issueId": 622,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/622"
+}
