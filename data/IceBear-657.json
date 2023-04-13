@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "IceBear",
+  "risk": "2",
+  "title": " Low level call returns true if the address doesn’t exist ",
+  "issueId": 657,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/657"
+}
