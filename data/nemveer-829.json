@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "nemveer",
+  "risk": "3",
+  "title": "Owner's ability to set any arbitrary virtualReserves allowes him to steal users funds",
+  "issueId": 829,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/829"
+}
