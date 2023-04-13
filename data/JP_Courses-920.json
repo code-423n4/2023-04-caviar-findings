@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "JP_Courses",
+  "risk": "2",
+  "title": "what prevents private pool owner/user from depositing one or more NFTs into the pool using a nft parameter value different from the pool's nft variable value? I dont see any measures/checks to prevent this.",
+  "issueId": 920,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/920"
+}
