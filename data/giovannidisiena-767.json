@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "giovannidisiena",
+  "risk": "2",
+  "title": "No check that tokens are received following `safeTransferFrom`",
+  "issueId": 767,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/767"
+}
