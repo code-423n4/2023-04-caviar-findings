@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "nemveer",
+  "risk": "2",
+  "title": "Lack of updation of merkleRoot while providing liquidity will render the liquidity useless",
+  "issueId": 819,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/819"
+}
