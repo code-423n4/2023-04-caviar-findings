@@ -24,3 +24,12 @@ There are 4 instances in the contract `EthRouter.sol`:
 ## Recommended Mitigation
 Use `block.number` instead of `block.timestamp` or `now`. Furthermore, it is also recommended to use oracles.
 
+[L-03] Update codes to avoid Compilation Errors
+================================================
+```
+warning[2072]: Warning: Unused local variable.
+   --> test/PrivatePool/Quotes.t.sol:115:37:
+    |
+115 |         (uint256 returnedFeeAmount, uint256 protocolFeeAmount) = privatePool.changeFeeQuote(inputAmount);
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+```
