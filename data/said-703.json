@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "said",
+  "risk": "2",
+  "title": "EthRouter's function only work for privatePool with native eth as it baseToken, making no privatePool with non native eth susceptible to slippage",
+  "issueId": 703,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/703"
+}
