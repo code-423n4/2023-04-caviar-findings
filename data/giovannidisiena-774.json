@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "giovannidisiena",
+  "risk": "2",
+  "title": "Incorrect application of `PrivatePool::flashLoan` fee leads allows caller to execute at a 99.999999999999% discount",
+  "issueId": 774,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/774"
+}
