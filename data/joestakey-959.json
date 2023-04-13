@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "joestakey",
+  "risk": "2",
+  "title": "`PrivatePool.change` does not work with token with less than 4 decimals ",
+  "issueId": 959,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/959"
+}
