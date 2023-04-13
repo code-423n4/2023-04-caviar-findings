@@ -1,0 +1,6 @@
+## [L-01] Use SafeTransfer instead on normal transfer on the `sell` function
+The contract `PrivatePool.sol` imports `SafeTransferLib` from solmate and is using the `safeTransferETH` and `safeTransfer`/`safeTransferFrom` everywhere beside on the line 
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L365.
+The recommendation would be to use `safeTransfer` instead of normal `transfer`, in case the private pool would work with a non-compliant ERC20 and also because was already used everywhere in the contract.
+## [L-02] Verify the cases where the addresses arguments in the constructors are address(0)
+There are 4 cases where address arguments are set into constructor, 3 in `PrivatePool.sol` https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L143-L147 and one in `EthRouter.sol` https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L90-L92. Consider checking for address(0) in all of these 4 cases, so you don't need to redeploy any of these 2 contracts in case of a mistake.
