@@ -12,6 +12,8 @@
 | [GAS-6](#GAS-6) | Use != 0 instead of > 0 for unsigned integer comparison | 17 |
 | [GAS-7](#GAS-7) | <x> += <y> costs more gas than <x> = <x> + <y> for state variables (-= too) | 9 |
 | [GAS-8](#GAS-8) | Setting the constructor to payable | 3 |
+| [GAS-9](#GAS-9) | Structs can be packed into fewer storage slots | 5 |
+
 
 ### [GAS-1] Using bools for storage incurs overhead
 Use uint256(1) and uint256(2) for true/false to avoid a Gwarmaccess (100 gas), and to avoid Gsset (20000 gas) when changing from ‘false’ to ‘true’, after having been ‘true’ in the past. See [source](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/58f635312aa21f947cae5f8578638a85aa2519f5/contracts/security/ReentrancyGuard.sol#L23-L27).
@@ -496,4 +498,148 @@ File:2023-04-caviar/blob/main/src/Factory.sol
 File:2023-04-caviar/blob/main/src/EthRouter.sol
 
 90:    constructor(address _royaltyRegistry) {
+```
+
+### [GAS‑9] Structs can be packed into fewer storage slots
+
+Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct. Subsequent reads as well as writes have smaller gas savings
+
+```solidity 
+File:2023-04-caviar/blob/main/src/EthRouter.sol
+
+49:    struct Buy {
+50:        address payable pool;
+51:        address nft;
+52:        uint256[] tokenIds;
+53:        uint256[] tokenWeights;
+54:        PrivatePool.MerkleMultiProof proof;
+55:        uint256 baseTokenAmount;
+56:        bool isPublicPool;
+57:    }
+
+59:    struct Sell {
+60:        address payable pool;
+61:        address nft;
+62:        uint256[] tokenIds;
+63:        uint256[] tokenWeights;
+64:        PrivatePool.MerkleMultiProof proof;
+65:        IStolenNftOracle.Message[] stolenNftProofs;
+66:        bool isPublicPool;
+67:        bytes32[][] publicPoolProofs;
+68:    }
+
+70:    struct Change {
+71:        address payable pool;
+72:        address nft;
+73:        uint256[] inputTokenIds;
+74:        uint256[] inputTokenWeights;
+75:        PrivatePool.MerkleMultiProof inputProof;
+76:        IStolenNftOracle.Message[] stolenNftProofs;
+77:        uint256[] outputTokenIds;
+78:        uint256[] outputTokenWeights;
+79:        PrivatePool.MerkleMultiProof outputProof;
+80:    }
+
+```
+```solidity 
+File:2023-04-caviar/blob/main/src/interfaces/IStolenNftOracle.sol
+struct Message {
+        bytes32 id;
+        bytes payload;
+        // The UNIX timestamp when the message was signed by the oracle
+        uint256 timestamp;
+        // ECDSA signature or EIP-2098 compact signature
+        bytes signature;
+    }
+
+```
+
+```solidity 
+File:2023-04-caviar/blob/main/src/PrivatePool.sol
+struct MerkleMultiProof {
+        bytes32[] proof;
+        bool[] flags;
+    }
+```
+to 
+
+```diff
+diff --git a/src/EthRouter.sol b/src/EthRouter.sol
+index 125001d..3f96715 100644
+--- a/src/EthRouter.sol
++++ b/src/EthRouter.sol
+@@ -46,36 +46,36 @@ contract EthRouter is ERC721TokenReceiver {
+     using SafeTransferLib for address;
+ 
+     struct Buy {
++        bool isPublicPool;
+         address payable pool;
+         address nft;
+-        uint256[] tokenIds;
+-        uint256[] tokenWeights;
+         PrivatePool.MerkleMultiProof proof;
+         uint256 baseTokenAmount;
+-        bool isPublicPool;
++        uint256[] tokenIds;
++        uint256[] tokenWeights;
+     }
+ 
+     struct Sell {
++        bool isPublicPool;
+         address payable pool;
+         address nft;
+-        uint256[] tokenIds;
+-        uint256[] tokenWeights;
++        bytes32[][] publicPoolProofs;
+         PrivatePool.MerkleMultiProof proof;
+         IStolenNftOracle.Message[] stolenNftProofs;
+-        bool isPublicPool;
+-        bytes32[][] publicPoolProofs;
++        uint256[] tokenIds;
++        uint256[] tokenWeights;
+     }
+ 
+     struct Change {
+         address payable pool;
+         address nft;
+-        uint256[] inputTokenIds;
+-        uint256[] inputTokenWeights;
+         PrivatePool.MerkleMultiProof inputProof;
++        PrivatePool.MerkleMultiProof outputProof;
+         IStolenNftOracle.Message[] stolenNftProofs;
++        uint256[] inputTokenIds;
++        uint256[] inputTokenWeights;
+         uint256[] outputTokenIds;
+         uint256[] outputTokenWeights;
+-        PrivatePool.MerkleMultiProof outputProof;
+     }
+
+diff --git a/src/PrivatePool.sol b/src/PrivatePool.sol
+index 75991e1..282a798 100644
+--- a/src/PrivatePool.sol
++++ b/src/PrivatePool.sol
+@@ -50,8 +50,8 @@ contract PrivatePool is ERC721TokenReceiver {
+     /// @notice Merkle proof input for a sparse merkle multi proof. It can be generated with a library like:
+     /// https://github.com/OpenZeppelin/merkle-tree#treegetmultiproof
+     struct MerkleMultiProof {
+-        bytes32[] proof;
+         bool[] flags;
++        bytes32[] proof;
+     }
+
+diff --git a/src/interfaces/IStolenNftOracle.sol b/src/interfaces/IStolenNftOracle.sol
+index 815a356..19d38f4 100644
+--- a/src/interfaces/IStolenNftOracle.sol
++++ b/src/interfaces/IStolenNftOracle.sol
+@@ -6,10 +6,10 @@ interface IStolenNftOracle {
+     struct Message {
+         bytes32 id;
+         bytes payload;
+-        // The UNIX timestamp when the message was signed by the oracle
+-        uint256 timestamp;
+         // ECDSA signature or EIP-2098 compact signature
+         bytes signature;
++        // The UNIX timestamp when the message was signed by the oracle
++        uint256 timestamp;
+     }
 ```
