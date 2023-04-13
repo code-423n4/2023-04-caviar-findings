@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "ulqiorra",
+  "risk": "3",
+  "title": "Mismatch of NFT addresses between EthRouter and PrivatePool can lead to NFT theft",
+  "issueId": 945,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/945"
+}
