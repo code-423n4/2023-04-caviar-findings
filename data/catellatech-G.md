@@ -3,14 +3,19 @@
 |:----:  | :---           |  :----:         |:----:         |
 | [G-01] | DUPLICATED REQUIRE()/IF() CHECKS SHOULD BE REFACTORED TO A MODIFIER OR FUNCTION | 688 | 12 |
 | [G-02] | <X> += <Y> COSTS MORE GAS THAN <X> = <X> + <Y> FOR STATE VARIABLES (-= TOO)| 1017 | 9 |
-| [G-03] | EMPTY BLOCKS SHOULD BE REMOVED OR EMIT SOMETHING |  | 3 |
+| [G-03] | EMPTY BLOCKS SHOULD BE REMOVED OR EMIT SOMETHING | - | 3 |
 | [G-04] | OPTIMIZING EVENT PARAMETERS: INDEXING WHERE POSSIBLE | 1059 | 8 |
 | [G-05] | USE DOBLE IF INSTEAD && | 4 | 7 |
 | [G-06] | USE SHIFT RIGHT/LEFT INSTEAD OF DIVISION/MULTIPLICATION | 350 | 2 |
 | [G-07] | USE NESTED IF AND, AVOID MULTIPLE CHECK COMBINATIONS | 550 | 11 |
 | [G-08] | USE ASSEMBLY TO CHECK FOR ADDRESS(0) | 340 | 20 |
+| [G-09] | SETTING THE CONSTRUCTOR TO PAYABLE | 39 | 3 |
+| [G-10] | FUNCTIONS GUARANTEED TO REVERT WHEN CALLED BY NORMAL USERS CAN BE MARKED PAYABLE | 231 | 11 |
+| [G-11] | USE HARDCODED ADDRESS INSTEAD OF ADDRESS(THIS) | - | 24 |
+| [G-12] | OPTIMIZE NAMES TO SAVE GAS | 110 | 5 |
+| [G-13] | PUBLIC FUNCTIONS TO EXTERNAL | - | 34 |
 
-| Gas saved | 4004 | Total Instances | 72 |
+| Gas saved | 4384 | Total Instances | 140 |
 |:--:|:--:|:--:|--:|
 
 # Detailed Findings
@@ -237,4 +242,213 @@ assembly {
   revert(0x00, 0x20)
  }
 }
+```
+## [G-09] SETTING THE CONSTRUCTOR TO PAYABLE
+Saves ~13 gas per instance
+
+```solidity
+main/src/Factory.sol
+53: constructor() ERC721("Caviar Private Pools", "POOL") Owned(msg.sender) {}
+
+main/src/EthRouter.sol
+90:constructor(address _royaltyRegistry) {
+
+main/src/PrivatePool.sol
+143: constructor(address _factory, address _royaltyRegistry, address _stolenNftOracle) {
+```
+
+## [G-10] FUNCTIONS GUARANTEED TO REVERT WHEN CALLED BY NORMAL USERS CAN BE MARKED PAYABLE
+If a function modifier or require such as onlyOwner/onlyX is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2), DUP1(3), ISZERO(3), PUSH2(3), JUMPI(10), PUSH1(3), DUP1(3), REVERT(0), JUMPDEST(1), POP(2) which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost.
+
+### PROOF OF CONCEPT
+```solidity
+main/src/Factory.sol
+    129: function setPrivatePoolMetadata(address _privatePoolMetadata) public onlyOwner {
+    135: function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
+    141: function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner {
+    148: function withdraw(address token, uint256 amount) public onlyOwner {
+
+main/src/PrivatePool.sol
+    459: function execute(address target, bytes memory data) public payable onlyOwner returns (bytes memory) {
+    514: function withdraw(address _nft, uint256[] calldata tokenIds, address token, uint256 tokenAmount) public onlyOwner {
+    538: function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirtualNftReserves) public onlyOwner {
+    550: function setMerkleRoot(bytes32 newMerkleRoot) public onlyOwner {
+    562: function setFeeRate(uint16 newFeeRate) public onlyOwner {
+    576: function setUseStolenNftOracle(bool newUseStolenNftOracle) public onlyOwner {
+    587: function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
+```
+### RECOMMENDATION
+Functions guaranteed to revert when called by normal users can be marked payable.
+
+## [G-11] USE HARDCODED ADDRESS INSTEAD OF ADDRESS(THIS)
+Instead of using address(this), it is more gas-efficient to pre-calculate and use the hardcoded address. Foundry's script.sol and solmate's LibRlp.sol contracts can help achieve this.
+
+[Reference](https://book.getfoundry.sh/reference/forge-std/compute-create-address)
+
+https://twitter.com/transmissions11/status/1518507047943245824
+
+### PROOF OF CONCEPT
+```solidity
+main/src/Factory.sol
+    169: predictedAddress = privatePoolImplementation.predictDeterministicAddress(salt, address(this));
+
+main/src/EthRouter.sol
+    136: ERC721(buys[i].nft).safeTransferFrom(address(this), msg.sender, buys[i].tokenIds[j]);
+    141: if (address(this).balance > 0) {
+                msg.sender.safeTransferETH(address(this).balance);
+            }
+
+    162: ERC721(sells[i].nft).safeTransferFrom(msg.sender, address(this), sells[i].tokenIds[j]);
+    203: if (address(this).balance < minOutputAmount) {
+    208: msg.sender.safeTransferETH(address(this).balance);
+    240: ERC721(nft).safeTransferFrom(msg.sender, address(this), tokenIds[i]);
+    266: ERC721(_change.nft).safeTransferFrom(msg.sender, address(this), _change.inputTokenIds[j]);
+    285: ERC721(_change.nft).safeTransferFrom(address(this), msg.sender, _change.outputTokenIds[j]);
+    290: if (address(this).balance > 0) {
+                msg.sender.safeTransferETH(address(this).balance);
+            }
+
+main/src/PrivatePool.sol
+    128: if (msg.sender != Factory(factory).ownerOf(uint160(address(this)))) {
+    240: ERC721(nft).safeTransferFrom(address(this), msg.sender, tokenIds[i]);
+    256: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), netInputAmount);
+    331: ERC721(nft).safeTransferFrom(msg.sender, address(this), tokenIds[i]);
+    423: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), feeAmount);
+    442: ERC721(nft).safeTransferFrom(msg.sender, address(this), inputTokenIds[i]);
+    447: ERC721(nft).safeTransferFrom(address(this), msg.sender, outputTokenIds[i]);
+    497: ERC721(nft).safeTransferFrom(msg.sender, address(this), tokenIds[i]);
+    502: ERC20(baseToken).safeTransferFrom(msg.sender, address(this), baseTokenAmount);
+    519: ERC721(_nft).safeTransferFrom(address(this), msg.sender, tokenIds[i]);
+    638: ERC721(token).safeTransferFrom(address(this), address(receiver), tokenId);
+    648: ERC721(token).safeTransferFrom(address(receiver), address(this), tokenId);
+    651: if (baseToken != address(0)) ERC20(baseToken).transferFrom(msg.sender, address(this), fee)
+    766: return result == address(this);
+```
+### RECOMMENDATION
+Use hardcoded address
+
+## [G-12] OPTIMIZE NAMES TO SAVE GAS
+Contracts most called functions could simply save gas by function ordering via Method ID. Calling a function at runtime will be cheaper if the function is positioned earlier in the order (has a relatively lower Method ID) because 22 gas are added to the cost of a function for every position that came before it. The caller can save on gas if you prioritize most called functions.
+
+See more [here](https://medium.com/joyso/solidity-how-does-function-name-affect-gas-consumption-in-smart-contract-47d270d8ac92)
+
+### PROOF OF CONCEPT
+All scope.
+
+### RECOMMENDATION
+Find a lower method ID name for the most called functions for example Call() vs. Call1() is cheaper by 22 gas For example, the function IDs in the Gauge.sol contract will be the most used; A lower method ID may be given.
+
+## [G-13] PUBLIC FUNCTIONS TO EXTERNAL
+The following functions could be set external to save gas and improve code quality. External call cost is less expensive than of public functions.
+
+### PROOF OF CONCEPT
+```solidity
+main/src/Factory.sol
+    129: function setPrivatePoolMetadata(address _privatePoolMetadata) public onlyOwner {
+    135: function setPrivatePoolImplementation(address _privatePoolImplementation) public onlyOwner {
+    141: function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner {
+    148: function withdraw(address token, uint256 amount) public onlyOwner {
+    161: function tokenURI(uint256 id) public view override returns (string memory) {
+    168: function predictPoolDeploymentAddress(bytes32 salt) public view returns (address predictedAddress) {
+
+main/src/PrivatePoolMetadata.sol
+    17: function tokenURI(uint256 tokenId) public view returns (string memory) {
+    35: function attributes(uint256 tokenId) public view returns (string memory) {
+    55:  function svg(uint256 tokenId) public view returns (bytes memory) {
+
+main/src/EthRouter.sol
+    99: function buy(Buy[] calldata buys, uint256 deadline, bool payRoyalties) public payable {
+    152: function sell(Sell[] calldata sells, uint256 minOutputAmount, uint256 deadline, bool payRoyalties) public {
+    219: function deposit(
+            address payable privatePool,
+            address nft,
+            uint256[] calldata tokenIds,
+            uint256 minPrice,
+            uint256 maxPrice,
+            uint256 deadline
+        ) public payable {
+
+    254: function change(Change[] calldata changes, uint256 deadline) public payable {
+    301: function getRoyalty(address nft, uint256 tokenId, uint256 salePrice)
+            public
+            view
+            returns (uint256 royaltyFee, address recipient)
+        {
+
+main/src/PrivatePool.sol
+    157: function initialize(
+            address _baseToken,
+            address _nft,
+            uint128 _virtualBaseTokenReserves,
+            uint128 _virtualNftReserves,
+            uint56 _changeFee,
+            uint16 _feeRate,
+            bytes32 _merkleRoot,
+            bool _useStolenNftOracle,
+            bool _payRoyalties
+        ) public {
+
+    211: function buy(uint256[] calldata tokenIds, uint256[] calldata tokenWeights, MerkleMultiProof calldata proof)
+            public
+            payable
+            returns (uint256 netInputAmount, uint256 feeAmount, uint256 protocolFeeAmount)
+        {
+
+    301: function sell(
+            uint256[] calldata tokenIds,
+            uint256[] calldata tokenWeights,
+            MerkleMultiProof calldata proof,
+            IStolenNftOracle.Message[] memory stolenNftProofs // put in memory to avoid stack too deep error
+        ) public returns (uint256 netOutputAmount, uint256 feeAmount, uint256 protocolFeeAmount) {
+
+    385: function change(
+            uint256[] memory inputTokenIds,
+            uint256[] memory inputTokenWeights,
+            MerkleMultiProof memory inputProof,
+            IStolenNftOracle.Message[] memory stolenNftProofs,
+            uint256[] memory outputTokenIds,
+            uint256[] memory outputTokenWeights,
+            MerkleMultiProof memory outputProof
+        ) public payable returns (uint256 feeAmount, uint256 protocolFeeAmount) {
+
+    395: function execute(address target, bytes memory data) public payable onlyOwner returns (bytes memory) {
+    484: function deposit(uint256[] calldata tokenIds, uint256 baseTokenAmount) public payable {
+    414: function withdraw(address _nft, uint256[] calldata tokenIds, address token, uint256 tokenAmount) public onlyOwner {
+    538: function setVirtualReserves(uint128 newVirtualBaseTokenReserves, uint128 newVirtualNftReserves) public onlyOwner {
+    550: function setMerkleRoot(bytes32 newMerkleRoot) public onlyOwner {
+    562: function setFeeRate(uint16 newFeeRate) public onlyOwner {
+    576: function setUseStolenNftOracle(bool newUseStolenNftOracle) public onlyOwner {
+    587: function setPayRoyalties(bool newPayRoyalties) public onlyOwner {
+    602: function setAllParameters(
+            uint128 newVirtualBaseTokenReserves,
+            uint128 newVirtualNftReserves,
+            bytes32 newMerkleRoot,
+            uint16 newFeeRate,
+            bool newUseStolenNftOracle,
+            bool newPayRoyalties
+        ) public {
+
+    661: function sumWeightsAndValidateProof(
+            uint256[] memory tokenIds,
+            uint256[] memory tokenWeights,
+            MerkleMultiProof memory proof
+        ) public view returns (uint256) {
+
+    694: function buyQuote(uint256 outputAmount)
+            public
+            view
+            returns (uint256 netInputAmount, uint256 feeAmount, uint256 protocolFeeAmount)
+        {
+
+    713: function sellQuote(uint256 inputAmount)
+            public
+            view
+            returns (uint256 netOutputAmount, uint256 feeAmount, uint256 protocolFeeAmount)
+        {
+
+    731: function changeFeeQuote(uint256 inputAmount) public view returns (uint256 feeAmount, uint256 protocolFeeAmount) {
+    742: function price() public view returns (uint256) {
+    750: function flashFee(address, uint256) public view returns (uint256) {
+    755: function flashFeeToken() public view returns (address) {
+    763:  function availableForFlashLoan(address token, uint256 tokenId) public view returns (bool) {
 ```
