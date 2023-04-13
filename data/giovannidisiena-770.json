@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "giovannidisiena",
+  "risk": "2",
+  "title": "Royalty not always being taken into account leads to incorrect protocol accounting",
+  "issueId": 770,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/770"
+}
