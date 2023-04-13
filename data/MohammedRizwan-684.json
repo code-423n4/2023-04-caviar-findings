@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "The reentrancy vulnerability in _safeMint() can allow an attacker to reenter the create( ) function",
+  "issueId": 684,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/684"
+}
