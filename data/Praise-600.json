@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Praise",
+  "risk": "2",
+  "title": "The buy() function PrivatePool.sol doesn't check against max input amount and and high slippage",
+  "issueId": 600,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/600"
+}
