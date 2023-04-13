@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "georgits",
+  "risk": "2",
+  "title": "`setProtocolFeeRate` has no change restrictions. This may lead to freeze of the `sell` functionality for all private pools created and initialized by the Factory contract.",
+  "issueId": 641,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/641"
+}
