@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Voyvoda",
+  "risk": "3",
+  "title": "Malicious royalty recipient can steal excess eth from buy orders",
+  "issueId": 569,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/569"
+}
