@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "neumo",
+  "risk": "2",
+  "title": "When changing NFTs, protocol fees depend on changeFee, which is a value controlled by the protocol owner",
+  "issueId": 601,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/601"
+}
