@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "fee-on-transfer tokens are not taken into account in the protocol",
+  "issueId": 852,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/852"
+}
