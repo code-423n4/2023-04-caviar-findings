@@ -1,0 +1,2 @@
+> [PrivatePool.sol docs](https://docs.caviar.sh/technical-reference/custom-pools/high-level-overview#privatepool.sol): Users can set the fee rate to be whatever value that they want.
+But there is no function to set `changeFee` in `PrivatePool.sol`
