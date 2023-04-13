@@ -21,18 +21,11 @@ function flashFee(address, uint256) public view returns (uint256) {
 }
 ```
 
-# Replace `transferFrom` with `safeTransferFrom`
-
-Factory.sol L115
+# import IERC3156FlashBorrower.sol indead of IERC3156FlashLender.sol
+PrivatePool.sol L34
 
 ```
- if (_baseToken == address(0)) {
-            // transfer eth into the pool if base token is ETH
-            address(privatePool).safeTransferETH(baseTokenAmount);
-        } else {
-            // deposit the base tokens from the caller into the pool
-            ERC20(_baseToken).transferFrom(msg.sender, address(privatePool), baseTokenAmount);
-        }
+import {IERC3156FlashBorrower} from "openzeppelin/interfaces/IERC3156FlashLender.sol";
 ```
 
-Replace `transferFrom` with `safeTransferFrom`, as some non-standard ERC20 tokens do not revert on failed transfers.
+It only use IERC3156FlashBorrower, other functions in IERC3156FlashLender.sol are not used.
