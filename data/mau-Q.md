@@ -74,3 +74,32 @@ https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c2
 https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L722
 https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L731
 https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L742
+
+# [N-1] Use a fixed version number in Solidity 
+
+## Comments
+
+It is generally recommended to use a fixed version number in Solidity rather than a version range that includes minor updates.
+
+The reason for this is that minor updates to a Solidity version can introduce changes that affect the behavior of your smart contract. These changes may not necessarily be backward-compatible, which means that your smart contract could break or behave unexpectedly when run on a newer minor version.
+
+By specifying a fixed version number, you ensure that your smart contract is only compiled and deployed with a specific version of Solidity, which reduces the risk of compatibility issues and unexpected behavior.
+
+Additionally, using a fixed version number makes your code more explicit and easier to understand, as it removes any ambiguity around which version of Solidity is being used.
+
+## Instances
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/interfaces/IStolenNftOracle.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L2
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePoolMetadata.sol#L2
+
+# [N-2] Remove the empty line
+
+## Instances
+
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/EthRouter.sol#L36
+https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/Factory.sol#L28
