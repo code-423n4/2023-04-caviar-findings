@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "cryptonue",
+  "risk": "2",
+  "title": "Buyer or seller can still send the royalty fee, even if royalty recipient address is address(0)",
+  "issueId": 606,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/606"
+}
