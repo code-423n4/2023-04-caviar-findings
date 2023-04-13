@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "ETHRouter doesn't revoke the ERC721's approvalForAll of the pool after the operation (e.g. sell) is finished",
+  "issueId": 842,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/842"
+}
