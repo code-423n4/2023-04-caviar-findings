@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "philogy",
+  "risk": "3",
+  "title": "Royalty Recipients Can Steal Swaps Executed via `EthRouter`",
+  "issueId": 688,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/688"
+}
