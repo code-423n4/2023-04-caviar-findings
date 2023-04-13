@@ -322,6 +322,7 @@ File: 2023-04-caviar/src/PrivatePool.sol
 | [L-1](#L-1) | Initializers could be front-run | 2 |
 | [L-2](#L-2) | Unsafe ERC20 operation(s) | 5 |
 | [L-3](#L-3) | Unused/empty receive()/fallback() function | 3 |
+| [L-4](#L-4) | Unsafe use of transfer()/transferFrom() with IERC20 | 3 |
 
 ### [L-1] Initializers could be front-run
 Initializers could be front-run, allowing an attacker to either set their own values, take ownership of the contract, and in the best case forcing a re-deployment
