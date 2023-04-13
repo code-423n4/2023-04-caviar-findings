@@ -208,3 +208,15 @@ QA12: The ``PrivatePool#buy()`` and ``PrivatePool#sell()`` functions lack slippa
 Without this control: a user might expect not to pay the royalty but end up having to pay the royalty due to the change of the royalty payment mode by the owner's calling of the ``setPayRoyalties()`` function.
 
 Mitigation: add one more argument called ``expectedPayRoyalties`` to the ``buy()`` and ``sell()`` and check whether it is equal to ``payRoyalties`` before proceeding with the rest of the flow.
+
+QA13: The ``flashloan()`` does not check whether ``token`` is whitelisted or not (for example, whether it is equal to ``nft``). As a result, a malicious user might create a malicious NFT contract, and (optionally but does not have to) send all the malicious NFTs to the ``PrivatePool`` contract and provides hooks for vulnerabilities:
+
+1) The ``safeTransferFrom()`` can be malicious;
+2) The ``ownerOf()`` can be malicious, as a result, the call of ``!availableForFlashLoan(token, tokenId)`` can be bypassed easily.
+3) receiver.onFlashLoan() can be malicious.
+
+Allowing so many hooks for malicious code in ``flashloan()`` is risky. For example, they can all be used  for reentrancy attacks. 
+
+Mitigation: make sure that ``token == nft`` so that one can only flashloan NFTs from the ``nft`` contract.
+
+
