@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "juancito",
+  "risk": "3",
+  "title": "Private pool owners can steal assets from users by frontrunning their transactions and changing pool parameters",
+  "issueId": 578,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/578"
+}
