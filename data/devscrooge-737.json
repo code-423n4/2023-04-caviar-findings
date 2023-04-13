@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "devscrooge",
+  "risk": "2",
+  "title": "Tokens with more than 18 decimals will cause tx revert on deposit function (DOS)",
+  "issueId": 737,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/737"
+}
