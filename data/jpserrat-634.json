@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "jpserrat",
+  "risk": "2",
+  "title": "Change function availability can be impact if feeAmount is zero",
+  "issueId": 634,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/634"
+}
