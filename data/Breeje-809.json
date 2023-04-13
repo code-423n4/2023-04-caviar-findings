@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "Breeje",
+  "risk": "2",
+  "title": "Private Pool's implementation won't work correctly when Base token is Fees on Transfer token",
+  "issueId": 809,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/809"
+}
