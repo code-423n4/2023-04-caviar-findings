@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tallo",
+  "risk": "2",
+  "title": "Royalty fees with a recipient of address(0) get stuck in the contract instead of being refunded for NFT purchases with ethereum",
+  "issueId": 584,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/584"
+}
