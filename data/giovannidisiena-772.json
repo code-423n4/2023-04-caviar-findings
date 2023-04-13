@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "giovannidisiena",
+  "risk": "2",
+  "title": "Inconsistent handling of fees in `PrivatePool::change` between ERC20 & ETH `baseToken`",
+  "issueId": 772,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/772"
+}
