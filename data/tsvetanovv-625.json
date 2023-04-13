@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "tsvetanovv",
+  "risk": "2",
+  "title": "Unsafe cast in `PrivatePool.sol`",
+  "issueId": 625,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/625"
+}
