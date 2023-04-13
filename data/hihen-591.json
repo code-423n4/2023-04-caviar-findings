@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "hihen",
+  "risk": "2",
+  "title": "The value of Factory.protocolFeeRate should be limited to a reasonable maximum value",
+  "issueId": 591,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/591"
+}
