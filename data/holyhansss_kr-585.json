@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "holyhansss_kr",
+  "risk": "2",
+  "title": "Pool owner is able to deposit stolenNFT when useStolenNftOracle is true ",
+  "issueId": 585,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/585"
+}
