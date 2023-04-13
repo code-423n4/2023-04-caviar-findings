@@ -86,4 +86,3 @@ This is contra intuitive and can lead to a bad user experience. If the user puts
 
 # There is no check if the contract owns the NFTs or not
 For the functions buy(), sell(), change(), deposit() and withdraw() there is no check if the alleged current owner really owns the NFTs in the tokenIds array. To save gas in case one of the Ids is not owned by the alleged owner (what would result in the whole transaction to fail) I suggest adding a check if the  alleged owner really owns the Nft and if not fail the transaction early. Such a check is already implemented in the function flashLoan() with the call of the function availableForFlashLoan().
-
