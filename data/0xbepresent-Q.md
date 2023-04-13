@@ -33,3 +33,22 @@ Add a ```updateChangeFee()``` function that helps to update the ```changeFee``` 
 ==
 
 The ```Factory.create()``` function [uses the next code](https://github.com/code-423n4/2023-04-caviar/blob/main/src/Factory.sol#L110-L121) that helps to deposit the ```baseToken``` and the NFTs. It can use the ```privatePool.deposit()``` instead and the code will be cleaner.
+
+5 - The ```price()``` function does not represent the exact price in 18 decimals as expected
+==
+
+The [price()](https://github.com/code-423n4/2023-04-caviar/blob/cd8a92667bcb6657f70657183769c244d04c015c/src/PrivatePool.sol#L742) function mention the next comment: *Returns the price of the pool to 18 decimals of accuracy.* but it returns the price based on the ```baseToken``` decimals which is incorrect.
+
+```solidity
+uint256 exponent = baseToken == address(0) ? 18 : (36 - ERC20(baseToken).decimals());
+return (virtualBaseTokenReserves * 10 ** exponent) / virtualNftReserves;
+```
+
+Please see the next situation:
+
+- The ```virtualBaseTokenReserves``` is 10e18. The value is normalized with 18 decimals.
+- The ```virtualNftReserves``` is 2e18. The value is normalize with 18 decimals.
+- The ```baseToken``` is a token with 6 decimals.
+
+Accordly to the formula, the result will be ```5e30``` which is incorrect because the real price should be ```5e18``` tokens for each ```NFT```. Instead the formula should only return ```virtualBaseTokenReserves / virtualNftReserves``` since both values are 18 decimals normalized.
+
