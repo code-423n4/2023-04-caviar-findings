@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "pipoca",
+  "risk": "2",
+  "title": "Lack of Input Validation in create() and setProtocolFeeRate() Functions",
+  "issueId": 668,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/668"
+}
