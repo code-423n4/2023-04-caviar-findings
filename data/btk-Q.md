@@ -16,6 +16,7 @@ The Caviar Private Pools protocol is a decentralized platform on Ethereum that a
 | [L-07] | Array lengths not checked                                                                                 | 4             |
 | [L-08] | Unused `receive()` Function Will Lock Ether In Contract                                                   | 1             |
 | [L-09] | Misleading comment                                                                                        | 1             |
+| [L-10] | Fees are not capped                                                                                       | 1             |
 
 | Total Non-Critical issues |
 |---------------------------|
@@ -307,6 +308,26 @@ To address this issue, we recommend changing the comment at line 376-377 to bett
 // Old comment: The sum of the caller's NFT weights must be less than or equal to the sum of the output pool NFTs weights.
 // New comment: The sum of the caller's NFT weights must be greater than or equal to the sum of the output pool NFTs weights.
 ```
+
+## [L-10] Fees are not capped
+
+#### Description
+
+The current implementation of the protocol allows fees to be set without any limit which means fees can be set to an arbitrarily high value, potentially harming users and reducing the protocol's overall health.
+
+#### Lines of code 
+
+```solidity
+    function setProtocolFeeRate(uint16 _protocolFeeRate) public onlyOwner {
+        protocolFeeRate = _protocolFeeRate;
+    }
+```
+
+- [Factory.sol#L141-L143](https://github.com/code-423n4/2023-04-caviar/blob/main/src/Factory.sol#L141-L143)
+
+#### Recommended Mitigation Steps
+
+To address this issue, we recommend implementing a fee cap.
 
 ## [NC-01] Include return parameters in NatSpec comments
 
