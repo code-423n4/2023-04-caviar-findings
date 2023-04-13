@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "philogy",
+  "risk": "3",
+  "title": "Unchecked Return Value Allows Flash Borrower To Not Pay Fee",
+  "issueId": 803,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/803"
+}
