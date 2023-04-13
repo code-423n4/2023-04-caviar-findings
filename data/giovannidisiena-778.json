@@ -1,0 +1,8 @@
+{
+  "contest": 230,
+  "handle": "giovannidisiena",
+  "risk": "2",
+  "title": "Virual NFT reserves are not updated even though weight sum may increase in calls to `PrivatePool::change`",
+  "issueId": 778,
+  "issueUrl": "https://github.com/code-423n4/2023-04-caviar-findings/issues/778"
+}
