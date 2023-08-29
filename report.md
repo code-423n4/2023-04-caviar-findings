@@ -17,6 +17,10 @@ A C4 audit is an event in which community participants, referred to as Wardens, 
 
 During the audit outlined in this document, C4 conducted an analysis of the Caviar Private Pools smart contract system written in Solidity. The audit took place between April 7—April 13 2023.
 
+Following the C4 audit, 3 wardens (rvierdiiev, rbserver, and KrisApostolov) reviewed the mitigations for all identified issues; the mitigation review report is appended below the audit report.
+
+*Note: This published report was updated on August 28, 2023 to include the mitigation review results.*
+
 ## Wardens
 
 127 Wardens contributed reports to the Caviar Private Pools:
@@ -319,6 +323,9 @@ Ensure that the amount sent to the NFT royalty receivers in the second `for` loo
 **[outdoteth (Caviar) confirmed via duplicate issue `#593` and mitigated](https://github.com/code-423n4/2023-04-caviar-findings/issues/593#issuecomment-1520075272):**
  > Fixed in: https://github.com/outdoteth/caviar-private-pools/pull/12.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/27), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/35), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/5).
+
+
 
 ***
 
@@ -474,6 +481,8 @@ We recommend the protocol not let the private pool owner perform arbtirary execu
 > 
 > For this reason I agree with High Severity.
 
+**Status:** Mitigation confirmed with comments. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/25), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/36), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/6).
+
 
 
 ***
@@ -603,6 +612,10 @@ File: PrivatePool.sol
 **[outdoteth (Caviar) mitigated](https://github.com/code-423n4/2023-04-caviar-findings/issues/167):**
 > Fixed in https://github.com/outdoteth/caviar-private-pools/pull/10.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/20), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/37), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/7).
+
+
+
 ***
 
  
@@ -704,7 +717,6 @@ Foundry
 Consider sending the NFTs after the funds have been received by the contract.
 
 **[outdoteth (Caviar) acknowledged](https://github.com/code-423n4/2023-04-caviar-findings/issues/885)** 
-
 
 **[Alex the Entreprenerd (judge) commented](https://github.com/code-423n4/2023-04-caviar-findings/issues/885#issuecomment-1529117611):**
  > The Warden has shown how, due to the handling of callbacks, a `buy` can be viewed as a flash-swap which allows the payer to pay after using the token, effectively allowing for a cheaper flashloan if fees are set in a certain way.
@@ -826,6 +838,9 @@ Only send the required change fee and not `msg.value`.
 > 
 > Because that doesn't cause a loss of principal, but shows a broken functionality for some cases, I agree with Medium Severity.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/34), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/38), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/8).
+
+
 
 ***
 
@@ -916,6 +931,10 @@ The `flashFee` function should properly scale the value of the `changeFee` varia
 > 
 > That said, the code and the codebase point to wanting to offer a fee that scales based on the amounts loaned. For this nuanced reason, given that the Sponsor has confirmed and mitigated with a scaling fee, I believe that the most appropriate severity is Medium.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/33), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/39), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/9).
+
+
+
 ***
 
 ## [[M-04] `changeFeeQuote` will fail for low decimal ERC20 tokens](https://github.com/code-423n4/2023-04-caviar-findings/issues/858)
@@ -995,6 +1014,9 @@ The implementation of `changeFeeQuote` should check if the token decimals are le
 > That said, I believe the finding is valid per our rules, with some tokens, taking the `changeFeeQuote` will revert due to an assumption that `decimals - 4` wouldn't revert.
 > 
 > The contracts cannot be used for those tokens, but since this is contingent on using such a low decimal token, I agree with Medium Severity and believe a nofix to be fine since most Stablecoins have more than 4 decimals.
+
+
+
 ***
 
 ## [[M-05] `EthRouter.sell`, `EthRouter.deposit`, and `EthRouter.change` functions can be DOS'ed for some ERC721 tokens](https://github.com/code-423n4/2023-04-caviar-findings/issues/776)
@@ -1114,6 +1136,9 @@ The `EthRouter.sell`, `EthRouter.deposit`, and `EthRouter.change` functions can 
 > 
 > Due to it's reliance on token implementation I agree with Medium Severity.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/32), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/40), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/10).
+
+
 
 ***
 
@@ -1182,6 +1207,8 @@ Send some part of flashloan fee to the factory.
 
 **[Alex the Entreprenerd (judge) commented](https://github.com/code-423n4/2023-04-caviar-findings/issues/697#issuecomment-1531011905):**
  > The Warden has found an inconsistency as to how fees are paid. After confirming with the Sponsor, I agree with Medium Severity.
+
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/31), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/41), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/11).
 
 
 
@@ -1346,7 +1373,8 @@ To address this issue, it is recommended that the weight of NFTs relative to oth
 > 
 > As a developer, I agree with the Sponsor with a nofix and believe in practice that this should not be an issue.
 >
-> As a Judge, I believe the finding meets the requirements of improperly implementing an EIP, which can cause a loss of yield. For this reason I think Medium Severity to be appropriate.
+> As a Judge, I believe the finding meets the requirements of improperly implementing an EIP, which can cause a loss of yield. For this reason, I think Medium Severity to be appropriate.
+
 
 
 ***
@@ -1548,6 +1576,8 @@ Consider collecting royalty amount from traders only when the royalty recipient 
 > 
 > For the reasons above, am maintaining Medium Severity.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/30), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/42), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/12).
+
 
 
 ***
@@ -1692,6 +1722,8 @@ This makes the protocol fee extremely low meaning a profit loss for the protocol
 > ```
 **[Alex the Entreprenerd (judge) decreased severity to Medium and commented](https://github.com/code-423n4/2023-04-caviar-findings/issues/463#issuecomment-1528971055):**
  > The Warden has shown an inconsistency in how protocolFees are computed, because this is limited to a loss of Yield, I believe Medium Severity to be more appropriate.
+
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/23), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/44), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/13).
 
 
 
@@ -1902,6 +1934,8 @@ Consider making the upcoming pool address user specific by combining the salt va
 **[Alex the Entreprenerd (judge) commented](https://github.com/code-423n4/2023-04-caviar-findings/issues/419#issuecomment-1528974717):**
  > For context, if pool weren't transferable then the DOS would have been permanent and I would have raised severity.
 
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/29), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/43), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/14).
+
 
 
 ***
@@ -1988,6 +2022,8 @@ To prevent users from misusing the protocol and causing financial losses, we sho
 > After discussing with additional judges, given that there are a category of NFTs that should not be Flashloaned (e.g. UniV3, Factory, other factories, etc..) believe it is most appropriate to judge the finding as Medium Severity, with the additional warning that similar "vault like" NFTs should also be examined with care.
 > 
 > The risk doesn't apply to ordinary collections.
+
+**Status:** Mitigation confirmed with comments. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/22), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/45), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/15).
 
 
 
@@ -2407,6 +2443,8 @@ Suggest removing `token` from function input parameters and using `nft` token ev
 > 
 > Because of this, I belive that the finding is valid but of Medium Severity.
 
+**Status:** Mitigation confirmed with comments. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/24), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/47), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/16).
+
 
 
 ***
@@ -2540,6 +2578,11 @@ contract NonNFT {
 
 **[Alex the Entreprenerd (judge) commented](https://github.com/code-423n4/2023-04-caviar-findings/issues/44#issuecomment-1527230841):**
  > Because the functionality breaks the EIP721 spec, I agree with Medium Severity, no funds are at risk.
+
+**[outdoteth (Caviar) mitigated](https://github.com/code-423n4/2023-05-caviar-mitigation-contest#mitigations-to-be-reviewed):**
+ > Fixed in: https://github.com/outdoteth/caviar-private-pools/pull/19.
+
+**Status:** Mitigation confirmed. Full details in reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/28), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/46), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/17).
 
 
 
@@ -4850,6 +4893,64 @@ index 75991e1..7d63e8e 100644
 
 ***
 
+# Mitigation Review
+
+## Introduction
+
+Following the C4 audit, 3 wardens (rvierdiiev, rbserver, and KrisApostolov) reviewed the mitigations for all identified issues. Additional details can be found within the [C4 Caviar Private Pools Mitigation Review repository](https://github.com/code-423n4/2023-05-caviar-mitigation-contest).
+
+## Overview of Changes
+
+**[Summary from the Sponsor](https://github.com/code-423n4/2023-05-caviar-mitigation-contest/blob/main/README.md#overview-of-changes):**
+
+> "All of the mitigations for each issue are isolated to their own pull requests. While each mitigation may work in isolation, we would also like a review of how the mitigations all work together (i.e. an overview of the whole codebase). Of particular concern is [the mitigation for H-02](https://github.com/outdoteth/caviar-private-pools/pull/2) and whether it makes sense or not."
+
+## Mitigation Review Scope
+
+| URL | Mitigation of | Purpose | 
+| ----------- | ------------- | ----------- |
+| https://github.com/outdoteth/caviar-private-pools/pull/12 | H-01 | This fix ensures that the royalty amounts and royalty payments are now done in a single loop | 
+| https://github.com/outdoteth/caviar-private-pools/pull/2 | H-02, M-15 | Adds a check in the `execute()` function that will revert if the target contract is the `baseToken` or `nft`. | 
+| https://github.com/outdoteth/caviar-private-pools/pull/10 | H-03 | This fix uses openzeppelin's SafeCast library | 
+| https://github.com/outdoteth/caviar-private-pools/pull/5 | M-02 | Adds a `baseTokenAmount` field to the Change input | 
+| https://github.com/outdoteth/caviar-private-pools/pull/6 | M-03 | Exponentiates the changeFee to make sure that the flashFee amount is correct. |
+| https://github.com/outdoteth/caviar-private-pools/pull/7 | M-05 | Fix is to skip the approval step if the pool has already been approved to transfer the NFTs from the EthRouter. |
+| https://github.com/outdoteth/caviar-private-pools/pull/8 | M-06 | Adds the protocol fee to flashLoan fees. |
+| https://github.com/outdoteth/caviar-private-pools/pull/11 | M-08 | This fix ensures that the royaltyAmount is only incremented if the recipient address is not zero. |
+| https://github.com/outdoteth/caviar-private-pools/pull/13 | M-10 | Fix is to add a separate fee called protocolChangeFeeRate which can be much higher than protocolFeeRate. |
+| https://github.com/outdoteth/caviar-private-pools/pull/9 | M-11 | This fix includes the msg.sender in the salt when creating the proxy deployment. |
+| https://github.com/outdoteth/caviar-private-pools/pull/14 | M-12 | Adds a check to ensure that users cannot create pools with private pool nfts deposited. |
+| https://github.com/outdoteth/caviar-private-pools/pull/19 | M-17 | Adds a revert if the token does not exist. |
+
+*Note: see [here](https://github.com/code-423n4/2023-05-caviar-mitigation-contest/blob/main/README.md#out-of-scope) for details on out of scope findings.*
+
+## Mitigation Review Summary
+
+| Original Issue | Status | Full Details |
+| ----------- | ------------- | ----------- |
+| [H-01](https://github.com/code-423n4/2023-04-caviar-findings/issues/320) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/27), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/35), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/5) |
+| [H-02](https://github.com/code-423n4/2023-04-caviar-findings/issues/184) | Mitigation Confirmed with Comments | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/25), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/36), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/6) |
+| [H-03](https://github.com/code-423n4/2023-04-caviar-findings/issues/167) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/20), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/37), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/7) |
+| [M-02](https://github.com/code-423n4/2023-04-caviar-findings/issues/873) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/34), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/38), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/8) |
+| [M-03](https://github.com/code-423n4/2023-04-caviar-findings/issues/864) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/33), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/39), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/9) |
+| [M-05](https://github.com/code-423n4/2023-04-caviar-findings/issues/776) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/32), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/40), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/10) |
+| [M-06](https://github.com/code-423n4/2023-04-caviar-findings/issues/697) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/31), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/41), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/11) |
+| [M-08](https://github.com/code-423n4/2023-04-caviar-findings/issues/596) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/30), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/42), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/12) |
+| [M-10](https://github.com/code-423n4/2023-04-caviar-findings/issues/463) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/23), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/44), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/13) |
+| [M-11](https://github.com/code-423n4/2023-04-caviar-findings/issues/419) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/29), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/43), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/14) |
+| [M-12](https://github.com/code-423n4/2023-04-caviar-findings/issues/353) | Mitigation Confirmed with Comments | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/22), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/45), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/15) |
+| [M-15](https://github.com/code-423n4/2023-04-caviar-findings/issues/230) | Mitigation Confirmed with Comments | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/24), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/47), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/16) |
+| [M-17](https://github.com/code-423n4/2023-04-caviar-findings/issues/44) | Mitigation Confirmed | Reports from [rbserver](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/28), [KrisApostolov](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/46), and [rvierdiiev](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/17) |
+
+**The wardens also surfaced three new Low severity issues:**
+
+- [User can change nft with royalty into nft with same weight but without royalty in order to make profit](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/18) *Submitted by rvierdiiev*
+- [Sell function will not work as expected when royalty fee is high](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/19) *Submitted by rvierdiiev*
+- [Mitigation for H-02 and M-15 prevents private pool owner from performing some legitimate operations for baseToken and nft tokens owned by private pool](https://github.com/code-423n4/2023-05-caviar-mitigation-contest-findings/issues/26) *Submitted by rbserver*
+
+
+
+***
 
 # Disclosures
 
